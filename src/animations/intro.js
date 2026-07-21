@@ -9,7 +9,7 @@ const INTRO_SESSION_KEY = 'unimed_intro_played';
 
 export function initIntro(onComplete) {
   const overlay = document.querySelector('#intro-overlay');
-  const video = document.querySelector('#intro-video');
+  const video   = document.querySelector('#intro-video');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const alreadyPlayed = import.meta.env.DEV
@@ -22,8 +22,13 @@ export function initIntro(onComplete) {
     return;
   }
 
-  video.muted = true;
-  video.playsInline = true;
+  /* ------ ATRIBUTOS OBRIGATÓRIOS PARA IOS ------ */
+  video.muted        = true;
+  video.playsInline  = true;
+  video.autoplay     = false;
+  video.setAttribute('playsinline', '');
+  video.setAttribute('muted', '');
+  video.setAttribute('webkit-playsinline', '');
 
   let fallback;
   let finished = false;
@@ -48,9 +53,7 @@ export function initIntro(onComplete) {
     });
   };
 
-  /* ------ FALLBACK — RECALCULADO ASSIM QUE A DURAÇÃO REAL É CONHECIDA ------ */
-  /* NUNCA CORTA O VÍDEO ANTES DO 'ended' — SÓ AGE SE ALGO REALMENTE TRAVAR */
-
+  /* ------ FALLBACK ------ */
   const scheduleFallback = () => {
     clearTimeout(fallback);
 
@@ -61,33 +64,49 @@ export function initIntro(onComplete) {
     fallback = setTimeout(finishIntro, Math.min(knownDuration, TIMEOUT.introFallbackMax));
   };
 
+  /* ------ PRIMING IOS: play/pause antes do play real ------ */
   const primeAndPlay = () => {
-    // GARANTE INÍCIO DO PRIMEIRO FRAME — SEM PAUSE/RESTART (EVITA FLASH E PROMISE ÓRFÃ)
-    try { video.currentTime = 0; } catch { /* METADATA AINDA NÃO DISPONÍVEL */ }
+    try { video.currentTime = 0; } catch { /* IGNORADO */ }
 
-    video.play()
-      .then(() => {
-        if (!import.meta.env.DEV) {
-          sessionStorage.setItem(INTRO_SESSION_KEY, 'true');
-        }
-        scheduleFallback();
-      })
-      .catch(finishIntro);
+    /* PRIMING — OBRIGATÓRIO NO IOS PARA RENDERIZAR O PRIMEIRO FRAME */
+    const primePromise = video.play();
+
+    if (primePromise !== undefined) {
+      primePromise
+        .then(() => {
+          video.pause();
+          video.currentTime = 0;
+
+          /* PLAY REAL APÓS PRIMING */
+          return video.play();
+        })
+        .then(() => {
+          if (!import.meta.env.DEV) {
+            sessionStorage.setItem(INTRO_SESSION_KEY, 'true');
+          }
+          scheduleFallback();
+        })
+        .catch(finishIntro);
+    } else {
+      /* FALLBACK PARA BROWSERS SEM PROMISE (RARO) */
+      try { video.play(); } catch { finishIntro(); }
+      scheduleFallback();
+    }
   };
 
   video.addEventListener('ended', finishIntro, { once: true });
   video.addEventListener('loadedmetadata', scheduleFallback, { once: true });
 
-  // FALLBACK INICIAL — CASO METADATA JÁ TENHA CARREGADO ANTES DO LISTENER
   if (video.readyState >= 1 && Number.isFinite(video.duration)) {
     scheduleFallback();
   } else {
     fallback = setTimeout(finishIntro, TIMEOUT.introFallback);
   }
 
+  /* ------ IOS NÃO DISPARA canplaythrough SEM INTERAÇÃO — USA loadeddata ------ */
   if (video.readyState >= 2) {
     primeAndPlay();
   } else {
-    video.addEventListener('canplaythrough', primeAndPlay, { once: true });
+    video.addEventListener('loadeddata', primeAndPlay, { once: true });
   }
 }
