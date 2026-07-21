@@ -65,6 +65,14 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* ------ IOS: FORÇA CAMADA GPU PRÓPRIA ------ */
+  /* SEM ISSO, O SAFARI iOS DECODIFICA E TOCA O VÍDEO (TIMER PASSA) MAS */
+  /* NÃO COMPÕE OS FRAMES DENTRO DO STACKING CONTEXT FIXO/ISOLADO DO OVERLAY */
+  /* — SÓ O FUNDO VERDE APARECE. translateZ PROMOVE O VÍDEO A UMA CAMADA PRÓPRIA. */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ------ CONTEÚDO DO HERO ------ */
