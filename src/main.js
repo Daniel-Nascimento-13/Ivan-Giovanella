@@ -8,6 +8,12 @@ import { initSmoothScroll } from './lib/smooth-scroll.js';
 import { initIntro } from './animations/intro.js';
 import { initHero, prepareHero } from './animations/hero.js';
 
+/* ========================================
+   SEÇÃO 2 — SOBRE
+   ======================================== */
+
+import { initSobre } from './animations/sobre.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (!prefersReducedMotion) {
@@ -17,4 +23,7 @@ if (!prefersReducedMotion) {
 document.addEventListener('DOMContentLoaded', () => {
   prepareHero(); // ESCONDE O HERO IMEDIATAMENTE — ANTES DA INTRO RODAR
   initIntro(() => initHero());
+
+  // SEÇÃO 2 — SOBRE: SCROLLTRIGGER PRÓPRIO, INDEPENDENTE DA INTRO
+  initSobre();
 });

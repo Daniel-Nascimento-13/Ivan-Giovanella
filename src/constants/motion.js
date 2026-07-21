@@ -27,6 +27,21 @@ export const STAGGER = {
   loose: 0.3
 };
 
+/* ------ OVERLAP — POSIÇÃO RELATIVA ENTRE TWEENS NA TIMELINE ------ */
+
+export const OVERLAP = {
+  tight: '-=0.3',
+  base: '-=0.6'
+};
+
+/* ------ CARDS STACK (SEÇÃO 2 — SOBRE) — CSS TRANSITION, NÃO GSAP ------ */
+/* NAVEGAÇÃO MANUAL (ARROW + DOTS) — SEM ROTAÇÃO AUTOMÁTICA */
+
+export const CARDS = {
+  transitionMs: 800,                               // DURAÇÃO DA TROCA (MS)
+  transitionEase: 'cubic-bezier(0.16, 1, 0.3, 1)'  // EXPO.OUT EQUIVALENTE EM CSS
+};
+
 /* ------ TIMEOUTS (MS) ------ */
 
 export const TIMEOUT = {
