@@ -103,10 +103,12 @@ export function initIntro(onComplete) {
     fallback = setTimeout(finishIntro, TIMEOUT.introFallback);
   }
 
-  /* ------ IOS NÃO DISPARA canplaythrough SEM INTERAÇÃO — USA loadeddata ------ */
-  if (video.readyState >= 2) {
-    primeAndPlay();
-  } else {
-    video.addEventListener('loadeddata', primeAndPlay, { once: true });
-  }
+  /* ------ IOS: NÃO ESPERAR readyState/loadeddata ANTES DE TOCAR ------ */
+  /* IOS SAFARI IGNORA preload="auto" E NÃO BUFFERIZA VÍDEO SEM UM play(). */
+  /* SE ESPERARMOS loadeddata (readyState >= 2), ELE NUNCA CHEGA — DEADLOCK: */
+  /* SÓ O FALLBACK DISPARA E O OVERLAY VERDE SOME SEM O VÍDEO NUNCA PINTAR. */
+  /* MUTED + playsinline PERMITE play() PROGRAMÁTICO SEM GESTO; O PRÓPRIO */
+  /* play() FORÇA O IOS A CARREGAR, DECODIFICAR E RENDERIZAR O PRIMEIRO FRAME. */
+  video.load();
+  primeAndPlay();
 }
