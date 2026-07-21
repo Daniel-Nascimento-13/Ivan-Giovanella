@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ivan Giovanella | Consultor Unimed Vales do Taquari e Rio Pardo</title>
+  <meta name="description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade para sua empresa. Consultoria especializada com Ivan Giovanella." />
+
+  <meta name="theme-color" content="#06301F" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ivan Giovanella | Consultor Unimed" />
+  <meta property="og:description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade." />
+  <!-- TODO: URL absoluta quando o domínio de produção for definido -->
+  <!-- <meta property="og:url" content="https://DOMINIO/" /> -->
+  <!-- <meta property="og:image" content="https://DOMINIO/images/FOTO-1.WEBP" /> -->
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ivan Giovanella | Consultor Unimed" />
+  <meta name="twitter:description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade." />
+  <!-- TODO: URL absoluta quando o domínio de produção for definido -->
+  <!-- <meta name="twitter:image" content="https://DOMINIO/images/FOTO-1.WEBP" /> -->
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <header>
+    <!-- NAV ENTRA NA SEÇÃO 0 -->
+  </header>
+
+  <main id="main">
+
+    <!-- ========================================
+         SEÇÃO 1 — HERO — VÍDEO ANIMADO DE ENTRADA
+         ======================================== -->
+
+    <!-- ------ INTRO EM VÍDEO ------ -->
+    <div id="intro-overlay" aria-hidden="true">
+      <video id="intro-video" src="/videos/VIDEO-UNIMED-LOGO.mp4" muted playsinline preload="auto"></video>
+    </div>
+
+    <!-- ------ CONTEÚDO DO HERO — MARKUP ESTÁTICO (LCP/CLS) ------ -->
+    <!-- TEXTO DE REFERÊNCIA EM src/data/site-data.js — hero.js APENAS SELECIONA E ANIMA -->
+    <section id="hero" aria-label="Apresentação">
+      <div class="hero-content">
+        <p class="hero-eyebrow">
+          Plano de saúde
+          <span class="eyebrow-roulette" aria-live="polite" aria-label="empresarial">
+            <span class="eyebrow-roulette__track">
+              <span class="eyebrow-roulette__word">empresarial</span>
+              <span class="eyebrow-roulette__word">pessoal</span>
+            </span>
+          </span>
+        </p>
+        <h1>
+          <span class="hero-line-wrap"><span class="hero-line">O melhor benefício para</span></span>
+          <span class="hero-line-wrap"><span class="hero-line">sua empresa é cuidar de</span></span>
+          <span class="hero-line-wrap"><span class="hero-line" data-highlight="true">quem faz ela acontecer.</span></span>
+        </h1>
+        <p class="hero-subheadline">Mais saúde, mais engajamento e menos rotatividade para o seu time.</p>
+        <!-- HREF INJETADO POR hero.js A PARTIR DE getWhatsappLink() (FONTE ÚNICA: src/data/site-data.js) -->
+        <a href="#" class="hero-cta" target="_blank" rel="noopener noreferrer">
+          <span class="hero-cta-label">Falar no WhatsApp</span>
+          <span class="hero-cta-glow" aria-hidden="true"><span></span></span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <!-- FOOTER ENTRA POR ÚLTIMO -->
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

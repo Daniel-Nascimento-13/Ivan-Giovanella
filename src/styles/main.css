@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource/bricolage-grotesque/800.css";
+
+@theme {
+  --color-paper: #06301F;
+  --color-ink: #ffffff;
+  --color-accent: #00995D;
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "Inter Variable", sans-serif;
+}
+
+/* ========================================
+   BASE
+   ======================================== */
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ========================================
+   SEÇÃO 1 — HERO — VÍDEO ANIMADO DE ENTRADA
+   ======================================== */
+
+/* ------ INTRO EM VÍDEO ------ */
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #00995D;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ------ CONTEÚDO DO HERO ------ */
+
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 6vw, 80px);
+  background-color: var(--color-paper);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-content {
+  max-width: 640px;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.hero-line-wrap {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-line {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.hero-line[data-highlight="true"] {
+  color: var(--color-accent);
+}
+
+.hero-subheadline {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 24px;
+  max-width: 480px;
+}
+
+/* ------ ROLETA DO EYEBROW ------ */
+.eyebrow-roulette {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  height: 1.2em;
+}
+
+.eyebrow-roulette__track {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.eyebrow-roulette__word {
+  display: block;
+  height: 1.2em;
+  line-height: 1.2em;
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+/* ------ CTA — EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER, NÃO REVEAL DE SCROLL. CSS PURO, FORA DO ESCOPO DO GSAP. ------ */
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 36px;
+  padding: 15px 30px;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 10rem;
+  background-color: #ffffff;
+  color: #0A0A0A;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px -8px rgba(0, 0, 0, 0.4);
+  transition: color 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hero-cta-label {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-cta:hover {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.hero-cta:active {
+  transform: scale(0.97);
+}
+
+.hero-cta-glow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-cta-glow span {
+  width: 18rem;
+  height: 18rem;
+  border-radius: 40rem;
+  background: conic-gradient(
+    from 0deg,
+    #fdfffe 0%,
+    #00ff99 20%,
+    #00ff88 40%,
+    #01f70e 60%,
+    #63f79a 80%,
+    #5ab791 100%
+  );
+  filter: blur(22px);
+  opacity: 0.85;
+  animation: hero-cta-spin 3s linear infinite;
+  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hero-cta:hover .hero-cta-glow span {
+  width: 15rem;
+  height: 15rem;
+  opacity: 1;
+}
+
+@keyframes hero-cta-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta-glow span {
+    animation: none;
+  }
+}
