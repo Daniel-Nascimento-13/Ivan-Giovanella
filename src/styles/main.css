@@ -54,8 +54,8 @@ h1, h2, h3 {
   inset: 0;
   z-index: 50;
   background-color: #00995D;
-  overflow: hidden;
-  isolation: isolate;
+  /* ------ IOS: SEM isolation/overflow — EVITA STACKING CONTEXT QUE IMPEDE ------ */
+  /* ------ O COMPOSITING DO VÍDEO. STACKING CONTROLADO SÓ VIA z-index. ------ */
 }
 
 #intro-video {
@@ -86,7 +86,6 @@ h1, h2, h3 {
   padding: clamp(24px, 6vw, 80px);
   background-color: var(--color-paper);
   overflow: hidden;
-  isolation: isolate;
 }
 
 .hero-content {
