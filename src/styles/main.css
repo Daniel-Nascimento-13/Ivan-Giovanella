@@ -5,7 +5,11 @@
 @theme {
   --color-paper: #06301F;
   --color-surface: #0D1F17;
+  --color-surface-2: #E8F0EB; /* SEÇÃO 2 — VERDE OFF-WHITE, FUNDO CLARO */
+  --color-card: #F0F4F1; /* CARD — BRANCO LEVEMENTE ESVERDEADO, PREMIUM */
+  --color-black: #0A0A0A;
   --color-ink: #ffffff;
+  --color-ink-muted: #2D4A38; /* VERDE ESCURO MÉDIO — TEXTO SOBRE FUNDO CLARO */
   --color-accent: #00995D;
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Inter Variable", sans-serif;
@@ -21,9 +25,39 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-paper);
+  background-color: var(--color-black);
   color: var(--color-ink);
   overflow-x: hidden;
+}
+
+/* ========================================
+   TRANSIÇÃO CINEMATOGRÁFICA ENTRE SEÇÕES
+   ======================================== */
+
+/* ------ FADE PRETO NO TOPO E NA BASE DE CADA SEÇÃO ------ */
+.section-fade {
+  position: relative;
+}
+
+.section-fade::before,
+.section-fade::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 160px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.section-fade::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--color-black), transparent);
+}
+
+.section-fade::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--color-black), transparent);
 }
 
 h1, h2, h3 {
@@ -97,6 +131,7 @@ h1, h2, h3 {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 13px;
+  line-height: 1.2; /* EXPLÍCITO — CASA COM A ALTURA DA ROLETA (1.2em) */
   letter-spacing: 1.5px;
   color: var(--color-accent);
   text-transform: uppercase;
@@ -150,7 +185,6 @@ h1, h2, h3 {
   height: 1.2em;
   line-height: 1.2em;
   color: var(--color-accent);
-  font-style: italic;
 }
 
 /* ------ CTA — EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER, NÃO REVEAL DE SCROLL. CSS PURO, FORA DO ESCOPO DO GSAP. ------ */
@@ -242,7 +276,10 @@ h1, h2, h3 {
    ======================================== */
 
 #sobre {
-  background-color: var(--color-surface);
+  position: relative;
+  margin: 0; /* SEM GAP ENTRE AS SEÇÕES — O FADE PRETO FAZ A TRANSIÇÃO */
+  overflow: hidden;
+  background-color: var(--color-surface-2);
   padding: clamp(64px, 10vw, 140px) clamp(24px, 6vw, 80px);
 }
 
@@ -293,7 +330,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: clamp(30px, 4.5vw, 48px);
   line-height: 1.1;
-  color: var(--color-ink);
+  color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO */
   margin-bottom: 20px;
 }
 
@@ -302,7 +339,7 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: clamp(15px, 2vw, 17px);
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — LEGÍVEL NO FUNDO CLARO */
   max-width: 560px;
   margin-bottom: 32px;
 }
@@ -369,9 +406,9 @@ h1, h2, h3 {
   overflow: hidden;   /* CONTÉM O CONTEÚDO DENTRO DA ALTURA FIXA */
   padding: 1.5rem;
   border-radius: 20px;
-  background-color: var(--color-surface);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.6);
+  background-color: var(--color-card); /* BRANCO ESVERDEADO — TOQUE PREMIUM */
+  border: 1px solid rgba(0, 153, 93, 0.12); /* BORDA LEVEMENTE VERDE */
+  box-shadow: 0 4px 24px rgba(6, 48, 31, 0.08); /* SOMBRA SUTIL ESVERDEADA */
   transform-origin: top center;
   will-change: transform;
   opacity: 0; /* ESTADO PADRÃO ANTES DO JS — EVITA FLASH DE STACK EMPILHADO */
@@ -443,14 +480,14 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: clamp(40px, 6vw, 52px);
   line-height: 1;
-  color: var(--color-accent);
+  color: var(--color-paper); /* VERDE ESCURO — NÚMERO SOBRE CARD BRANCO */
 }
 
 .sobre-card__suffix {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(18px, 3vw, 22px);
-  color: var(--color-ink);
+  color: var(--color-paper);
 }
 
 .sobre-card__icon {
@@ -475,7 +512,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: 20px;
   line-height: 1.2;
-  color: var(--color-ink);
+  color: var(--color-paper); /* VERDE ESCURO — TÍTULO SOBRE CARD BRANCO */
   margin: 0 0 8px;
 }
 
@@ -484,7 +521,7 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — LABEL SOBRE CARD BRANCO */
   margin: 0;
 }
 
@@ -508,7 +545,7 @@ h1, h2, h3 {
   padding: 0;
   border: none;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.2); /* DOT INATIVO — ESCURO SOBRE FUNDO CLARO */
   cursor: pointer;
   /* MICRO-INTERAÇÃO — TRANSIÇÃO DE ESTADO DO DOT (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
@@ -530,16 +567,16 @@ h1, h2, h3 {
   height: 44px;
   margin: 24px auto 0;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2); /* BORDA ESCURA — SOBRE FUNDO CLARO */
   background-color: transparent;
-  color: var(--color-ink);
+  color: var(--color-paper); /* ÍCONE VERDE ESCURO */
   cursor: pointer;
   /* MICRO-INTERAÇÃO — HOVER/ACTIVE DO BOTÃO (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
 .sobre-nav-arrow:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(0, 0, 0, 0.05); /* HOVER SUTIL — SOBRE FUNDO CLARO */
 }
 
 .sobre-nav-arrow:active {
