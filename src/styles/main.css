@@ -11,6 +11,7 @@
   --color-ink: #ffffff;
   --color-ink-muted: #2D4A38; /* VERDE ESCURO MÉDIO — TEXTO SOBRE FUNDO CLARO */
   --color-accent: #00995D;
+  --color-orange: #E8621A;
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Inter Variable", sans-serif;
 }
@@ -36,8 +37,21 @@ body {
 
 /* ------ TRANSIÇÕES ENTRE SEÇÕES VIA GRADIENTE ------ */
 
-/* HERO → SOBRE: SÓ O HERO GERA O GRADIENTE NA BASE */
-#hero::after {
+/* HERO — TOPO: SOMBRA SUTIL PARA LEGIBILIDADE DA NAV */
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* HERO → SOBRE: GRADIENTE DESATIVADO — SUBSTITUÍDO PELA .hero-wave (SVG) */
+/* #hero::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -47,10 +61,26 @@ body {
   background: linear-gradient(to bottom, var(--color-paper), var(--color-surface-2));
   pointer-events: none;
   z-index: 2;
+} */
+
+/* HERO → SOBRE: DIVISÓRIA EM ONDA (SVG) */
+.hero-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
 }
 
-/* SOBRE → MARCAS: SÓ O SOBRE GERA O GRADIENTE NA BASE */
-#sobre::after {
+.hero-wave svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
+}
+
+/* SOBRE → MARCAS: GRADIENTE DESATIVADO — SUBSTITUÍDO PELA .sobre-wave (SVG) */
+/* #sobre::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -59,7 +89,23 @@ body {
   height: 160px;
   background: linear-gradient(to bottom, var(--color-surface-2), var(--color-paper));
   pointer-events: none;
-  z-index: 0; /* ABAIXO DA .sobre-nav-arrow — GRADIENTE NÃO COBRE A SETA */
+  z-index: 0;
+} */
+
+/* SOBRE → MARCAS: DIVISÓRIA EM ONDA (SVG) */
+.sobre-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+}
+
+.sobre-wave svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
 }
 
 /* MARCAS → SAÍDA: FADE FINAL PARA PRETO */
@@ -150,7 +196,7 @@ h1, h2, h3 {
   font-size: 13px;
   line-height: 1.2; /* EXPLÍCITO — CASA COM A ALTURA DA ROLETA (1.2em) */
   letter-spacing: 1.5px;
-  color: var(--color-accent);
+  color: var(--color-orange);
   text-transform: uppercase;
   margin-bottom: 20px;
 }
@@ -201,7 +247,10 @@ h1, h2, h3 {
   display: block;
   height: 1.2em;
   line-height: 1.2em;
-  color: var(--color-accent);
+  background-color: var(--color-orange);
+  color: var(--color-ink);
+  padding: 0 8px;
+  border-radius: 4px;
 }
 
 /* ------ CTA — EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER, NÃO REVEAL DE SCROLL. CSS PURO, FORA DO ESCOPO DO GSAP. ------ */
@@ -297,7 +346,7 @@ h1, h2, h3 {
   margin: 0; /* SEM GAP ENTRE AS SEÇÕES — O FADE PRETO FAZ A TRANSIÇÃO */
   overflow: hidden;
   background-color: var(--color-surface-2);
-  padding: clamp(64px, 10vw, 140px) clamp(24px, 6vw, 80px);
+  padding: clamp(16px, 3vw, 40px) clamp(24px, 6vw, 80px) clamp(100px, 14vw, 180px);
 }
 
 .sobre-inner {
@@ -343,6 +392,31 @@ h1, h2, h3 {
   color: var(--color-accent);
   text-transform: uppercase;
   margin-bottom: 12px;
+}
+
+/* ------ ROLETA DO EYEBROW — SOBRE ------ */
+.sobre-eyebrow-roulette {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  vertical-align: bottom;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sobre-eyebrow-roulette__track {
+  display: flex;
+  flex-direction: column;
+}
+
+.sobre-eyebrow-roulette__word {
+  line-height: 1.2;
+  white-space: nowrap;
+  background-color: var(--color-orange);
+  color: var(--color-ink);
+  padding: 0 6px;
+  border-radius: 3px;
+  display: inline-block;
+  width: auto;
 }
 
 .sobre-name {
@@ -658,6 +732,7 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: clamp(32px, 5vw, 56px);
 }
 
@@ -669,15 +744,40 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-accent); /* TOKEN VERDE DO @theme */
+  color: var(--color-orange);
   opacity: 0.8;
+}
+
+/* ------ ROLETA DO EYEBROW — MARCAS ------ */
+.marcas-eyebrow-roulette {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  vertical-align: bottom;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marcas-eyebrow-roulette__track {
+  display: flex;
+  flex-direction: column;
+}
+
+.marcas-eyebrow-roulette__word {
+  line-height: 1.2;
+  white-space: nowrap;
+  background-color: var(--color-orange);
+  color: var(--color-ink);
+  padding: 0 6px;
+  border-radius: 3px;
+  display: inline-block;
+  width: auto;
 }
 
 /* ------ TÍTULO ------ */
 
 .marcas-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
   text-align: center;

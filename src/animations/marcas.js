@@ -19,6 +19,7 @@ const WAVE_DELAY = 0.08;   /* DELAY ESCALONADO POR COLUNA (S) — EFEITO DE ONDA
 
 let _interval = null;    /* ÚNICO SETINTERVAL GLOBAL — CONTROLA O CICLO INTEIRO */
 let _revealST = null;
+let _marcasRouletteTimer = null;
 
 /* ------ EMBARALHA ARRAY (FISHER-YATES) ------ */
 function shuffle(arr) {
@@ -96,6 +97,43 @@ function initColumn(col, logos) {
   return { col, logos, index: 0, current: first };
 }
 
+/* ------ ROLETA DO EYEBROW — MARCAS ------ */
+function initMarcasEyebrowRoulette(section) {
+  const track = section.querySelector('.marcas-eyebrow-roulette__track');
+  const rouletteEl = section.querySelector('.marcas-eyebrow-roulette');
+  if (!track || !rouletteEl) return;
+
+  const words = track.querySelectorAll('.marcas-eyebrow-roulette__word');
+  if (words.length < 2) return;
+
+  let current = 0;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function advance() {
+    current = (current + 1) % words.length;
+    rouletteEl.setAttribute('aria-label', words[current].textContent);
+
+    if (prefersReduced) {
+      gsap.set(track, { y: -(current * 1.2) + 'em' });
+    } else {
+      gsap.to(track, {
+        y: -(current * 1.2) + 'em',
+        duration: DURATION.base,
+        ease: EASE.smooth,
+      });
+    }
+
+    /* AJUSTA A LARGURA DO CONTAINER À PALAVRA VISÍVEL — TRANSIÇÃO CSS SUAVE */
+    const activeWord = words[current];
+    rouletteEl.style.width = activeWord.offsetWidth + 'px';
+  }
+
+  /* LARGURA INICIAL — CASA COM A PRIMEIRA PALAVRA */
+  rouletteEl.style.width = words[0].offsetWidth + 'px';
+
+  _marcasRouletteTimer = setInterval(advance, 3000);
+}
+
 /* ------ INIT ------ */
 export function initMarcas() {
   const section = document.querySelector('#marcas');
@@ -129,6 +167,9 @@ export function initMarcas() {
   const textEls = revealEls.filter(el => !el.classList.contains('marcas-carousel'));
   const carousel = section.querySelector('.marcas-carousel');
 
+  /* ------ ROLETA DO EYEBROW — TROCA DE TEXTO EM LOOP ------ */
+  initMarcasEyebrowRoulette(section);
+
   _revealST = createReveal(textEls, {
     trigger: section,
     start: 'top 65%',
@@ -157,4 +198,8 @@ export function destroyMarcas() {
   _interval = null;
   _revealST?.kill();
   _revealST = null;
+
+  /* ------ PARA A ROLETA DO EYEBROW ------ */
+  clearInterval(_marcasRouletteTimer);
+  _marcasRouletteTimer = null;
 }

@@ -8,6 +8,7 @@ import { EASE, DURATION, STAGGER, REVEAL_FROM_DEEP, OVERLAP, CARDS } from '../co
 let sobreTimeline = null;
 let cardsCleanup = null;
 const cardsTimeouts = [];
+let _sobreRouletteTimer = null;
 
 /* ------ ESTADOS DE REVEAL ------ */
 /* FOTO: CLIP DA ESQUERDA + FADE — RETÂNGULO ABRE DA ESQUERDA PARA A DIREITA, SEM CORTE BRUSCO */
@@ -155,6 +156,43 @@ function initCardsStack(section, prefersReducedMotion) {
   };
 }
 
+/* ------ ROLETA DO EYEBROW — SOBRE ------ */
+function initSobreEyebrowRoulette(section) {
+  const track = section.querySelector('.sobre-eyebrow-roulette__track');
+  const rouletteEl = section.querySelector('.sobre-eyebrow-roulette');
+  if (!track || !rouletteEl) return;
+
+  const words = track.querySelectorAll('.sobre-eyebrow-roulette__word');
+  if (words.length < 2) return;
+
+  let current = 0;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function advance() {
+    current = (current + 1) % words.length;
+    rouletteEl.setAttribute('aria-label', words[current].textContent);
+
+    if (prefersReduced) {
+      gsap.set(track, { y: -(current * 1.2) + 'em' });
+    } else {
+      gsap.to(track, {
+        y: -(current * 1.2) + 'em',
+        duration: DURATION.base,
+        ease: EASE.smooth,
+      });
+    }
+
+    /* AJUSTA A LARGURA DO CONTAINER À PALAVRA VISÍVEL — TRANSIÇÃO CSS SUAVE */
+    const activeWord = words[current];
+    rouletteEl.style.width = activeWord.offsetWidth + 'px';
+  }
+
+  /* LARGURA INICIAL — CASA COM A PRIMEIRA PALAVRA */
+  rouletteEl.style.width = words[0].offsetWidth + 'px';
+
+  _sobreRouletteTimer = setInterval(advance, 3000);
+}
+
 /* ========================================
    INIT — SCROLLTRIGGER CRIADO DE FORMA SÍNCRONA
    ======================================== */
@@ -173,6 +211,9 @@ export function initSobre() {
 
   /* ------ CARDS: ESTADO INICIAL + NAVEGAÇÃO MANUAL (SÍNCRONO) ------ */
   initCardsStack(section, prefersReducedMotion);
+
+  /* ------ ROLETA DO EYEBROW — TROCA DE TEXTO EM LOOP ------ */
+  initSobreEyebrowRoulette(section);
 
   /* ------ GUARD REDUCED MOTION — MOSTRA TUDO SEM ANIMAR ------ */
   if (prefersReducedMotion) {
@@ -232,4 +273,8 @@ export function destroySobre() {
   /* ------ LIMPA TIMEOUTS PENDENTES DE RECICLAGEM ------ */
   cardsTimeouts.forEach(clearTimeout);
   cardsTimeouts.length = 0;
+
+  /* ------ PARA A ROLETA DO EYEBROW ------ */
+  clearInterval(_sobreRouletteTimer);
+  _sobreRouletteTimer = null;
 }
