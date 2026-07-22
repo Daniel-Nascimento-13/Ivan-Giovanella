@@ -34,30 +34,47 @@ body {
    TRANSIÇÃO CINEMATOGRÁFICA ENTRE SEÇÕES
    ======================================== */
 
-/* ------ FADE PRETO NO TOPO E NA BASE DE CADA SEÇÃO ------ */
-.section-fade {
-  position: relative;
-}
+/* ------ TRANSIÇÕES ENTRE SEÇÕES VIA GRADIENTE ------ */
 
-.section-fade::before,
-.section-fade::after {
+/* HERO → SOBRE: SÓ O HERO GERA O GRADIENTE NA BASE */
+#hero::after {
   content: '';
   position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 160px;
+  background: linear-gradient(to bottom, var(--color-paper), var(--color-surface-2));
   pointer-events: none;
   z-index: 2;
 }
 
-.section-fade::before {
-  top: 0;
-  background: linear-gradient(to bottom, var(--color-black), transparent);
+/* SOBRE → MARCAS: SÓ O SOBRE GERA O GRADIENTE NA BASE */
+#sobre::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, var(--color-surface-2), var(--color-paper));
+  pointer-events: none;
+  z-index: 0; /* ABAIXO DA .sobre-nav-arrow — GRADIENTE NÃO COBRE A SETA */
 }
 
-.section-fade::after {
+/* MARCAS → SAÍDA: FADE FINAL PARA PRETO */
+#marcas::after {
+  content: '';
+  position: absolute;
   bottom: 0;
-  background: linear-gradient(to top, var(--color-black), transparent);
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, var(--color-paper), var(--color-black));
+  pointer-events: none;
+  z-index: 2;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 h1, h2, h3 {
@@ -387,6 +404,7 @@ h1, h2, h3 {
 /* WRAPPER — ANCORA CARDS + DOTS (LATERAL) + ARROW (ABAIXO), CENTRALIZADO NA COLUNA */
 .sobre-stack {
   position: relative;
+  z-index: 1;
   width: 300px; /* MANTIDO — LARGURA FIXA DO STACK */
   margin: 40px auto 0;
 }
@@ -563,6 +581,8 @@ h1, h2, h3 {
 /* ------ BOTÃO PRÓXIMO — ABAIXO DO STACK, CENTRALIZADO ------ */
 
 .sobre-nav-arrow {
+  position: relative; /* HABILITA z-index — FICA ACIMA DO GRADIENTE #sobre::after */
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -624,6 +644,7 @@ h1, h2, h3 {
    ======================================== */
 
 #marcas {
+  position: relative; /* CONTÉM OS ::before/::after ABSOLUTOS DAS TRANSIÇÕES */
   background-color: var(--color-paper); /* VERDE ESCURO — IGUAL AO HERO */
   padding: clamp(200px, 25vw, 320px) clamp(24px, 6vw, 80px);
   margin: 0;
@@ -708,28 +729,3 @@ h1, h2, h3 {
   transition: opacity 0.3s ease;
 }
 
-/* ------ FADE INFERIOR — ELEMENTO HTML DEDICADO (NÃO PSEUDO) ------ */
-/* EVITA O PISCA: NÃO É ::after DO #marcas, LOGO NÃO SOFRE REPAINT JUNTO COM AS ANIMAÇÕES */
-
-/* DESLIGA O ::after BASE NO #marcas — SUBSTITUÍDO PELO .marcas-fade-bottom, SEM DUPLICAR */
-#marcas.section-fade::after {
-  content: none;
-}
-
-.marcas-fade-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  background: linear-gradient(to top, var(--color-black), transparent);
-  pointer-events: none;
-  z-index: 10;
-  transform: translateZ(0); /* PROMOVE PARA CAMADA GPU PRÓPRIA */
-  will-change: transform;   /* MANTÉM A CAMADA — EVITA RECOMPOSITE COM OS LOGOS ANIMADOS */
-}
-
-#marcas .marcas-carousel {
-  position: relative;
-  z-index: 1;
-}
