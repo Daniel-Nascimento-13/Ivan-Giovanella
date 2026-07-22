@@ -63,3 +63,10 @@ export const REVEAL_TO = {
   y: 0,
   autoAlpha: 1
 };
+
+/* ------ REVEAL PROFUNDO — MAIOR DESLOCAMENTO VERTICAL (FEEL CINEMATOGRÁFICO) ------ */
+
+export const REVEAL_FROM_DEEP = {
+  ...REVEAL_FROM,
+  y: 64
+};

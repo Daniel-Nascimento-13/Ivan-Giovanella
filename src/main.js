@@ -14,6 +14,12 @@ import { initHero, prepareHero } from './animations/hero.js';
 
 import { initSobre } from './animations/sobre.js';
 
+/* ========================================
+   SEÇÃO 3 — MARCAS
+   ======================================== */
+
+import { initMarcas } from './animations/marcas.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (!prefersReducedMotion) {
@@ -26,4 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // SEÇÃO 2 — SOBRE: SCROLLTRIGGER PRÓPRIO, INDEPENDENTE DA INTRO
   initSobre();
+
+  // SEÇÃO 3 — MARCAS: CARROSSEL DE LOGOS + REVEAL
+  initMarcas();
 });

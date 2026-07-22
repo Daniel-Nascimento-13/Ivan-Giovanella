@@ -1,5 +1,5 @@
 import { gsap, ScrollTrigger } from '../lib/gsap.js';
-import { EASE, DURATION, STAGGER, REVEAL_FROM, OVERLAP, CARDS } from '../constants/motion.js';
+import { EASE, DURATION, STAGGER, REVEAL_FROM_DEEP, OVERLAP, CARDS } from '../constants/motion.js';
 
 /* ========================================
    SEÇÃO 2 — SOBRE
@@ -10,12 +10,12 @@ let cardsCleanup = null;
 const cardsTimeouts = [];
 
 /* ------ ESTADOS DE REVEAL ------ */
-/* FOTO: CLIP DA ESQUERDA — RETÂNGULO ABRE DA ESQUERDA PARA A DIREITA */
-const PHOTO_FROM = { clipPath: 'inset(0 100% 0 0)' };
-const PHOTO_TO   = { clipPath: 'inset(0 0% 0 0)' };
+/* FOTO: CLIP DA ESQUERDA + FADE — RETÂNGULO ABRE DA ESQUERDA PARA A DIREITA, SEM CORTE BRUSCO */
+const PHOTO_FROM = { clipPath: 'inset(0 100% 0 0)', autoAlpha: 0 };
+const PHOTO_TO   = { clipPath: 'inset(0 0% 0 0)',   autoAlpha: 1 };
 
-/* TEXTO: translateY + autoAlpha (SEM CLIP) — REUSA O DESLOCAMENTO PADRÃO */
-const TEXT_FROM = { y: REVEAL_FROM.y, autoAlpha: 0 };
+/* TEXTO: translateY + autoAlpha (SEM CLIP) — REUSA O DESLOCAMENTO PROFUNDO */
+const TEXT_FROM = { y: REVEAL_FROM_DEEP.y, autoAlpha: 0 };
 const TEXT_TO   = { y: 0, autoAlpha: 1 };
 
 /* ------ SELEÇÃO — ORDEM DEFINE O STAGGER: EYEBROW → NOME → PARÁGRAFO → STACK ------ */
@@ -113,8 +113,9 @@ function initCardsStack(section, prefersReducedMotion) {
     return handler;
   });
 
-  /* ------ TAP NOS CARDS — AVANÇA IGUAL À ARROW, IGNORA SCROLL ------ */
+  /* ------ TAP / CLICK NOS CARDS — AVANÇA IGUAL À ARROW, IGNORA SCROLL ------ */
   const TAP_THRESHOLD = 10; // PX — SE O DEDO MOVER MAIS QUE ISSO É SCROLL, NÃO TAP
+  const goNext = () => render((currentTop + 1) % n, true); // PRÓXIMO — LOOP INFINITO, IGUAL À ARROW
   const cardTouchHandlers = cards.map((card) => {
     let startX = 0;
     let startY = 0;
@@ -129,12 +130,17 @@ function initCardsStack(section, prefersReducedMotion) {
       const touch = e.changedTouches[0];
       const moved = Math.hypot(touch.clientX - startX, touch.clientY - startY);
       if (moved > TAP_THRESHOLD) return; // MOVIMENTO = SCROLL — IGNORA
-      render((currentTop + 1) % n, true); // PRÓXIMO — LOOP INFINITO, IGUAL À ARROW
+      e.preventDefault(); // SUPRIME O CLICK SINTÉTICO — EVITA AVANÇAR DUAS VEZES NO TOUCH
+      goNext();
     };
+
+    /* CLICK — MOUSE NO DESKTOP (NO TOUCH É SUPRIMIDO PELO preventDefault ACIMA) */
+    const onClick = () => goNext();
 
     card.addEventListener('touchstart', onTouchStart, { passive: true });
     card.addEventListener('touchend', onTouchEnd);
-    return { onTouchStart, onTouchEnd };
+    card.addEventListener('click', onClick);
+    return { onTouchStart, onTouchEnd, onClick };
   });
 
   /* ------ CLEANUP DOS LISTENERS ------ */
@@ -144,6 +150,7 @@ function initCardsStack(section, prefersReducedMotion) {
     cards.forEach((card, i) => {
       card.removeEventListener('touchstart', cardTouchHandlers[i].onTouchStart);
       card.removeEventListener('touchend', cardTouchHandlers[i].onTouchEnd);
+      card.removeEventListener('click', cardTouchHandlers[i].onClick);
     });
   };
 }
@@ -175,14 +182,14 @@ export function initSobre() {
   }
 
   /* ------ ESTADO INICIAL ESCONDIDO ------ */
-  gsap.set(media, { ...PHOTO_FROM, willChange: 'clip-path' });
+  gsap.set(media, { ...PHOTO_FROM, willChange: 'clip-path, opacity' });
   gsap.set(textElements, { ...TEXT_FROM, willChange: 'transform, opacity' });
 
   /* ------ TIMELINE ANCORADA NA SEÇÃO ------ */
   sobreTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: section,
-      start: 'top 75%',
+      start: 'top 60%',
       once: true
     },
     onComplete: () => {
@@ -194,17 +201,17 @@ export function initSobre() {
   /* FOTO: REVEAL DA ESQUERDA */
   sobreTimeline.to(media, {
     ...PHOTO_TO,
-    duration: DURATION.slow,
+    duration: DURATION.cinematic,
     ease: EASE.out
   });
 
-  /* TEXTO + STACK: STAGGER — INICIA JUNTO COM O FIM DA ABERTURA DA FOTO */
+  /* TEXTO + STACK: STAGGER — INICIA QUASE AO FIM DA ABERTURA DA FOTO */
   sobreTimeline.to(textElements, {
     ...TEXT_TO,
-    duration: DURATION.base,
+    duration: DURATION.slow,
     ease: EASE.out,
     stagger: STAGGER.base
-  }, OVERLAP.base);
+  }, OVERLAP.tight);
 }
 
 /* ------ CLEANUP ------ */

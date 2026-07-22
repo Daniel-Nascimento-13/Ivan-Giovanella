@@ -295,6 +295,9 @@ h1, h2, h3 {
 
 .sobre-media {
   /* CLIP APLICADO NO ELEMENTO — REVEAL DA ESQUERDA VIA GSAP */
+  position: relative;
+  z-index: 3;
+  background-color: #d0cece;
   border-radius: 28px;
   overflow: hidden;
   box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.55);
@@ -614,4 +617,119 @@ h1, h2, h3 {
   .sobre-content {
     flex: 1 1 55%;
   }
+}
+
+/* ========================================
+   SEÇÃO 3 — MARCAS
+   ======================================== */
+
+#marcas {
+  background-color: var(--color-paper); /* VERDE ESCURO — IGUAL AO HERO */
+  padding: clamp(200px, 25vw, 320px) clamp(24px, 6vw, 80px);
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate; /* ISOLA O CONTEXTO DE EMPILHAMENTO — ::after SEMPRE POR CIMA */
+}
+
+.marcas-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(32px, 5vw, 56px);
+}
+
+/* ------ EYEBROW — MESMO ESTILO DO .sobre-eyebrow MAS CLARO (FUNDO ESCURO) ------ */
+
+.marcas-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent); /* TOKEN VERDE DO @theme */
+  opacity: 0.8;
+}
+
+/* ------ TÍTULO ------ */
+
+.marcas-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--color-ink); /* TOKEN BRANCO DO @theme */
+}
+
+.marcas-title--highlight {
+  color: var(--color-accent); /* TOKEN VERDE DO @theme */
+}
+
+/* ------ CARROSSEL — COLUNAS DE LOGOS ------ */
+
+.marcas-carousel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: clamp(16px, 3vw, 32px);
+  align-items: flex-start;
+  width: 100%;
+  justify-content: center;
+}
+
+.marcas-col {
+  position: relative;
+  flex: 1;
+  max-width: 200px;
+  aspect-ratio: 3 / 2; /* MESMO RATIO DO LOGO — ALTURA FIXA */
+}
+
+/* ------ LOGO — CARD COM MOLDURA SUTIL ------ */
+/* SLOT ABSOLUTO — OLD E NEXT SE SOBREPÕEM, COLUNA NÃO MUDA DE ALTURA NA TRANSIÇÃO */
+
+.marcas-logo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.marcas-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* LOGOS BRANCOS NO FUNDO ESCURO */
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+/* ------ FADE INFERIOR — ELEMENTO HTML DEDICADO (NÃO PSEUDO) ------ */
+/* EVITA O PISCA: NÃO É ::after DO #marcas, LOGO NÃO SOFRE REPAINT JUNTO COM AS ANIMAÇÕES */
+
+/* DESLIGA O ::after BASE NO #marcas — SUBSTITUÍDO PELO .marcas-fade-bottom, SEM DUPLICAR */
+#marcas.section-fade::after {
+  content: none;
+}
+
+.marcas-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to top, var(--color-black), transparent);
+  pointer-events: none;
+  z-index: 10;
+  transform: translateZ(0); /* PROMOVE PARA CAMADA GPU PRÓPRIA */
+  will-change: transform;   /* MANTÉM A CAMADA — EVITA RECOMPOSITE COM OS LOGOS ANIMADOS */
+}
+
+#marcas .marcas-carousel {
+  position: relative;
+  z-index: 1;
 }
