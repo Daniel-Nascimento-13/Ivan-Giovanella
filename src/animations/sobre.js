@@ -113,10 +113,38 @@ function initCardsStack(section, prefersReducedMotion) {
     return handler;
   });
 
+  /* ------ TAP NOS CARDS — AVANÇA IGUAL À ARROW, IGNORA SCROLL ------ */
+  const TAP_THRESHOLD = 10; // PX — SE O DEDO MOVER MAIS QUE ISSO É SCROLL, NÃO TAP
+  const cardTouchHandlers = cards.map((card) => {
+    let startX = 0;
+    let startY = 0;
+
+    const onTouchStart = (e) => {
+      const touch = e.changedTouches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+    };
+
+    const onTouchEnd = (e) => {
+      const touch = e.changedTouches[0];
+      const moved = Math.hypot(touch.clientX - startX, touch.clientY - startY);
+      if (moved > TAP_THRESHOLD) return; // MOVIMENTO = SCROLL — IGNORA
+      render((currentTop + 1) % n, true); // PRÓXIMO — LOOP INFINITO, IGUAL À ARROW
+    };
+
+    card.addEventListener('touchstart', onTouchStart, { passive: true });
+    card.addEventListener('touchend', onTouchEnd);
+    return { onTouchStart, onTouchEnd };
+  });
+
   /* ------ CLEANUP DOS LISTENERS ------ */
   cardsCleanup = () => {
     arrow?.removeEventListener('click', onArrow);
     dots.forEach((dot, i) => dot.removeEventListener('click', dotHandlers[i]));
+    cards.forEach((card, i) => {
+      card.removeEventListener('touchstart', cardTouchHandlers[i].onTouchStart);
+      card.removeEventListener('touchend', cardTouchHandlers[i].onTouchEnd);
+    });
   };
 }
 
