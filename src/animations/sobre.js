@@ -158,37 +158,35 @@ function initCardsStack(section, prefersReducedMotion) {
 
 /* ------ ROLETA DO EYEBROW — SOBRE ------ */
 function initSobreEyebrowRoulette(section) {
-  const track = section.querySelector('.sobre-eyebrow-roulette__track');
   const rouletteEl = section.querySelector('.sobre-eyebrow-roulette');
-  if (!track || !rouletteEl) return;
+  const track = section.querySelector('.sobre-eyebrow-roulette__track');
+  if (!rouletteEl || !track) return;
 
-  const words = track.querySelectorAll('.sobre-eyebrow-roulette__word');
+  const words = Array.from(track.querySelectorAll('.sobre-eyebrow-roulette__word'));
   if (words.length < 2) return;
 
-  let current = 0;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
+
+  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
+  const widths = words.map(w => w.offsetWidth);
+  const h = words[0].offsetHeight;
+
+  rouletteEl.style.height = h + 'px';
+  rouletteEl.style.width = (widths[0] + 4) + 'px';
 
   function advance() {
     current = (current + 1) % words.length;
-    rouletteEl.setAttribute('aria-label', words[current].textContent);
+    rouletteEl.setAttribute('aria-label', words[current].textContent.trim());
 
     if (prefersReduced) {
-      gsap.set(track, { y: -(current * 1.2) + 'em' });
-    } else {
-      gsap.to(track, {
-        y: -(current * 1.2) + 'em',
-        duration: DURATION.base,
-        ease: EASE.smooth,
-      });
+      track.style.transition = 'none';
+      rouletteEl.style.transition = 'none';
     }
 
-    /* AJUSTA A LARGURA DO CONTAINER À PALAVRA VISÍVEL — TRANSIÇÃO CSS SUAVE */
-    const activeWord = words[current];
-    rouletteEl.style.width = activeWord.offsetWidth + 'px';
+    track.style.transform = `translateY(-${current * h}px)`;
+    rouletteEl.style.width = (widths[current] + 4) + 'px';
   }
-
-  /* LARGURA INICIAL — CASA COM A PRIMEIRA PALAVRA */
-  rouletteEl.style.width = words[0].offsetWidth + 'px';
 
   _sobreRouletteTimer = setInterval(advance, 3000);
 }

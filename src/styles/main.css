@@ -229,28 +229,41 @@ h1, h2, h3 {
   max-width: 480px;
 }
 
-/* ------ ROLETA DO EYEBROW ------ */
-.eyebrow-roulette {
+/* ------ ROLETA DO EYEBROW — TRACK DESLIZANTE (transição CSS pura) ------ */
+.eyebrow-roulette,
+.sobre-eyebrow-roulette,
+.marcas-eyebrow-roulette {
   display: inline-block;
   overflow: hidden;
-  vertical-align: bottom;
-  height: 1.2em;
+  vertical-align: text-bottom;
+  padding-right: 2px;
+  height: 1.7em;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.eyebrow-roulette__track {
+.eyebrow-roulette__track,
+.sobre-eyebrow-roulette__track,
+.marcas-eyebrow-roulette__track {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
 
-.eyebrow-roulette__word {
-  display: block;
-  height: 1.2em;
-  line-height: 1.2em;
+.eyebrow-roulette__word,
+.sobre-eyebrow-roulette__word,
+.marcas-eyebrow-roulette__word {
+  display: inline-block;
+  white-space: nowrap;
   background-color: var(--color-orange);
   color: var(--color-ink);
-  padding: 0 8px;
+  padding: 2px 8px;
   border-radius: 4px;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: 1.4;
 }
 
 /* ------ CTA — EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER, NÃO REVEAL DE SCROLL. CSS PURO, FORA DO ESCOPO DO GSAP. ------ */
@@ -280,6 +293,11 @@ h1, h2, h3 {
 .hero-cta-label {
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2;
 }
 
 .hero-cta:hover {
@@ -331,6 +349,18 @@ h1, h2, h3 {
   to { transform: rotate(360deg); }
 }
 
+/* ------ ANIMAÇÃO DE LETRAS DO CTA — SAÍDA/ENTRADA COM BLUR ------ */
+@keyframes ctaCharOut {
+  0%   { transform: translateY(0);   opacity: 1; filter: blur(0);   }
+  100% { transform: translateY(-80%); opacity: 0; filter: blur(3px); }
+}
+
+@keyframes ctaCharIn {
+  0%   { transform: translateY(60%);  opacity: 0; filter: blur(8px); }
+  50%  { transform: translateY(-5%);  opacity: 1; filter: blur(0);   }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-cta-glow span {
     animation: none;
@@ -363,10 +393,9 @@ h1, h2, h3 {
   /* CLIP APLICADO NO ELEMENTO — REVEAL DA ESQUERDA VIA GSAP */
   position: relative;
   z-index: 3;
-  background-color: #d0cece;
-  border-radius: 28px;
+  background-color: var(--color-surface-2);
+  border-radius: 0 0 20px 20px;
   overflow: hidden;
-  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.55);
 }
 
 .sobre-photo {
@@ -375,6 +404,22 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   object-position: center top;
+}
+
+/* ------ ONDA NO TOPO DA FOTO ------ */
+.sobre-photo-wave-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  line-height: 0;
+  z-index: 2;
+}
+
+.sobre-photo-wave-top svg {
+  display: block;
+  width: 100%;
+  height: 40px;
 }
 
 /* ------ TEXTO ------ */
@@ -390,34 +435,12 @@ h1, h2, h3 {
   font-size: 13px;
   letter-spacing: 1.5px;
   color: var(--color-accent);
+  color: var(--color-orange);
   text-transform: uppercase;
   margin-bottom: 12px;
 }
 
-/* ------ ROLETA DO EYEBROW — SOBRE ------ */
-.sobre-eyebrow-roulette {
-  display: inline-block;
-  overflow: hidden;
-  height: 1.2em;
-  vertical-align: bottom;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.sobre-eyebrow-roulette__track {
-  display: flex;
-  flex-direction: column;
-}
-
-.sobre-eyebrow-roulette__word {
-  line-height: 1.2;
-  white-space: nowrap;
-  background-color: var(--color-orange);
-  color: var(--color-ink);
-  padding: 0 6px;
-  border-radius: 3px;
-  display: inline-block;
-  width: auto;
-}
+/* ------ ROLETA DO EYEBROW — SOBRE: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
 
 .sobre-name {
   font-family: var(--font-display);
@@ -748,30 +771,7 @@ h1, h2, h3 {
   opacity: 0.8;
 }
 
-/* ------ ROLETA DO EYEBROW — MARCAS ------ */
-.marcas-eyebrow-roulette {
-  display: inline-block;
-  overflow: hidden;
-  height: 1.2em;
-  vertical-align: bottom;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.marcas-eyebrow-roulette__track {
-  display: flex;
-  flex-direction: column;
-}
-
-.marcas-eyebrow-roulette__word {
-  line-height: 1.2;
-  white-space: nowrap;
-  background-color: var(--color-orange);
-  color: var(--color-ink);
-  padding: 0 6px;
-  border-radius: 3px;
-  display: inline-block;
-  width: auto;
-}
+/* ------ ROLETA DO EYEBROW — MARCAS: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
 
 /* ------ TÍTULO ------ */
 

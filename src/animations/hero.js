@@ -38,33 +38,37 @@ export function prepareHero() {
 
 /* ------ ROLETA DO EYEBROW ------ */
 let _rouletteTimer = null;
+let _ctaTimer = null;
 
 function initEyebrowRoulette() {
-  const track = document.querySelector('.eyebrow-roulette__track');
   const rouletteEl = document.querySelector('.eyebrow-roulette');
-  if (!track || !rouletteEl) return;
+  const track = document.querySelector('.eyebrow-roulette__track');
+  if (!rouletteEl || !track) return;
 
-  const words = track.querySelectorAll('.eyebrow-roulette__word');
+  const words = Array.from(track.querySelectorAll('.eyebrow-roulette__word'));
   if (words.length < 2) return;
 
-  let current = 0;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
+
+  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
+  const widths = words.map(w => w.offsetWidth);
+  const h = words[0].offsetHeight;
+
+  rouletteEl.style.height = h + 'px';
+  rouletteEl.style.width = (widths[0] + 4) + 'px';
 
   function advance() {
     current = (current + 1) % words.length;
-
-    // ATUALIZA ARIA-LABEL COM A PALAVRA VISÍVEL
-    rouletteEl.setAttribute('aria-label', words[current].textContent);
+    rouletteEl.setAttribute('aria-label', words[current].textContent.trim());
 
     if (prefersReduced) {
-      gsap.set(track, { y: -(current * 1.2) + 'em' });
-    } else {
-      gsap.to(track, {
-        y: -(current * 1.2) + 'em',
-        duration: DURATION.base,
-        ease: EASE.smooth,
-      });
+      track.style.transition = 'none';
+      rouletteEl.style.transition = 'none';
     }
+
+    track.style.transform = `translateY(-${current * h}px)`;
+    rouletteEl.style.width = (widths[current] + 4) + 'px';
   }
 
   _rouletteTimer = setInterval(advance, 3000);
@@ -73,6 +77,57 @@ function initEyebrowRoulette() {
 function destroyEyebrowRoulette() {
   clearInterval(_rouletteTimer);
   _rouletteTimer = null;
+}
+
+/* ------ ANIMAÇÃO DE LETRAS DO CTA ------ */
+function initCtaAnimation() {
+  const cta = document.querySelector('.hero-cta-label');
+  if (!cta) return;
+
+  const originalText = cta.textContent.trim();
+  cta.innerHTML = '';
+
+  /* ENVOLVE CADA LETRA EM UM SPAN */
+  originalText.split('').forEach(c => {
+    const span = document.createElement('span');
+    span.style.cssText = 'display:inline-block; line-height:1.2;';
+    span.textContent = c === ' ' ? '\u00A0' : c;
+    cta.appendChild(span);
+  });
+
+  function animate() {
+    const spans = cta.querySelectorAll('span');
+
+    /* SAÍDA — LETRAS SOBEM COM BLUR */
+    spans.forEach((s, i) => {
+      s.style.animation = 'none';
+      void s.offsetWidth;
+      s.style.animationDelay = (i * 0.03) + 's';
+      s.style.animation = 'ctaCharOut 0.4s ease forwards ' + (i * 0.03) + 's';
+    });
+
+    /* ENTRADA — LETRAS SOBEM POR BAIXO */
+    setTimeout(() => {
+      spans.forEach((s, i) => {
+        s.style.animation = 'none';
+        void s.offsetWidth;
+        s.style.animation = 'ctaCharIn 0.5s ease backwards ' + (i * 0.03) + 's';
+      });
+    }, 500);
+
+    /* LIMPA ANIMAÇÕES */
+    setTimeout(() => {
+      spans.forEach(s => { s.style.animation = ''; s.style.animationDelay = ''; });
+    }, 1100);
+  }
+
+  setTimeout(animate, 2000);
+  _ctaTimer = setInterval(animate, 5000);
+}
+
+function destroyCtaAnimation() {
+  clearInterval(_ctaTimer);
+  _ctaTimer = null;
 }
 
 /* ------ INIT — CHAMADO APÓS A INTRO TERMINAR ------ */
@@ -89,7 +144,6 @@ export function initHero() {
   if (!heroElements.length) return;
 
   animateHero(heroElements);
-  initEyebrowRoulette();
 }
 
 /* ------ CTA WHATSAPP — FONTE ÚNICA ------ */
@@ -120,7 +174,11 @@ function animateHero(elements) {
   heroTimeline.to(elements, {
     ...REVEAL_TO,
     stagger: STAGGER.base,
-    onComplete: () => gsap.set(elements, { willChange: 'auto' })
+    onComplete: () => {
+      gsap.set(elements, { willChange: 'auto' });
+      initEyebrowRoulette();
+      initCtaAnimation();
+    }
   });
 }
 
@@ -132,4 +190,5 @@ export function destroyHero() {
     heroTimeline = null;
   }
   destroyEyebrowRoulette();
+  destroyCtaAnimation();
 }
