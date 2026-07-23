@@ -256,7 +256,20 @@
 
         <!-- ------ CABEÇALHO ------ -->
         <div class="como-funciona-header">
-          <p class="como-funciona-eyebrow">Como funciona</p>
+          <!-- ROLETA — MESMA ESTRUTURA DAS SEÇÕES 1, 2 E 3. O CLONE DA PRIMEIRA -->
+          <!-- PALAVRA É INJETADO POR como-funciona.js PARA O RESET SILENCIOSO. -->
+          <p class="como-funciona-eyebrow">
+            Como funciona:
+            <span class="como-funciona-eyebrow-roulette" aria-live="polite" aria-label="5 passos">
+              <span class="como-funciona-eyebrow-roulette__track">
+                <span class="como-funciona-eyebrow-roulette__word">5 passos</span>
+                <span class="como-funciona-eyebrow-roulette__word">Para você</span>
+                <span class="como-funciona-eyebrow-roulette__word">Para sua empresa</span>
+                <span class="como-funciona-eyebrow-roulette__word">Sem surpresas</span>
+                <span class="como-funciona-eyebrow-roulette__word">Rápido</span>
+              </span>
+            </span>
+          </p>
           <h2 class="como-funciona-title">Cinco passos simples até<br><span class="como-funciona-title--highlight">o plano ideal para você</span></h2>
         </div>
 

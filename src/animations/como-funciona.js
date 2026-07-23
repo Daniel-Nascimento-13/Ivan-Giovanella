@@ -2,6 +2,7 @@ import { gsap } from '../lib/gsap.js';
 import {
   EASE,
   DURATION,
+  ROULETTE,
   STEPPER,
   STEPPER_REVEAL_FROM,
   STEPPER_REVEAL_TO
@@ -16,6 +17,8 @@ import {
 // TODOS OS NÚMEROS VÊM DE src/constants/motion.js — ZERO MAGIC NUMBERS AQUI.
 
 let _timeline = null;
+let _rouletteTimer = null;
+let _rouletteResetTimer = null;
 
 /* ------ MEDIÇÃO DOS PINS ------ */
 // COORDENADAS EM PIXELS RELATIVAS À PISTA — NUNCA VALORES FIXOS NO PATH.
@@ -163,6 +166,93 @@ export function createStepperTimeline(refs, geometry) {
   });
 
   return _timeline;
+}
+
+/* ------ ROLETA DO EYEBROW — SEÇÃO 4 — COMO FUNCIONA ------ */
+// MESMO MECANISMO DAS SEÇÕES 1, 2 E 3: TRACK EM COLUNA QUE DESLIZA POR TRANSITION
+// CSS, COM A LARGURA DO WRAPPER ACOMPANHANDO A PALAVRA ATUAL. SEM GSAP.
+//
+// ÚNICA DIFERENÇA: AS OUTRAS SEÇÕES TÊM 2 PALAVRAS E USAM current = (current+1) % n,
+// ENTÃO A VOLTA AO TOPO É UM PASSO SÓ E NÃO SE PERCEBE. COM 5 PALAVRAS ESSA VOLTA
+// SERIA UM REBOBINAR DE 4 PASSOS, BEM VISÍVEL. POR ISSO UM CLONE DA PRIMEIRA
+// PALAVRA FECHA A LISTA: O CICLO SEMPRE DESCE, E AO CHEGAR NO CLONE O TRACK VOLTA
+// AO TOPO COM A TRANSIÇÃO DESLIGADA — SALTO INVISÍVEL PORQUE O CONTEÚDO É IGUAL.
+
+export function initComoFuncionaEyebrowRoulette() {
+  const rouletteEl = document.querySelector('.como-funciona-eyebrow-roulette');
+  const track = document.querySelector('.como-funciona-eyebrow-roulette__track');
+  if (!rouletteEl || !track) return;
+
+  /* O CLONE FICA FORA DA LISTA — UMA REINICIALIZAÇÃO NÃO PODE CONTÁ-LO COMO PALAVRA */
+  const words = Array.from(
+    track.querySelectorAll('.como-funciona-eyebrow-roulette__word:not([aria-hidden="true"])')
+  );
+  if (words.length < 2) return;
+
+  /* GUARD — REINICIALIZAÇÃO NÃO PODE ACUMULAR TIMER */
+  destroyComoFuncionaEyebrowRoulette();
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
+
+  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
+  const widths = words.map(w => w.offsetWidth);
+  const h = words[0].offsetHeight;
+
+  /* CLONE DA PRIMEIRA PALAVRA NO FIM — DESTINO DO ÚLTIMO PASSO DO CICLO */
+  if (track.dataset.rouletteCloned !== 'true') {
+    const clone = words[0].cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+    track.dataset.rouletteCloned = 'true';
+  }
+
+  /* VOLTA AO TOPO SEM TRANSIÇÃO — ESTADO LIMPO EM CASO DE REINICIALIZAÇÃO */
+  track.style.transition = 'none';
+  track.style.transform = 'translateY(0px)';
+  void track.offsetHeight;
+  if (!prefersReduced) track.style.transition = '';
+
+  rouletteEl.style.height = h + 'px';
+  rouletteEl.style.width = (widths[0] + ROULETTE.widthPadPx) + 'px';
+
+  function advance() {
+    current += 1;
+
+    /* NO CLONE O CONTEÚDO É O DA PALAVRA 0 — LARGURA E LABEL SEGUEM A ORIGINAL */
+    const isClone = current === words.length;
+    const wordIndex = isClone ? 0 : current;
+
+    rouletteEl.setAttribute('aria-label', words[wordIndex].textContent.trim());
+
+    if (prefersReduced) {
+      track.style.transition = 'none';
+      rouletteEl.style.transition = 'none';
+    }
+
+    track.style.transform = `translateY(-${current * h}px)`;
+    rouletteEl.style.width = (widths[wordIndex] + ROULETTE.widthPadPx) + 'px';
+
+    /* RESET SILENCIOSO — DEPOIS QUE O DESLIZE ATÉ O CLONE TERMINA */
+    if (isClone) {
+      _rouletteResetTimer = setTimeout(() => {
+        track.style.transition = 'none';
+        track.style.transform = 'translateY(0px)';
+        void track.offsetHeight; /* FORÇA REFLOW ANTES DE RELIGAR A TRANSIÇÃO */
+        if (!prefersReduced) track.style.transition = '';
+        current = 0;
+      }, ROULETTE.resetDelayMs);
+    }
+  }
+
+  _rouletteTimer = setInterval(advance, ROULETTE.cycleMs);
+}
+
+export function destroyComoFuncionaEyebrowRoulette() {
+  clearInterval(_rouletteTimer);
+  _rouletteTimer = null;
+  clearTimeout(_rouletteResetTimer);
+  _rouletteResetTimer = null;
 }
 
 /* ------ CLEANUP — MATA TIMELINE, SCROLLTRIGGER E REVERTE O PIN ------ */

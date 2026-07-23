@@ -272,7 +272,8 @@ h1, h2, h3 {
 /* ------ ROLETA DO EYEBROW — TRACK DESLIZANTE (transição CSS pura) ------ */
 .eyebrow-roulette,
 .sobre-eyebrow-roulette,
-.marcas-eyebrow-roulette {
+.marcas-eyebrow-roulette,
+.como-funciona-eyebrow-roulette {
   display: inline-block;
   overflow: hidden;
   vertical-align: text-bottom;
@@ -283,7 +284,8 @@ h1, h2, h3 {
 
 .eyebrow-roulette__track,
 .sobre-eyebrow-roulette__track,
-.marcas-eyebrow-roulette__track {
+.marcas-eyebrow-roulette__track,
+.como-funciona-eyebrow-roulette__track {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -293,7 +295,8 @@ h1, h2, h3 {
 
 .eyebrow-roulette__word,
 .sobre-eyebrow-roulette__word,
-.marcas-eyebrow-roulette__word {
+.marcas-eyebrow-roulette__word,
+.como-funciona-eyebrow-roulette__word {
   display: inline-block;
   white-space: nowrap;
   background-color: var(--color-orange);
@@ -917,22 +920,52 @@ h1, h2, h3 {
   text-align: center;
 }
 
+/* TIPOGRAFIA IDÊNTICA À .hero-eyebrow E À .sobre-eyebrow — CORPO, PESO, TRACKING E COR. */
+/* SEM text-align PRÓPRIO: HERDA O center DO .como-funciona-header, COMO O EYEBROW */
+/* DA SEÇÃO 3 HERDA O DO .marcas-inner. */
+/* ------ */
+/* FLEX NO LUGAR DO FLUXO INLINE — CONSERTO DEFINITIVO DA SOBREPOSIÇÃO. */
+/* A PÍLULA TEM 1.7em DE ALTURA (line-height 1.4 + 2px DE PADDING EM CIMA E EMBAIXO) */
+/* CONTRA UMA LINHA DE TEXTO DE 1.2em. NO FLUXO INLINE ELA TRANSBORDAVA A LINHA PARA */
+/* CIMA POR CAUSA DO vertical-align: text-bottom E, QUANDO O EYEBROW QUEBRAVA EM DUAS */
+/* LINHAS, SUBIA POR CIMA DE "COMO FUNCIONA:". */
+/* EM FLEX ISSO É ESTRUTURALMENTE IMPOSSÍVEL: CADA LINHA DE FLEX TEM ALTURA PRÓPRIA E */
+/* CONTÉM SEUS ITENS — O flex-wrap DESCE A PÍLULA INTEIRA, SEM INVADIR A LINHA ACIMA. */
+/* O TEXTO FIXO VIRA UM FLEX ITEM ANÔNIMO; A ROLETA É O SEGUNDO ITEM, AO LADO. */
+/* line-height VOLTA AO 1.2 DO HERO: QUEM ALINHA AGORA É align-items + gap. */
 .como-funciona-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-family: var(--font-body);
-  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
   color: var(--color-orange);
-  opacity: 0.8;
-  margin-bottom: clamp(10px, 1.6vw, 16px);
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
+/* ------ ROLETA DO EYEBROW — SEÇÃO 4: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
+/* CORES, PADDING E RADIUS DA PÍLULA CONTINUAM VINDO DO BLOCO COMPARTILHADO. */
+/* ÚNICO ACRÉSCIMO: COMO FLEX ITEM A PÍLULA NÃO PODE ENCOLHER — O JS ESCREVE A */
+/* LARGURA EXATA DA PALAVRA ATUAL E O flex-shrink PADRÃO (1) A COMPRIMIRIA. */
+/* O vertical-align DA REGRA COMPARTILHADA FICA INERTE AQUI (NÃO SE APLICA A FLEX */
+/* ITEM) — DEIXADO COMO ESTÁ, POIS AS SEÇÕES 1, 2 E 3 DEPENDEM DELE. */
+.como-funciona-eyebrow-roulette {
+  flex: 0 0 auto;
+}
+
+/* TIPOGRAFIA ALINHADA À .hero-line — MESMO CLAMP, PESO E LINE-HEIGHT. */
+/* O CLAMP JÁ É A CURVA RESPONSIVA DO HERO: NÃO PRECISA DE REGRA POR BREAKPOINT. */
 .como-funciona-title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.6vw, 3rem);
   font-weight: 800;
-  line-height: 1.1;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.15;
   color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO, IGUAL À .sobre-name */
 }
 

@@ -4,7 +4,9 @@ import {
   layoutStepperLine,
   createStepperTimeline,
   applyStepperStaticState,
-  killStepperTimeline
+  killStepperTimeline,
+  initComoFuncionaEyebrowRoulette,
+  destroyComoFuncionaEyebrowRoulette
 } from '../animations/como-funciona.js';
 
 /* ========================================
@@ -103,9 +105,18 @@ export function initComoFunciona() {
   /* O TÍTULO DEFINE A ALTURA DA PISTA — A TROCA DE FONTE REPOSICIONA OS PINS. */
   /* APENAS REFRESH: A GEOMETRIA SE REFAZ NO onRefreshInit DO PRÓPRIO TRIGGER, */
   /* SEM CRIAR SCROLLTRIGGER DENTRO DE CALLBACK ASSÍNCRONO. */
-  document.fonts?.ready.then(() => {
-    if (_refs) ScrollTrigger.refresh();
-  });
+  /* A ROLETA TAMBÉM ESPERA A FONTE: ELA PRÉ-MEDE A LARGURA DE CADA PALAVRA E, */
+  /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO. */
+  /* NÃO HÁ SCROLLTRIGGER NA ROLETA — SÓ TRANSITION CSS E setInterval. */
+  if (document.fonts) {
+    document.fonts.ready.then(() => {
+      if (!_refs) return;
+      ScrollTrigger.refresh();
+      initComoFuncionaEyebrowRoulette();
+    });
+  } else {
+    initComoFuncionaEyebrowRoulette();
+  }
 }
 
 /* ------ CLEANUP ------ */
@@ -116,6 +127,7 @@ export function destroyComoFunciona() {
 
   window.removeEventListener('resize', onResize);
 
+  destroyComoFuncionaEyebrowRoulette();
   killStepperTimeline();
 
   if (_refs) {
