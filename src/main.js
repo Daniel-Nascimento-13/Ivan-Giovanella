@@ -20,6 +20,12 @@ import { initSobre } from './animations/sobre.js';
 
 import { initMarcas } from './animations/marcas.js';
 
+/* ========================================
+   SEÇÃO 4 — COMO FUNCIONA
+   ======================================== */
+
+import { initComoFunciona } from './sections/como-funciona.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (!prefersReducedMotion) {
@@ -35,4 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // SEÇÃO 3 — MARCAS: CARROSSEL DE LOGOS + REVEAL
   initMarcas();
+
+  // SEÇÃO 4 — COMO FUNCIONA: STEPPER COM LINHA DESENHADA NO SCROLL
+  initComoFunciona();
 });

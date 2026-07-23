@@ -11,6 +11,9 @@
   --color-ink: #ffffff;
   --color-ink-muted: #2D4A38; /* VERDE ESCURO MÉDIO — TEXTO SOBRE FUNDO CLARO */
   --color-accent: #00995D;
+  --color-tint: #E1F5EE; /* VERDE CLARO — TEXTO E SUPERFÍCIES SOBRE FUNDO ESCURO */
+  --color-tint-strong: #d4f0e4; /* VERDE CLARO SATURADO — REALCES SOBRE FUNDO ESCURO */
+  --color-gold: #D4AF37; /* DOURADO — NUMERAÇÃO DO STEPPER (SEÇÃO 4) */
   --color-orange: #E8621A;
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Inter Variable", sans-serif;
@@ -108,8 +111,9 @@ body {
   height: clamp(40px, 6vw, 80px);
 }
 
-/* MARCAS → SAÍDA: FADE FINAL PARA PRETO */
-#marcas::after {
+/* MARCAS → COMO FUNCIONA: FADE PARA PRETO DESATIVADO */
+/* A TRANSIÇÃO ESCURO → CLARO É FEITA PELA .como-funciona-wave-top (SVG). */
+/* #marcas::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -121,6 +125,42 @@ body {
   z-index: 2;
   transform: translateZ(0);
   will-change: transform;
+} */
+
+/* MARCAS → COMO FUNCIONA: DIVISÓRIA EM ONDA (SVG) NO TOPO DA SEÇÃO 4 */
+/* ANCORADA NO TOPO E NÃO NO RODAPÉ DA SEÇÃO 3: O PADRÃO .sobre-photo-wave-top. */
+/* PREENCHE COM #06301F — A COR DA SEÇÃO ANTERIOR — SOBRE O FUNDO CLARO. */
+.como-funciona-wave-top {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.como-funciona-wave-top svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
+}
+
+/* COMO FUNCIONA → SAÍDA: DIVISÓRIA EM ONDA (SVG) */
+.como-funciona-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.como-funciona-wave svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
 }
 
 h1, h2, h3 {
@@ -827,5 +867,248 @@ h1, h2, h3 {
   filter: brightness(0) invert(1); /* LOGOS BRANCOS NO FUNDO ESCURO */
   opacity: 0.75;
   transition: opacity 0.3s ease;
+}
+
+/* ========================================
+   SEÇÃO 4 — COMO FUNCIONA — STEPPER ANIMADO
+   ======================================== */
+
+#como-funciona {
+  /* ------ TOKENS DO STEPPER — GEOMETRIA DA CASCATA ------ */
+  --step-count: 5;                     /* TOTAL DE PASSOS — DIVISOR DO ESPAÇAMENTO VERTICAL */
+  --step-inset: 2%;                    /* AFASTAMENTO LATERAL DOS CARDS */
+  --step-tilt: 2deg;                   /* INCLINAÇÃO ALTERNADA (ÍMPARES +, PARES −) */
+  --step-card-w: 44%;                  /* MOBILE — VER NOTA DE LEGIBILIDADE NO BREAKPOINT 768px */
+  --step-card-h: min(30%, clamp(118px, 18svh, 176px));
+  /* O TETO DE 30% DA PISTA É ESTRUTURAL: COM 5 CARDS EM CASCATA, OS DO MESMO LADO */
+  /* (01-03 E 03-05) FICAM A 2 PASSOS DE DISTÂNCIA — SÓ NÃO COLIDEM SE A ALTURA */
+  /* DO CARD FOR MENOR QUE 1/3 DA PISTA. */
+  --step-pin-size: 14px;               /* DIÂMETRO DO PIN — ORIGEM/DESTINO DA LINHA */
+
+  position: relative;
+  height: 100vh;                       /* FALLBACK PARA NAVEGADORES SEM svh */
+  height: 100svh;                      /* SEÇÃO PINADA — PRECISA CABER NA VIEWPORT */
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  /* PADDING-TOP: clamp(40px, 7vw, 88px) + 3rem A 5rem — AFASTA O EYEBROW DA ONDA */
+  /* DE ENTRADA, QUE FICA COLADA NO TOPO (top: -1px) E NÃO ACOMPANHA O PADDING. */
+  padding: clamp(88px, 11vw, 168px) clamp(24px, 6vw, 80px) clamp(72px, 10vw, 120px);
+  background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.como-funciona-inner {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 4vw, 40px);
+}
+
+/* ------ CABEÇALHO ------ */
+
+.como-funciona-header {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.como-funciona-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  opacity: 0.8;
+  margin-bottom: clamp(10px, 1.6vw, 16px);
+}
+
+.como-funciona-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO, IGUAL À .sobre-name */
+}
+
+.como-funciona-title--highlight {
+  color: var(--color-accent);
+}
+
+/* ------ PISTA — CONTÊINER DA LINHA E DOS CARDS ------ */
+
+.como-funciona-stepper {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ------ LINHA SVG — ATRÁS DOS CARDS ------ */
+/* O viewBox E O ATRIBUTO d SÃO ESCRITOS POR como-funciona.js A PARTIR DO RECT DOS PINS */
+
+.como-funciona-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.como-funciona-line__path {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 8 6;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+/* TRAÇO DA MÁSCARA — MAIS GROSSO QUE A LINHA VISÍVEL PARA COBRI-LA POR INTEIRO. */
+/* linecap BUTT MANTÉM A FRENTE DO DESENHO RETA ENQUANTO O DASHOFFSET CORRE. */
+.como-funciona-line__mask {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 8;
+  stroke-linecap: butt;
+}
+
+/* ------ CARDS — POSIÇÃO ABSOLUTA, CASCATA ALTERNADA ------ */
+
+.como-funciona-steps {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.como-funciona-card {
+  position: absolute;
+  width: var(--step-card-w);
+  height: var(--step-card-h);
+  top: calc(var(--step-index) * (100% - var(--step-card-h)) / (var(--step-count) - 1));
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 1.8vw, 20px);
+  border-radius: clamp(12px, 1.6vw, 20px);
+  /* SEM backdrop-filter: 5 CARDS COM BLUR DE FUNDO CUSTAM CARO NUM PIN COM SCRUB */
+  /* MESMA RECEITA DO .sobre-card — CARD CLARO SOBRE FUNDO CLARO */
+  background-color: var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
+  box-shadow: 0 10px 28px -14px color-mix(in srgb, var(--color-paper) 30%, transparent);
+  transform-origin: center center;
+}
+
+/* ÍMPARES (01-03-05) — ESQUERDA, INCLINAÇÃO POSITIVA */
+.como-funciona-card:nth-child(odd) {
+  left: var(--step-inset);
+  transform: rotate(var(--step-tilt));
+}
+
+/* PARES (02-04) — DIREITA, INCLINAÇÃO NEGATIVA */
+.como-funciona-card:nth-child(even) {
+  right: var(--step-inset);
+  transform: rotate(calc(var(--step-tilt) * -1));
+}
+
+/* ÍNDICE DE CASCATA — DEFINE O top DE CADA CARD SEM style INLINE NO HTML */
+.como-funciona-card:nth-child(1) { --step-index: 0; }
+.como-funciona-card:nth-child(2) { --step-index: 1; }
+.como-funciona-card:nth-child(3) { --step-index: 2; }
+.como-funciona-card:nth-child(4) { --step-index: 3; }
+.como-funciona-card:nth-child(5) { --step-index: 4; }
+
+/* ------ PIN — ÂNCORA DA LINHA NO TOPO DO CARD ------ */
+/* CENTRALIZADO POR margin NEGATIVA, NUNCA POR transform: O TRANSFORM É DO GSAP. */
+
+.como-funciona-card__pin {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--step-pin-size);
+  height: var(--step-pin-size);
+  margin: calc(var(--step-pin-size) / -2) 0 0 calc(var(--step-pin-size) / -2);
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+/* ------ CONTEÚDO DO CARD ------ */
+
+.como-funciona-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 0 0 auto;
+  margin-bottom: clamp(6px, 1.2vw, 12px);
+}
+
+.como-funciona-card__number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(13px, 1.5vw, 18px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--color-orange); /* MESMO LARANJA DOS EYEBROWS DAS DEMAIS SEÇÕES */
+}
+
+.como-funciona-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: clamp(26px, 3.2vw, 38px);
+  height: clamp(26px, 3.2vw, 38px);
+  border-radius: clamp(8px, 1vw, 12px);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent); /* ÍCONE VERDE — IGUAL AO .sobre-card__icon */
+}
+
+.como-funciona-card__icon svg {
+  width: clamp(14px, 1.9vw, 22px);
+  height: clamp(14px, 1.9vw, 22px);
+}
+
+.como-funciona-card__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(12px, 1.5vw, 18px);
+  line-height: 1.15;
+  color: var(--color-paper); /* VERDE ESCURO — TÍTULO SOBRE CARD CLARO */
+  margin: 0 0 clamp(3px, 0.6vw, 6px);
+  flex: 0 0 auto;
+}
+
+.como-funciona-card__text {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(10px, 1.1vw, 14px);
+  line-height: 1.35;
+  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — IGUAL AO .sobre-card__label */
+  margin: 0;
+  /* CLIPA O EXCEDENTE EM VIEWPORTS BAIXAS — O CARD TEM ALTURA FIXA POR DESIGN. */
+  /* overflow AQUI E NÃO NO CARD: NO CARD ELE CORTARIA O PIN. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ------ TABLET/DESKTOP — LARGURA DE CARD DA ESPECIFICAÇÃO (34%) ------ */
+/* ABAIXO DE 768px OS 34% RENDERIAM ~110px DE CARD: LARGURA INSUFICIENTE PARA */
+/* O TÍTULO E A DESCRIÇÃO. O MOBILE USA 44%, MANTENDO O CORREDOR CENTRAL DA LINHA. */
+
+@media (min-width: 768px) {
+  #como-funciona {
+    --step-card-w: 34%;
+  }
 }
 
