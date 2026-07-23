@@ -894,9 +894,13 @@ h1, h2, h3 {
   min-height: 560px;
   display: flex;
   flex-direction: column;
-  /* PADDING-TOP: clamp(40px, 7vw, 88px) + 3rem A 5rem — AFASTA O EYEBROW DA ONDA */
-  /* DE ENTRADA, QUE FICA COLADA NO TOPO (top: -1px) E NÃO ACOMPANHA O PADDING. */
-  padding: clamp(88px, 11vw, 168px) clamp(24px, 6vw, 80px) clamp(72px, 10vw, 120px);
+  /* PADDING-TOP AFASTA O EYEBROW DA ONDA DE ENTRADA, QUE FICA COLADA NO TOPO */
+  /* (top: -1px) E NÃO ACOMPANHA O PADDING. */
+  /* OS DOIS VALORES VERTICAIS FORAM APERTADOS EM ~28px NO MOBILE PARA DEVOLVER PISTA */
+  /* AO STEPPER: A SEÇÃO TEM ALTURA TRAVADA (100svh, EXIGÊNCIA DO PIN), ENTÃO O HEADER */
+  /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
+  /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
+  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
   background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
   overflow: hidden;
   isolation: isolate;
