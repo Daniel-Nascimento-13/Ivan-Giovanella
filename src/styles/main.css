@@ -924,21 +924,12 @@ h1, h2, h3 {
 /* SEM text-align PRÓPRIO: HERDA O center DO .como-funciona-header, COMO O EYEBROW */
 /* DA SEÇÃO 3 HERDA O DO .marcas-inner. */
 /* ------ */
-/* FLEX NO LUGAR DO FLUXO INLINE — CONSERTO DEFINITIVO DA SOBREPOSIÇÃO. */
-/* A PÍLULA TEM 1.7em DE ALTURA (line-height 1.4 + 2px DE PADDING EM CIMA E EMBAIXO) */
-/* CONTRA UMA LINHA DE TEXTO DE 1.2em. NO FLUXO INLINE ELA TRANSBORDAVA A LINHA PARA */
-/* CIMA POR CAUSA DO vertical-align: text-bottom E, QUANDO O EYEBROW QUEBRAVA EM DUAS */
-/* LINHAS, SUBIA POR CIMA DE "COMO FUNCIONA:". */
-/* EM FLEX ISSO É ESTRUTURALMENTE IMPOSSÍVEL: CADA LINHA DE FLEX TEM ALTURA PRÓPRIA E */
-/* CONTÉM SEUS ITENS — O flex-wrap DESCE A PÍLULA INTEIRA, SEM INVADIR A LINHA ACIMA. */
-/* O TEXTO FIXO VIRA UM FLEX ITEM ANÔNIMO; A ROLETA É O SEGUNDO ITEM, AO LADO. */
-/* line-height VOLTA AO 1.2 DO HERO: QUEM ALINHA AGORA É align-items + gap. */
+/* FLUXO INLINE PURO, IGUAL AO .hero-eyebrow — SEM display, SEM FLEX, SEM gap. */
+/* A CENTRALIZAÇÃO VEM DO text-align: center DO .como-funciona-header. */
+/* A ROLETA É inline-block COM vertical-align: text-bottom (REGRA COMPARTILHADA) E */
+/* FLUI LOGO APÓS O TEXTO FIXO. QUANDO NÃO CABE, A LINHA QUEBRA E A CAIXA DA PÍLULA */
+/* ENTRA INTEIRA NA LINHA DE BAIXO — O LINE BOX CRESCE PARA CONTÊ-LA. */
 .como-funciona-eyebrow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 13px;
@@ -950,21 +941,18 @@ h1, h2, h3 {
 }
 
 /* ------ ROLETA DO EYEBROW — SEÇÃO 4: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
-/* CORES, PADDING E RADIUS DA PÍLULA CONTINUAM VINDO DO BLOCO COMPARTILHADO. */
-/* ÚNICO ACRÉSCIMO: COMO FLEX ITEM A PÍLULA NÃO PODE ENCOLHER — O JS ESCREVE A */
-/* LARGURA EXATA DA PALAVRA ATUAL E O flex-shrink PADRÃO (1) A COMPRIMIRIA. */
-/* O vertical-align DA REGRA COMPARTILHADA FICA INERTE AQUI (NÃO SE APLICA A FLEX */
-/* ITEM) — DEIXADO COMO ESTÁ, POIS AS SEÇÕES 1, 2 E 3 DEPENDEM DELE. */
-.como-funciona-eyebrow-roulette {
-  flex: 0 0 auto;
-}
+/* SEM OVERRIDE ALGUM: display, vertical-align, height, CORES, PADDING E RADIUS VÊM */
+/* TODOS DO BLOCO COMPARTILHADO — EXATAMENTE COMO NAS SEÇÕES 1, 2 E 3. */
 
-/* TIPOGRAFIA ALINHADA À .hero-line — MESMO CLAMP, PESO E LINE-HEIGHT. */
-/* O CLAMP JÁ É A CURVA RESPONSIVA DO HERO: NÃO PRECISA DE REGRA POR BREAKPOINT. */
+/* PESO, LINE-HEIGHT E TETO (44px) IGUAIS À .hero-line. O PISO DIVERGE DE PROPÓSITO: */
+/* O HERO USA clamp(28px, 5vw, 44px), MAS "CINCO PASSOS SIMPLES ATÉ" É MAIS LONGA QUE */
+/* QUALQUER LINHA DO HERO E, A 28px, ESTOURA A LARGURA ÚTIL DO MOBILE — O TÍTULO IA */
+/* PARA 3 LINHAS EM VEZ DE 2. MEDIDO: 28px QUEBRA A 390px, 27px AINDA CABE. */
+/* O PISO MENOR + vw MAIOR MANTÉM 2 LINHAS DE 320px A 430px E CHEGA AOS MESMOS 44px. */
 .como-funciona-title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(28px, 5vw, 44px);
+  font-size: clamp(20px, 6.4vw, 44px);
   line-height: 1.15;
   color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO, IGUAL À .sobre-name */
 }
