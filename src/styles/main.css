@@ -993,7 +993,10 @@ h1, h2, h3 {
 .como-funciona-card {
   position: absolute;
   width: var(--step-card-w);
-  height: var(--step-card-h);
+  /* MOBILE: min-height NO LUGAR DE height — O CARD 03 ("PROPOSTA PERSONALIZADA") TEM */
+  /* TÍTULO DE 2 LINHAS E ESTOURA O SLOT EM TELAS BAIXAS. AQUI O CARD PODE CRESCER. */
+  /* NO BREAKPOINT 768px A ALTURA VOLTA A SER FIXA — VER NOTA LÁ. */
+  min-height: var(--step-card-h);
   top: calc(var(--step-index) * (100% - var(--step-card-h)) / (var(--step-count) - 1));
   display: flex;
   flex-direction: column;
@@ -1095,11 +1098,9 @@ h1, h2, h3 {
   line-height: 1.35;
   color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — IGUAL AO .sobre-card__label */
   margin: 0;
-  /* CLIPA O EXCEDENTE EM VIEWPORTS BAIXAS — O CARD TEM ALTURA FIXA POR DESIGN. */
-  /* overflow AQUI E NÃO NO CARD: NO CARD ELE CORTARIA O PIN. */
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
+  /* MOBILE: SEM CLIP E SEM SHRINK — O TEXTO OCUPA A ALTURA QUE PRECISAR E O CARD */
+  /* ACOMPANHA VIA min-height. O CLIP VOLTA NO BREAKPOINT 768px. */
+  flex: 0 0 auto;
 }
 
 /* ------ TABLET/DESKTOP — LARGURA DE CARD DA ESPECIFICAÇÃO (34%) ------ */
@@ -1109,6 +1110,21 @@ h1, h2, h3 {
 @media (min-width: 768px) {
   #como-funciona {
     --step-card-w: 34%;
+  }
+
+  /* ALTURA FIXA DE VOLTA: A CASCATA CALCULA O top DE CADA CARD A PARTIR DE */
+  /* --step-card-h. SE UM CARD CRESCER AQUI, O ESPAÇAMENTO DEIXA DE BATER. */
+  /* DA TABLET PRA CIMA O CARD É LARGO O BASTANTE E NADA ESTOURA. */
+  .como-funciona-card {
+    height: var(--step-card-h);
+  }
+
+  /* CLIPA O EXCEDENTE — O CARD TEM ALTURA FIXA POR DESIGN. */
+  /* overflow AQUI E NÃO NO CARD: NO CARD ELE CORTARIA O PIN. */
+  .como-funciona-card__text {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
   }
 }
 
