@@ -788,6 +788,21 @@ h1, h2, h3 {
   isolation: isolate; /* ISOLA O CONTEXTO DE EMPILHAMENTO — ::after SEMPRE POR CIMA */
 }
 
+#marcas::after {
+  /* COBRE O SEAM DE 1-2px ENTRE MARCAS E COMO FUNCIONA — */
+  /* A ONDA SVG FICA CLIPADA PELO overflow:hidden DA SEÇÃO 4, */
+  /* ENTÃO FECHAMOS O GAP PELO LADO DA SEÇÃO 3. */
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-surface-2);
+  z-index: 4;
+  pointer-events: none;
+}
+
 .marcas-inner {
   max-width: 1120px;
   margin: 0 auto;
