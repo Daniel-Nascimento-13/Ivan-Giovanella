@@ -25,6 +25,9 @@
 
 html {
   scroll-behavior: auto;
+  /* TRAVA MOVIMENTO LATERAL NO MOBILE — body SOZINHO NÃO SEGURA overflow-x */
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -32,6 +35,9 @@ body {
   background-color: var(--color-black);
   color: var(--color-ink);
   overflow-x: hidden;
+  /* SEM RUBBER-BAND HORIZONTAL E SEM PAN-X — GESTO SÓ VERTICAL */
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
 }
 
 /* ========================================
@@ -69,7 +75,7 @@ body {
 /* HERO → SOBRE: DIVISÓRIA EM ONDA (SVG) */
 .hero-wave {
   position: absolute;
-  bottom: -1px;
+  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
   left: 0;
   right: 0;
   z-index: 3;
@@ -79,7 +85,7 @@ body {
 .hero-wave svg {
   display: block;
   width: 100%;
-  height: clamp(40px, 6vw, 80px);
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
 /* SOBRE → MARCAS: GRADIENTE DESATIVADO — SUBSTITUÍDO PELA .sobre-wave (SVG) */
@@ -98,7 +104,7 @@ body {
 /* SOBRE → MARCAS: DIVISÓRIA EM ONDA (SVG) */
 .sobre-wave {
   position: absolute;
-  bottom: -1px;
+  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
   left: 0;
   right: 0;
   z-index: 3;
@@ -108,7 +114,7 @@ body {
 .sobre-wave svg {
   display: block;
   width: 100%;
-  height: clamp(40px, 6vw, 80px);
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
 /* MARCAS → COMO FUNCIONA: FADE PARA PRETO DESATIVADO */
@@ -132,7 +138,7 @@ body {
 /* PREENCHE COM #06301F — A COR DA SEÇÃO ANTERIOR — SOBRE O FUNDO CLARO. */
 .como-funciona-wave-top {
   position: absolute;
-  top: -1px;
+  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
   left: 0;
   right: 0;
   z-index: 3;
@@ -143,7 +149,7 @@ body {
 .como-funciona-wave-top svg {
   display: block;
   width: 100%;
-  height: clamp(40px, 6vw, 80px);
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
 /* COMO FUNCIONA → DEPOIMENTOS: SEM ONDA DE SAÍDA NA SEÇÃO 4. */
@@ -1156,7 +1162,7 @@ h1, h2, h3 {
 /* SEÇÃO 4 (CLARA) → DEPOIMENTOS: ONDA NO TOPO, PREENCHIDA COM O CLARO DA ANTERIOR */
 .depoimentos-wave-top {
   position: absolute;
-  top: -1px;
+  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
   left: 0;
   right: 0;
   z-index: 3;
@@ -1167,13 +1173,13 @@ h1, h2, h3 {
 .depoimentos-wave-top svg {
   display: block;
   width: 100%;
-  height: clamp(40px, 6vw, 80px);
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
 /* DEPOIMENTOS → SAÍDA: ONDA NO RODAPÉ */
 .depoimentos-wave {
   position: absolute;
-  bottom: -1px;
+  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
   left: 0;
   right: 0;
   z-index: 3;
@@ -1184,7 +1190,7 @@ h1, h2, h3 {
 .depoimentos-wave svg {
   display: block;
   width: 100%;
-  height: clamp(40px, 6vw, 80px);
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
 /* ------ SEÇÃO ------ */
