@@ -146,22 +146,9 @@ body {
   height: clamp(40px, 6vw, 80px);
 }
 
-/* COMO FUNCIONA → SAÍDA: DIVISÓRIA EM ONDA (SVG) */
-.como-funciona-wave {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  z-index: 3;
-  line-height: 0;
-  pointer-events: none;
-}
-
-.como-funciona-wave svg {
-  display: block;
-  width: 100%;
-  height: clamp(40px, 6vw, 80px);
-}
+/* COMO FUNCIONA → DEPOIMENTOS: SEM ONDA DE SAÍDA NA SEÇÃO 4. */
+/* A TRANSIÇÃO É FEITA POR UMA ÚNICA ONDA — .depoimentos-wave-top, NO TOPO DA SEÇÃO 5. */
+/* DUAS ONDAS NO MESMO SEAM PRODUZIAM UMA FAIXA CLARA INTERMEDIÁRIA. */
 
 h1, h2, h3 {
   font-family: var(--font-display);
@@ -273,7 +260,8 @@ h1, h2, h3 {
 .eyebrow-roulette,
 .sobre-eyebrow-roulette,
 .marcas-eyebrow-roulette,
-.como-funciona-eyebrow-roulette {
+.como-funciona-eyebrow-roulette,
+.depoimentos-eyebrow-roulette {
   display: inline-block;
   overflow: hidden;
   vertical-align: text-bottom;
@@ -285,7 +273,8 @@ h1, h2, h3 {
 .eyebrow-roulette__track,
 .sobre-eyebrow-roulette__track,
 .marcas-eyebrow-roulette__track,
-.como-funciona-eyebrow-roulette__track {
+.como-funciona-eyebrow-roulette__track,
+.depoimentos-eyebrow-roulette__track {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -296,7 +285,8 @@ h1, h2, h3 {
 .eyebrow-roulette__word,
 .sobre-eyebrow-roulette__word,
 .marcas-eyebrow-roulette__word,
-.como-funciona-eyebrow-roulette__word {
+.como-funciona-eyebrow-roulette__word,
+.depoimentos-eyebrow-roulette__word {
   display: inline-block;
   white-space: nowrap;
   background-color: var(--color-orange);
@@ -1150,6 +1140,364 @@ h1, h2, h3 {
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
+  }
+}
+
+/* ========================================
+   SEÇÃO 5 — DEPOIMENTOS — CARDS EMPILHADOS
+   ======================================== */
+
+/* ------ TRANSIÇÕES EM ONDA ------ */
+
+/* SEÇÃO 4 (CLARA) → DEPOIMENTOS: ONDA NO TOPO, PREENCHIDA COM O CLARO DA ANTERIOR */
+.depoimentos-wave-top {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.depoimentos-wave-top svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
+}
+
+/* DEPOIMENTOS → SAÍDA: ONDA NO RODAPÉ */
+.depoimentos-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.depoimentos-wave svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 6vw, 80px);
+}
+
+/* ------ SEÇÃO ------ */
+
+#depoimentos {
+  /* TOKENS DO PALCO — GEOMETRIA DA PILHA. ZERO VALORES SOLTOS NOS ARQUIVOS DE SEÇÃO. */
+  --dep-card-w: 240px;                             /* MOBILE — 280px NO BREAKPOINT 768px */
+  /* PISO 264px: O CARD MAIS LONGO (06, ~230 CHARS) PRECISA DE ~261px NO MOBILE. */
+  /* EM VIEWPORTS BAIXAS O 40vh RESOLVE ABAIXO DISSO, ENTÃO O PISO É QUEM PROTEGE */
+  /* CONTRA O CORTE. AINDA BEM ABAIXO DOS 300px ORIGINAIS — CUMPRE A REDUÇÃO. */
+  --dep-card-h: clamp(264px, 40vh, 280px);         /* ALTURA FIXA — PALCO NÃO PULA ENTRE CARDS */
+  /* OFFSET EM % DA LARGURA DO PRÓPRIO CARD (translateX). MOBILE MENOR: OS LATERAIS */
+  /* SÓ ESPIAM ATRÁS DO ATIVO PARA NÃO VAZAR A VIEWPORT ESTREITA. */
+  --dep-side1-x: 34%;                              /* DESLOCAMENTO HORIZONTAL DO CARD ±1 */
+  --dep-side2-x: 60%;                              /* DESLOCAMENTO HORIZONTAL DO CARD ±2 */
+  --dep-side1-scale: 0.88;
+  --dep-side2-scale: 0.76;
+  --dep-side1-op: 0.85;
+  --dep-side2-op: 0.6;
+  --dep-rot: 2.5deg;                               /* ROTAÇÃO DOS CARDS LATERAIS (SINAL VIA JS) */
+  /* TRANSIÇÃO DA TROCA — INJETADA POR depoimentos.js A PARTIR DE motion.js */
+  --dep-transition: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  background-color: var(--color-paper); /* VERDE ESCURO — IGUAL AO HERO/MARCAS */
+  padding: clamp(96px, 14vw, 160px) clamp(24px, 6vw, 80px) clamp(96px, 14vw, 160px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ------ FUNDO — LETRAS VAZADAS (DECORATIVO, ATRÁS DE TUDO) ------ */
+/* FICA ATRÁS DE TODO O CONTEÚDO. CONTEÚDO ESTÁTICO (HEADER) PINTA ACIMA DE UM */
+/* z-index: 0 POSICIONADO, ENTÃO O .depoimentos-inner GANHA z-index: 1 (RELATIVE */
+/* SEM OFFSET — NEUTRO NO LAYOUT) PARA QUE O FUNDO 0 FIQUE ABAIXO DE TUDO. */
+.depoimentos-bg-text {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.depoimentos-bg-text span {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 16vw, 110px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(0, 153, 93, 0.15);
+}
+
+.depoimentos-inner {
+  position: relative;   /* PLUMBING DE STACKING — SEM OFFSET, NÃO MOVE NADA */
+  z-index: 1;           /* CONTEÚDO ACIMA DO .depoimentos-bg-text (z-index: 0) */
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(32px, 5vw, 56px);
+}
+
+/* ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO ------ */
+
+.depoimentos-header {
+  text-align: center;
+}
+
+/* EYEBROW — MESMA TIPOGRAFIA DO .hero-eyebrow / .como-funciona-eyebrow */
+.depoimentos-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  color: var(--color-orange);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ------ ROLETA DO EYEBROW — SEÇÃO 5: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
+/* SEM OVERRIDE: PÍLULA LARANJA, TEXTO BRANCO, PADDING E RADIUS VÊM DO BLOCO */
+/* COMPARTILHADO — EXATAMENTE COMO NAS SEÇÕES 1, 2, 3 E 4. */
+
+/* TÍTULO — MESMO CORPO, PESO E LINE-HEIGHT DO .como-funciona-title */
+.depoimentos-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, 6.4vw, 44px);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.depoimentos-title--highlight {
+  color: var(--color-accent);
+}
+
+/* ------ PALCO — CARDS EMPILHADOS ------ */
+
+.depoimentos-stage {
+  position: relative;
+  width: 100%;
+  height: var(--dep-card-h);
+  /* SEM overflow: hidden — OS CARDS ±2 PRECISAM VAZAR A LARGURA DO INNER (max 1120px) */
+}
+
+.depoimentos-cards {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ------ CARD ------ */
+
+.depoimento-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dep-card-w);
+  height: var(--dep-card-h);
+  margin-top: calc(var(--dep-card-h) / -2);
+  margin-left: calc(var(--dep-card-w) / -2);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 18px);
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: 20px;
+  background-color: var(--color-card);      /* CARDS LATERAIS — CLARO (ESTADO PADRÃO) */
+  box-shadow: 0 20px 44px -24px rgba(0, 0, 0, 0.7);
+  transform-origin: center center;
+  /* MULTIPLICADOR DE ENTRADA (0→1) TWEENADO POR depoimentos.js — COMPÕE COM A OPACITY */
+  /* DE BANDA (--dep-op) SEM QUE O REVEAL BRIGUE COM O ESTADO DOS CARDS LATERAIS. */
+  opacity: calc(var(--dep-op, 1) * var(--dep-reveal, 1));
+  /* MICRO-INTERAÇÃO — TROCA DE POSIÇÃO É TRANSIÇÃO CSS (EXCEÇÃO DOCUMENTADA) */
+  transition:
+    transform var(--dep-transition),
+    opacity var(--dep-transition),
+    background-color var(--dep-transition);
+}
+
+/* MUDANÇA INSTANTÂNEA — PRIMEIRA APLICAÇÃO DE POSIÇÕES, EVITA FAN-OUT NO LOAD */
+.depoimentos-cards--init .depoimento-card {
+  transition: none;
+}
+
+/* ------ ESTADOS DA PILHA — CLASSES ATRIBUÍDAS POR depoimentos.js ------ */
+/* --dep-dir (-1 ESQUERDA / +1 DIREITA) COMPÕE O SINAL DO translateX E DA ROTAÇÃO */
+
+/* O CENTRO JÁ VEM DO margin-left DO CARD-BASE — O transform SÓ APLICA O OFFSET DA */
+/* BANDA. NÃO REPETIR translateX(-50%) AQUI, SENÃO O CARD DESLOCA MEIA LARGURA. */
+
+.depoimento-card--active {
+  --dep-op: 1;
+  z-index: 5;
+  transform: translateX(0) scale(1) rotate(0deg);
+  background-color: var(--color-accent);   /* CARD CENTRAL — VERDE UNIMED */
+  cursor: default;
+}
+
+.depoimento-card--side-1 {
+  --dep-op: var(--dep-side1-op);
+  z-index: 4;
+  transform:
+    translateX(calc(var(--dep-dir) * var(--dep-side1-x)))
+    scale(var(--dep-side1-scale))
+    rotate(calc(var(--dep-dir) * var(--dep-rot)));
+  cursor: pointer;
+}
+
+.depoimento-card--side-2 {
+  --dep-op: var(--dep-side2-op);
+  z-index: 3;
+  transform:
+    translateX(calc(var(--dep-dir) * var(--dep-side2-x)))
+    scale(var(--dep-side2-scale))
+    rotate(calc(var(--dep-dir) * var(--dep-rot)));
+  cursor: pointer;
+}
+
+/* ALÉM DE ±2 — OCULTO, MAS SEGUINDO A DIREÇÃO PARA SAIR/ENTRAR PELO LADO CERTO */
+.depoimento-card--hidden {
+  --dep-op: 0;
+  z-index: 2;
+  transform:
+    translateX(calc(var(--dep-dir) * var(--dep-side2-x)))
+    scale(var(--dep-side2-scale))
+    rotate(calc(var(--dep-dir) * var(--dep-rot)));
+  pointer-events: none;
+}
+
+/* ------ CONTEÚDO DO CARD ------ */
+
+/* ASPA DECORATIVA — ABSOLUTA, FORA DO FLUXO FLEX: NÃO AFETA TEXTO NEM ESTRELAS */
+.depoimento-card__quote {
+  position: absolute;
+  top: -14px;
+  left: 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+/* CARD CENTRAL — ASPA CLARA SOBRE O VERDE */
+.depoimento-card--active .depoimento-card__quote {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* RÓTULO — "DEPOIMENTO" ACIMA DO TEXTO */
+.depoimento-card__label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 6px;
+}
+
+/* CARD CENTRAL — RÓTULO CLARO SOBRE O VERDE */
+.depoimento-card--active .depoimento-card__label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.depoimento-card__stars {
+  display: block;                    /* ESTRELAS CENTRALIZADAS VIA text-align */
+  text-align: center;
+  padding-top: 8px;
+  font-size: clamp(16px, 2.4vw, 20px);
+  line-height: 1;
+  color: var(--color-gold);          /* ESTRELAS DOURADAS */
+  flex: 0 0 auto;
+  margin-top: auto;                  /* ESTRELAS ANCORADAS NO FIM DO CARD */
+}
+
+.depoimento-card__text {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.55;
+  color: var(--color-ink-muted);     /* CARDS LATERAIS — TEXTO VERDE ESCURO SOBRE CLARO */
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* CARD CENTRAL — TEXTO E ESTRELAS SOBRE O VERDE */
+.depoimento-card--active .depoimento-card__text {
+  color: var(--color-ink);           /* TEXTO BRANCO NO CARD ATIVO */
+}
+
+/* ------ NAVEGAÇÃO — ANTERIOR / PRÓXIMO ------ */
+/* MESMO DESENHO DO .sobre-nav-arrow, RGBA INVERTIDO PARA O FUNDO ESCURO */
+
+.depoimentos-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.depoimentos-nav-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25); /* BORDA CLARA — SOBRE FUNDO ESCURO */
+  background-color: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.depoimentos-nav-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.depoimentos-nav-arrow:active {
+  transform: scale(0.95);
+}
+
+.depoimentos-nav-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ------ GUARD PREFERS-REDUCED-MOTION — TROCA INSTANTÂNEA ------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .depoimento-card,
+  .depoimentos-nav-arrow {
+    transition: none;
+  }
+}
+
+/* ------ DESKTOP — CARD MAIOR ------ */
+
+@media (min-width: 768px) {
+  #depoimentos {
+    --dep-card-w: 280px;
+    --dep-side1-x: 52%;   /* MAIS FOLGA NO DESKTOP — LEQUE MAIS ABERTO */
+    --dep-side2-x: 92%;
   }
 }
 

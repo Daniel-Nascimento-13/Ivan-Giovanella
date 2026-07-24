@@ -26,6 +26,12 @@ import { initMarcas } from './animations/marcas.js';
 
 import { initComoFunciona } from './sections/como-funciona.js';
 
+/* ========================================
+   SEÇÃO 5 — DEPOIMENTOS
+   ======================================== */
+
+import { initDepoimentos } from './sections/depoimentos.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (!prefersReducedMotion) {
@@ -44,4 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // SEÇÃO 4 — COMO FUNCIONA: STEPPER COM LINHA DESENHADA NO SCROLL
   initComoFunciona();
+
+  // SEÇÃO 5 — DEPOIMENTOS: CARDS EMPILHADOS COM NAVEGAÇÃO
+  initDepoimentos();
 });

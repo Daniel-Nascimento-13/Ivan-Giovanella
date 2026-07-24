@@ -382,11 +382,181 @@
         </div>
       </div>
 
-      <!-- ------ DIVISÓRIA EM ONDA — SAÍDA DA SEÇÃO 4 ------ -->
-      <!-- SEÇÃO 5 AINDA NÃO EXISTE: DESTINO PROVISÓRIO #06301F, O VERDE ESCURO DO PROJETO -->
-      <div class="como-funciona-wave" aria-hidden="true">
+      <!-- ------ SAÍDA DA SEÇÃO 4 ------ -->
+      <!-- SEM ONDA DE SAÍDA AQUI: A TRANSIÇÃO S4 (CLARA) → S5 (ESCURA) É FEITA POR UMA -->
+      <!-- ÚNICA ONDA, A .depoimentos-wave-top NO TOPO DA SEÇÃO 5. DUAS ONDAS NO MESMO -->
+      <!-- SEAM CRIAVAM UMA FAIXA CLARA (light → dark → LIGHT → dark). -->
+    </section>
+
+    <!-- ========================================
+         SEÇÃO 5 — DEPOIMENTOS — CARDS EMPILHADOS
+         ======================================== -->
+    <section id="depoimentos" aria-label="Depoimentos de clientes">
+
+      <!-- ------ FUNDO — LETRAS VAZADAS (DECORATIVO) ------ -->
+      <div class="depoimentos-bg-text" aria-hidden="true">
+        <span>FEEDBACK</span>
+        <span>FEEDBACK</span>
+        <span>FEEDBACK</span>
+        <span>FEEDBACK</span>
+      </div>
+
+      <!-- ------ DIVISÓRIA EM ONDA — TRANSIÇÃO SEÇÃO 4 → DEPOIMENTOS ------ -->
+      <!-- SEÇÃO ANTERIOR É CLARA (--color-surface-2): ONDA PREENCHE COM ELA SOBRE O VERDE -->
+      <div class="depoimentos-wave-top" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#06301F"/>
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#E8F0EB"/>
+        </svg>
+      </div>
+
+      <div class="depoimentos-inner">
+
+        <!-- ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO ------ -->
+        <div class="depoimentos-header">
+          <!-- ROLETA — MESMA ESTRUTURA DA SEÇÃO 4. O CLONE DA PRIMEIRA PALAVRA É -->
+          <!-- INJETADO POR depoimentos.js PARA O RESET SILENCIOSO. -->
+          <p class="depoimentos-eyebrow">
+            O que dizem:
+            <span class="depoimentos-eyebrow-roulette" aria-live="polite" aria-label="nossos clientes">
+              <span class="depoimentos-eyebrow-roulette__track">
+                <span class="depoimentos-eyebrow-roulette__word">nossos clientes</span>
+                <span class="depoimentos-eyebrow-roulette__word">quem já contratou</span>
+                <span class="depoimentos-eyebrow-roulette__word">empresas parceiras</span>
+                <span class="depoimentos-eyebrow-roulette__word">quem confia</span>
+              </span>
+            </span>
+          </p>
+          <h2 class="depoimentos-title">Empresas que já cuidam<br><span class="depoimentos-title--highlight">de quem faz acontecer</span></h2>
+        </div>
+
+        <!-- ------ PALCO — CARDS EMPILHADOS (POSIÇÕES DEFINIDAS POR depoimentos.js) ------ -->
+        <div class="depoimentos-stage">
+          <ul class="depoimentos-cards" aria-label="Depoimentos">
+
+            <!-- CARD 01 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Eu adiava isso faz tempo. O Ivan me ligou, explicou tudo sem enrolação e em menos de uma semana minha equipe já tinha cobertura. Simples assim.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 02 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">A gente tinha um plano caro que não atendia bem. O Ivan analisou o que a gente usava de verdade e reduziu o custo em quase 30%. Os funcionários adoraram a troca.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 03 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Contratei pra mim e pros meus 4 sócios. O atendimento foi rápido, sem burocracia e o Ivan ainda nos ajudou a entender o que cada cobertura significava na prática.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 04 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Nossa rotatividade caiu depois que oferecemos o plano. Os colaboradores valorizam muito. Foi um investimento que fez sentido desde o primeiro mês.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 05 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Já tentei contratar plano empresarial antes e foi um pesadelo. Com o Ivan foi diferente — ele acompanhou tudo, tirou dúvida até no domingo.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 06 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Tenho 18 funcionários e nunca pensei que conseguiria oferecer plano de saúde. O Ivan montou uma solução que coube no nosso orçamento. Hoje é um diferencial na hora de contratar.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 07 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">O que me surpreendeu foi o pós-venda. Tivemos um problema com um reembolso e o Ivan resolveu em dois dias. Isso faz diferença.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 08 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Indicaria sem pensar duas vezes. Minha empresa tem 8 pessoas e o Ivan tratou a gente como se fosse uma grande conta. Atendimento de verdade.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 09 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">A proposta chegou no mesmo dia. Sem letra miúda, sem surpresa no boleto. O que foi prometido foi entregue. Renovei sem hesitar.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+            <!-- CARD 10 -->
+            <li class="depoimento-card">
+              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <p class="depoimento-card__label">Depoimento</p>
+              <p class="depoimento-card__text">Eu precisava de algo rápido porque estava perdendo um funcionário-chave para uma empresa maior. O Ivan entrou com o plano em tempo recorde. Consegui segurar o colaborador.</p>
+              <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
+                <span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- ------ NAVEGAÇÃO — ANTERIOR / PRÓXIMO ------ -->
+        <div class="depoimentos-nav">
+          <button type="button" class="depoimentos-nav-arrow" data-dir="prev" aria-label="Depoimento anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <button type="button" class="depoimentos-nav-arrow" data-dir="next" aria-label="Próximo depoimento">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ------ DIVISÓRIA EM ONDA — SAÍDA DA SEÇÃO 5 ------ -->
+      <!-- PRÓXIMA SEÇÃO AINDA NÃO EXISTE: DESTINO PROVISÓRIO #0A0A0A (--color-black) -->
+      <div class="depoimentos-wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0A0A0A"/>
         </svg>
       </div>
     </section>
