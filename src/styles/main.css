@@ -879,8 +879,12 @@ h1, h2, h3 {
   --step-pin-size: 14px;               /* DIÂMETRO DO PIN — ORIGEM/DESTINO DA LINHA */
 
   position: relative;
-  height: 100vh;                       /* FALLBACK PARA NAVEGADORES SEM svh */
-  height: 100svh;                      /* SEÇÃO PINADA — PRECISA CABER NA VIEWPORT */
+  /* SEÇÃO PINADA: USA LARGE VIEWPORT (lvh). A SEÇÃO É position: fixed DURANTE O PIN; */
+  /* COM 100svh ELA MEDIA A ALTURA COM A BARRA DE ENDEREÇO VISÍVEL E, QUANDO A BARRA */
+  /* SE OCULTAVA NO SCROLL, A VIEWPORT CRESCIA E SOBRAVA UMA FAIXA PRETA NO RODAPÉ */
+  /* (O PIN-SPACER TRANSPARENTE SOBRE O FUNDO PRETO DO BODY). lvh COBRE OS DOIS ESTADOS. */
+  height: 100vh;                       /* FALLBACK — vh = LARGE VIEWPORT NA MAIORIA DOS BROWSERS */
+  height: 100lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
   min-height: 560px;
   display: flex;
   flex-direction: column;
