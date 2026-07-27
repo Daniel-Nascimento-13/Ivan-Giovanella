@@ -612,26 +612,29 @@
         <div class="cta-social-wrap">
           <p class="cta-social-label">Siga nas redes</p>
           <div class="cta-social" data-cta-social>
-            <a class="cta-social-icon" href="https://instagram.com/ivangiovanella" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Ivan" style="left: 0">
+            <a class="cta-social-icon" href="https://www.instagram.com/iggiovanella/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Ivan" style="left: 0">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
               </svg>
+              <span class="cta-social-icon__handle" aria-hidden="true">@ivan</span>
             </a>
-            <a class="cta-social-icon" href="https://instagram.com/unimedvtrp" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Unimed" style="left: 64px">
+            <a class="cta-social-icon" href="https://www.instagram.com/unimed_vtrp/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Unimed" style="left: 64px">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
               </svg>
+              <span class="cta-social-icon__handle" aria-hidden="true">@unimed</span>
             </a>
-            <a class="cta-social-icon" href="https://linkedin.com/in/ivangiovanella" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn do Ivan" style="left: 128px">
+            <a class="cta-social-icon" href="https://www.linkedin.com/in/ivan-giovanella-37637a208/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn do Ivan" style="left: 128px">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                 <path d="M2 9h4v12H2z" />
                 <circle cx="4" cy="4" r="2" />
               </svg>
+              <span class="cta-social-icon__handle" aria-hidden="true">Ivan</span>
             </a>
             <button type="button" class="cta-social-toggle" data-cta-social-toggle aria-expanded="false" aria-label="Mostrar redes sociais">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -667,8 +670,16 @@
               <input class="cta-field__input" type="number" name="pessoas" min="1" required />
             </label>
             <label class="cta-field">
+              <span class="cta-field__label">Plano de interesse</span>
+              <select class="cta-field__input" name="plano" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="empresarial">Empresarial</option>
+                <option value="pessoal">Pessoal</option>
+              </select>
+            </label>
+            <label class="cta-field">
               <span class="cta-field__label">Cidade</span>
-              <input class="cta-field__input" type="text" name="cidade" required />
+              <input class="cta-field__input" type="text" name="cidade" placeholder="Ex: Lajeado/RS" required />
             </label>
             <button type="submit" class="cta-btn cta-btn--submit">Enviar pelo WhatsApp</button>
           </form>
@@ -681,7 +692,7 @@
 
   <footer class="cta-footer">
     <p class="cta-footer__title">Unimed Vales do Taquari e Rio Pardo</p>
-    <p class="cta-footer__meta">© 2025 Ivan Giovanella · Consultor de Planos de Saúde</p>
+    <p class="cta-footer__meta">© 2026 Ivan Giovanella · Consultor de Planos de Saúde</p>
   </footer>
 
   <script type="module" src="/src/main.js"></script>

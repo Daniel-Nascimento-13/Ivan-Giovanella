@@ -59,7 +59,11 @@ function buildModalMessage(form) {
   const pessoas = (data.get('pessoas') || '').toString().trim();
   const cidade = (data.get('cidade') || '').toString().trim();
 
-  return `Olá Ivan! Gostaria de uma avaliação do plano. *Nome:* ${nome} | *Empresa:* ${empresa} | *Pessoas:* ${pessoas} | *Cidade:* ${cidade}`;
+  /* PLANO — TEXTO LEGÍVEL DA OPÇÃO SELECIONADA (EX: "EMPRESARIAL"), NÃO O VALUE CRU */
+  const planoSelect = form.querySelector('[name="plano"]');
+  const plano = (planoSelect?.selectedOptions[0]?.textContent || '').trim();
+
+  return `Olá Ivan! Gostaria de uma avaliação do plano. *Nome:* ${nome} | *Empresa:* ${empresa} | *Plano:* ${plano} | *Pessoas:* ${pessoas} | *Cidade:* ${cidade}`;
 }
 
 /* ------ INIT ------ */

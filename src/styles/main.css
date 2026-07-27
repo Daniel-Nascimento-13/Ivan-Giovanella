@@ -1668,10 +1668,11 @@ h1, h2, h3 {
 }
 
 /* PISTA DO FAB — LARGURA = 52×4 + 12×3 (4 ALVOS, 3 GAPS) */
+/* ALTURA 52px DO CÍRCULO + FOLGA ABAIXO PARA O @ HANDLE DE CADA ÍCONE */
 .cta-social {
   position: relative;
   width: 244px;
-  height: 52px;
+  height: 74px;
   margin: 0 auto;
 }
 
@@ -1698,6 +1699,22 @@ h1, h2, h3 {
 .cta-social-icon svg {
   width: 22px;
   height: 22px;
+}
+
+/* @ HANDLE — ABAIXO DO CÍRCULO, CENTRALIZADO. HERDA A OPACIDADE DO ÍCONE-PAI, */
+/* ENTÃO APARECE E SOME JUNTO COM ELE (MESMA TRANSIÇÃO DE OPACITY DO FAB). */
+.cta-social-icon__handle {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+  opacity: 0.6;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 /* BOTÃO + — CAPA A PISTA. FECHADO: DESLIZA SOBRE O 1º ÍCONE (translateX -192px) */
