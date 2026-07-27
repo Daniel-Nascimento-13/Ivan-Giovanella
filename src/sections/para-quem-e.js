@@ -2,7 +2,9 @@ import {
   revealParaQuemE,
   killParaQuemEReveal,
   initParaQuemEAccordion,
-  destroyParaQuemEAccordion
+  destroyParaQuemEAccordion,
+  initParaQuemERoulette,
+  destroyParaQuemERoulette
 } from '../animations/para-quem-e.js';
 
 /* ========================================
@@ -47,11 +49,24 @@ export function initParaQuemE() {
 
   /* ACCORDION — ESTADO INICIAL FECHADO (current = -1 DENTRO DA FUNÇÃO) */
   initParaQuemEAccordion(refs);
+
+  /* ------ ROLETA DO EYEBROW ------ */
+  /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA E, MEDIDA COM A */
+  /* FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO. SEM SCROLLTRIGGER */
+  /* AQUI — SÓ TRANSITION CSS E setInterval. */
+  if (document.fonts) {
+    document.fonts.ready.then(() => {
+      if (document.querySelector('#para-quem-e')) initParaQuemERoulette();
+    });
+  } else {
+    initParaQuemERoulette();
+  }
 }
 
 /* ------ CLEANUP ------ */
 
 export function destroyParaQuemE() {
+  destroyParaQuemERoulette();
   destroyParaQuemEAccordion();
   killParaQuemEReveal();
 }

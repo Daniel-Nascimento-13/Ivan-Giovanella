@@ -270,7 +270,8 @@ h1, h2, h3 {
 .marcas-eyebrow-roulette,
 .como-funciona-eyebrow-roulette,
 .depoimentos-eyebrow-roulette,
-.cta-eyebrow-roulette {
+.cta-eyebrow-roulette,
+.pq-eyebrow-roulette {
   display: inline-block;
   overflow: hidden;
   vertical-align: text-bottom;
@@ -284,7 +285,8 @@ h1, h2, h3 {
 .marcas-eyebrow-roulette__track,
 .como-funciona-eyebrow-roulette__track,
 .depoimentos-eyebrow-roulette__track,
-.cta-eyebrow-roulette__track {
+.cta-eyebrow-roulette__track,
+.pq-eyebrow-roulette__track {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -297,7 +299,8 @@ h1, h2, h3 {
 .marcas-eyebrow-roulette__word,
 .como-funciona-eyebrow-roulette__word,
 .depoimentos-eyebrow-roulette__word,
-.cta-eyebrow-roulette__word {
+.cta-eyebrow-roulette__word,
+.pq-eyebrow-roulette__word {
   display: inline-block;
   white-space: nowrap;
   background-color: var(--color-orange);
@@ -933,21 +936,23 @@ h1, h2, h3 {
   color: var(--color-accent);
 }
 
-/* ------ ACCORDION — DOIS PAINÉIS LADO A LADO ------ */
+/* ------ ACCORDION — COLUNA DE ITENS (BOTÃO + DETALHE PRÓPRIO) ------ */
+/* CADA ITEM ABRE SEU CARD LOGO ABAIXO DO BOTÃO, EMPURRANDO OS SEGUINTES PARA BAIXO. */
 
 .para-quem-accordion {
-  display: flex;
-  align-items: stretch;
-  gap: clamp(16px, 3vw, 32px);
-}
-
-/* PAINEL ESQUERDO — LISTA DE BOTÕES (200px FIXO NO DESKTOP) */
-.para-quem-list {
-  flex: 0 0 200px;
-  width: 200px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 8px; /* ESPAÇAMENTO ENTRE ITENS (PERFIS) */
+}
+
+/* ITEM — BOTÃO + SEU CARD, EMPILHADOS. SEM gap: O CARD ENCOSTA NO BOTÃO (CONEXÃO */
+/* VISUAL) E, FECHADO (max-height 0), NÃO DEIXA ESPAÇO FANTASMA. */
+.para-quem-item {
+  display: flex;
+  flex-direction: column;
 }
 
 /* BOTÃO — ESTADO INATIVO É O DEFAULT DO CSS. O ESTADO ATIVO É APLICADO POR JS */
@@ -988,38 +993,42 @@ h1, h2, h3 {
   transition: transform 0.3s ease;
 }
 
-/* ÍCONE-FONTE DO PERFIL — CLONADO PARA O CARD POR JS. NUNCA VISÍVEL NO BOTÃO. */
-.para-quem-btn__source-icon {
-  display: none;
-}
-
-/* PAINEL DIREITO — CARD DE DETALHE */
-/* FECHADO: opacity 0 + translateX(16px) scale(0.97) + visibility hidden. */
-/* ABERTO (.is-open, VIA JS): opacity 1 + translateX(0) scale(1) + visibility visible. */
+/* CARD DE DETALHE — UM POR ITEM, LOGO ABAIXO DO BOTÃO. */
+/* FECHADO: max-height 0 + overflow hidden + opacity 0 (COLAPSA POR COMPLETO). */
+/* ABERTO (.open, VIA JS): max-height 400px + opacity 1. O PADDING VIVE DENTRO, */
+/* ENTÃO O overflow hidden O CLIPA A ZERO QUANDO FECHADO — SEM ESPAÇO RESIDUAL. */
 .para-quem-detail {
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 1.25rem;
-  border-radius: 16px;
+  /* CARD: FUNDO/BORDA/RAIO NO PRÓPRIO WRAPPER. COM box-sizing: border-box (GLOBAL DO */
+  /* TAILWIND) O max-height 0 CLIPA A BORDA — NENHUM SLIVER FICA VISÍVEL FECHADO. */
   background-color: var(--color-card);
   border: 1px solid rgba(6, 48, 31, 0.12);
+  border-radius: 16px;
+  max-height: 0;
+  overflow: hidden;
   opacity: 0;
-  visibility: hidden;
-  transform: translateX(16px) scale(0.97);
-  transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1),
-              transform 0.4s cubic-bezier(0.77, 0, 0.175, 1),
-              visibility 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+  transition: max-height 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.3s ease;
 }
 
-.para-quem-detail.is-open {
+.para-quem-detail.open {
+  max-height: 400px;
   opacity: 1;
-  visibility: visible;
-  transform: translateX(0) scale(1);
+}
+
+/* PADDING/RADIUS NO CONTEÚDO INTERNO DO CARD — MARGIN-TOP DE 8px SEPARA DO BOTÃO */
+/* (FICA DENTRO DO overflow hidden, LOGO SÓ APARECE QUANDO O CARD ABRE). */
+.para-quem-detail__icon,
+.para-quem-detail__tag,
+.para-quem-detail__title,
+.para-quem-detail__text {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 }
 
 .para-quem-detail__icon {
   display: inline-flex;
   color: var(--color-accent); /* ÍCONE VERDE NO CARD */
+  margin-top: 1.25rem;
   margin-bottom: 0.75rem;
 }
 
@@ -1054,27 +1063,7 @@ h1, h2, h3 {
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-ink-muted);
-}
-
-/* ------ MOBILE — COLUNA ------ */
-/* ABAIXO DE 768px: LISTA EM CIMA, CARD EMBAIXO. O CARD DESLIZA EM Y (NÃO EM X). */
-@media (max-width: 767px) {
-  .para-quem-accordion {
-    flex-direction: column;
-  }
-
-  .para-quem-list {
-    flex: 0 0 auto;
-    width: 100%;
-  }
-
-  .para-quem-detail {
-    transform: translateY(12px) scale(0.97);
-  }
-
-  .para-quem-detail.is-open {
-    transform: translateY(0) scale(1);
-  }
+  margin-bottom: 1.25rem;
 }
 
 /* ========================================

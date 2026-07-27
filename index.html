@@ -258,22 +258,33 @@
 
         <!-- ------ CABEÇALHO ------ -->
         <div class="para-quem-header">
-          <p class="para-quem-eyebrow">Feito para você</p>
+          <!-- ROLETA — MESMA ESTRUTURA DAS DEMAIS SEÇÕES. O CLONE DA PRIMEIRA -->
+          <!-- PALAVRA É INJETADO POR para-quem-e.js PARA O RESET SILENCIOSO. -->
+          <p class="para-quem-eyebrow">
+            Feito para
+            <span class="pq-eyebrow-roulette" aria-live="polite" aria-label="você">
+              <span class="pq-eyebrow-roulette__track">
+                <span class="pq-eyebrow-roulette__word">você</span>
+                <span class="pq-eyebrow-roulette__word">quem cuida</span>
+                <span class="pq-eyebrow-roulette__word">quem empreende</span>
+                <span class="pq-eyebrow-roulette__word">quem protege</span>
+                <span class="pq-eyebrow-roulette__word">quem cresce</span>
+                <span class="pq-eyebrow-roulette__word">todos</span>
+              </span>
+            </span>
+          </p>
           <h2 class="para-quem-title">O plano certo <span class="para-quem-title--highlight">para cada perfil</span></h2>
         </div>
 
-        <!-- ------ ACCORDION — DOIS PAINÉIS LADO A LADO ------ -->
-        <div class="para-quem-accordion">
+        <!-- ------ ACCORDION — COLUNA DE ITENS (BOTÃO + DETALHE PRÓPRIO) ------ -->
+        <!-- CADA ITEM ABRE SEU CARD LOGO ABAIXO DO BOTÃO, EMPURRANDO OS SEGUINTES. -->
+        <!-- OS ATRIBUTOS data-detail* SÃO EXIGIDOS PELO GUARD DE sections/para-quem-e.js. -->
+        <div class="para-quem-accordion" aria-label="Perfis de contratação">
 
-          <!-- PAINEL ESQUERDO — LISTA DE BOTÕES (PERFIS) -->
-          <div class="para-quem-list" role="tablist" aria-label="Perfis de contratação">
-
-            <!-- PERFIL 01 — PESSOA FÍSICA -->
+          <!-- PERFIL 01 — PESSOA FÍSICA -->
+          <div class="para-quem-item">
             <button class="para-quem-btn" type="button" data-index="0"
-                    data-tag="Cuidado individual"
-                    data-title="Pessoa Física"
-                    data-text="Para quem quer cobertura completa sem depender de plano empresarial. A partir de uma vida, com atendimento personalizado."
-                    aria-expanded="false" aria-controls="para-quem-detail">
+                    aria-expanded="false" aria-controls="para-quem-detail-0">
               <span class="para-quem-btn__label">Pessoa Física</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -281,20 +292,24 @@
                   <path d="M5 12h14" />
                 </svg>
               </span>
-              <span class="para-quem-btn__source-icon" aria-hidden="true">
+            </button>
+            <div class="para-quem-detail" id="para-quem-detail-0" data-detail>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="8" r="4" />
                   <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                 </svg>
               </span>
-            </button>
+              <span class="para-quem-detail__tag" data-detail-tag>Cuidado individual</span>
+              <h3 class="para-quem-detail__title" data-detail-title>Pessoa Física</h3>
+              <p class="para-quem-detail__text" data-detail-text>Para quem quer cobertura completa sem depender de plano empresarial. A partir de uma vida, com atendimento personalizado.</p>
+            </div>
+          </div>
 
-            <!-- PERFIL 02 — MEI -->
+          <!-- PERFIL 02 — MEI -->
+          <div class="para-quem-item">
             <button class="para-quem-btn" type="button" data-index="1"
-                    data-tag="Você é seu negócio"
-                    data-title="MEI"
-                    data-text="Tenha um plano que protege quem faz tudo acontecer. Cobertura completa para o empreendedor que não pode parar."
-                    aria-expanded="false" aria-controls="para-quem-detail">
+                    aria-expanded="false" aria-controls="para-quem-detail-1">
               <span class="para-quem-btn__label">MEI</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -302,20 +317,24 @@
                   <path d="M5 12h14" />
                 </svg>
               </span>
-              <span class="para-quem-btn__source-icon" aria-hidden="true">
+            </button>
+            <div class="para-quem-detail" id="para-quem-detail-1" data-detail>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="4" width="18" height="16" rx="2" />
                   <path d="M8 2v4M16 2v4M9 12h6M9 16h4" />
                 </svg>
               </span>
-            </button>
+              <span class="para-quem-detail__tag" data-detail-tag>Você é seu negócio</span>
+              <h3 class="para-quem-detail__title" data-detail-title>MEI</h3>
+              <p class="para-quem-detail__text" data-detail-text>Tenha um plano que protege quem faz tudo acontecer. Cobertura completa para o empreendedor que não pode parar.</p>
+            </div>
+          </div>
 
-            <!-- PERFIL 03 — PEQUENAS EMPRESAS -->
+          <!-- PERFIL 03 — PEQUENAS EMPRESAS -->
+          <div class="para-quem-item">
             <button class="para-quem-btn" type="button" data-index="2"
-                    data-tag="Sem burocracia"
-                    data-title="Pequenas empresas"
-                    data-text="Ofereça um benefício real para sua equipe sem complicação. Planos acessíveis que cabem no orçamento do seu negócio."
-                    aria-expanded="false" aria-controls="para-quem-detail">
+                    aria-expanded="false" aria-controls="para-quem-detail-2">
               <span class="para-quem-btn__label">Pequenas empresas</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -323,20 +342,24 @@
                   <path d="M5 12h14" />
                 </svg>
               </span>
-              <span class="para-quem-btn__source-icon" aria-hidden="true">
+            </button>
+            <div class="para-quem-detail" id="para-quem-detail-2" data-detail>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
               </span>
-            </button>
+              <span class="para-quem-detail__tag" data-detail-tag>Sem burocracia</span>
+              <h3 class="para-quem-detail__title" data-detail-title>Pequenas empresas</h3>
+              <p class="para-quem-detail__text" data-detail-text>Ofereça um benefício real para sua equipe sem complicação. Planos acessíveis que cabem no orçamento do seu negócio.</p>
+            </div>
+          </div>
 
-            <!-- PERFIL 04 — MÉDIAS EMPRESAS -->
+          <!-- PERFIL 04 — MÉDIAS EMPRESAS -->
+          <div class="para-quem-item">
             <button class="para-quem-btn" type="button" data-index="3"
-                    data-tag="Reduza rotatividade"
-                    data-title="Médias empresas"
-                    data-text="Atraia e retenha talentos com saúde de qualidade. Um benefício que faz diferença na hora de contratar."
-                    aria-expanded="false" aria-controls="para-quem-detail">
+                    aria-expanded="false" aria-controls="para-quem-detail-3">
               <span class="para-quem-btn__label">Médias empresas</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -344,20 +367,24 @@
                   <path d="M5 12h14" />
                 </svg>
               </span>
-              <span class="para-quem-btn__source-icon" aria-hidden="true">
+            </button>
+            <div class="para-quem-detail" id="para-quem-detail-3" data-detail>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="2" />
                   <path d="M9 2v20M15 2v20M2 9h20M2 15h20" />
                 </svg>
               </span>
-            </button>
+              <span class="para-quem-detail__tag" data-detail-tag>Reduza rotatividade</span>
+              <h3 class="para-quem-detail__title" data-detail-title>Médias empresas</h3>
+              <p class="para-quem-detail__text" data-detail-text>Atraia e retenha talentos com saúde de qualidade. Um benefício que faz diferença na hora de contratar.</p>
+            </div>
+          </div>
 
-            <!-- PERFIL 05 — ASSOCIAÇÕES E SINDICATOS -->
+          <!-- PERFIL 05 — ASSOCIAÇÕES E SINDICATOS -->
+          <div class="para-quem-item">
             <button class="para-quem-btn" type="button" data-index="4"
-                    data-tag="Planos coletivos especiais"
-                    data-title="Associações e sindicatos"
-                    data-text="Para grupos com condições especiais e negociadas. Cobertura ampla com vantagens exclusivas para os associados."
-                    aria-expanded="false" aria-controls="para-quem-detail">
+                    aria-expanded="false" aria-controls="para-quem-detail-4">
               <span class="para-quem-btn__label">Associações e sindicatos</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -365,23 +392,19 @@
                   <path d="M5 12h14" />
                 </svg>
               </span>
-              <span class="para-quem-btn__source-icon" aria-hidden="true">
+            </button>
+            <div class="para-quem-detail" id="para-quem-detail-4" data-detail>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="9" cy="7" r="3" />
                   <circle cx="15" cy="7" r="3" />
                   <path d="M3 20c0-3 2.7-5 6-5h6c3.3 0 6 2 6 5" />
                 </svg>
               </span>
-            </button>
-
-          </div>
-
-          <!-- PAINEL DIREITO — CARD DE DETALHE (PREENCHIDO POR para-quem-e.js) -->
-          <div class="para-quem-detail" id="para-quem-detail" data-detail aria-live="polite">
-            <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true"></span>
-            <span class="para-quem-detail__tag" data-detail-tag></span>
-            <h3 class="para-quem-detail__title" data-detail-title></h3>
-            <p class="para-quem-detail__text" data-detail-text></p>
+              <span class="para-quem-detail__tag" data-detail-tag>Planos coletivos especiais</span>
+              <h3 class="para-quem-detail__title" data-detail-title>Associações e sindicatos</h3>
+              <p class="para-quem-detail__text" data-detail-text>Para grupos com condições especiais e negociadas. Cobertura ampla com vantagens exclusivas para os associados.</p>
+            </div>
           </div>
 
         </div>
