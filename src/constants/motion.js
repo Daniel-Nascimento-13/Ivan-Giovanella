@@ -121,3 +121,12 @@ export const STEPPER_REVEAL_TO = {
   y: 0,
   autoAlpha: 1
 };
+
+/* ------ SEÇÃO 6 — CTA FINAL — CONVERSÃO ------ */
+/* REVEAL DO HEADER/BOTÕES + ABERTURA DO MODAL. A ROLETA DO EYEBROW REUSA ROULETTE. */
+/* A ANIMAÇÃO DO FAB SOCIAL É TRANSITION CSS (MICRO-INTERAÇÃO) — NÃO ENTRA AQUI. */
+
+export const CTA = {
+  revealStart: 'top 75%',   // DISPARO DO REVEAL NO SCROLLTRIGGER
+  modalDuration: 0.4        // ABERTURA/FECHAMENTO DO MODAL — CLIP-PATH + AUTOALPHA
+};

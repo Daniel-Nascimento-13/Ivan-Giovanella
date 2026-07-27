@@ -267,7 +267,8 @@ h1, h2, h3 {
 .sobre-eyebrow-roulette,
 .marcas-eyebrow-roulette,
 .como-funciona-eyebrow-roulette,
-.depoimentos-eyebrow-roulette {
+.depoimentos-eyebrow-roulette,
+.cta-eyebrow-roulette {
   display: inline-block;
   overflow: hidden;
   vertical-align: text-bottom;
@@ -280,7 +281,8 @@ h1, h2, h3 {
 .sobre-eyebrow-roulette__track,
 .marcas-eyebrow-roulette__track,
 .como-funciona-eyebrow-roulette__track,
-.depoimentos-eyebrow-roulette__track {
+.depoimentos-eyebrow-roulette__track,
+.cta-eyebrow-roulette__track {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -292,7 +294,8 @@ h1, h2, h3 {
 .sobre-eyebrow-roulette__word,
 .marcas-eyebrow-roulette__word,
 .como-funciona-eyebrow-roulette__word,
-.depoimentos-eyebrow-roulette__word {
+.depoimentos-eyebrow-roulette__word,
+.cta-eyebrow-roulette__word {
   display: inline-block;
   white-space: nowrap;
   background-color: var(--color-orange);
@@ -1179,22 +1182,8 @@ h1, h2, h3 {
   height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
 }
 
-/* DEPOIMENTOS → SAÍDA: ONDA NO RODAPÉ */
-.depoimentos-wave {
-  position: absolute;
-  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
-  left: 0;
-  right: 0;
-  z-index: 3;
-  line-height: 0;
-  pointer-events: none;
-}
-
-.depoimentos-wave svg {
-  display: block;
-  width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
-}
+/* DEPOIMENTOS → CTA: SEM ONDA DE SAÍDA AQUI — A TRANSIÇÃO S5 (ESCURA) → S6 (CLARA) */
+/* É FEITA PELA .cta-wave-top NO TOPO DA SEÇÃO 6. */
 
 /* ------ SEÇÃO ------ */
 
@@ -1511,6 +1500,378 @@ h1, h2, h3 {
     --dep-card-w: 280px;
     --dep-side1-x: 52%;   /* MAIS FOLGA NO DESKTOP — LEQUE MAIS ABERTO */
     --dep-side2-x: 92%;
+  }
+}
+
+/* ========================================
+   SEÇÃO 6 — CTA FINAL — CONVERSÃO
+   ======================================== */
+
+/* ------ TRANSIÇÃO EM ONDA ------ */
+
+/* SEÇÃO 5 (ESCURA) → CTA: ONDA NO TOPO, PREENCHIDA COM O VERDE DA ANTERIOR */
+.cta-wave-top {
+  position: absolute;
+  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  left: 0;
+  right: 0;
+  z-index: 3;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.cta-wave-top svg {
+  display: block;
+  width: 100%;
+  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+}
+
+/* ------ SEÇÃO ------ */
+
+#cta {
+  position: relative;
+  background-color: var(--color-surface-2);
+  padding: clamp(96px, 14vw, 160px) clamp(24px, 6vw, 80px) clamp(72px, 10vw, 112px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(28px, 4vw, 44px);
+}
+
+/* ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO + SUBTÍTULO ------ */
+
+.cta-header {
+  text-align: center;
+}
+
+/* EYEBROW — MESMA TIPOGRAFIA DAS SEÇÕES ANTERIORES */
+.cta-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  color: var(--color-orange);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ROLETA — REGRAS UNIFICADAS NO BLOCO COMPARTILHADO (PÍLULA LARANJA, TEXTO BRANCO) */
+
+/* TÍTULO — MESMO CLAMP DE CORPO DAS SEÇÕES ANTERIORES */
+.cta-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, 6.4vw, 44px);
+  line-height: 1.15;
+  color: var(--color-paper);
+}
+
+.cta-title--highlight {
+  color: var(--color-accent);
+}
+
+.cta-subtitle {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(15px, 2.4vw, 18px);
+  line-height: 1.55;
+  color: var(--color-ink-muted);
+  margin-top: 20px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ------ BOTÕES PRINCIPAIS ------ */
+
+.cta-actions {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: transform 0.15s ease, background-color 0.3s ease;
+}
+
+.cta-btn:active {
+  transform: scale(0.98);
+}
+
+.cta-btn__icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+/* BOTÃO WHATSAPP — VERDE UNIMED */
+.cta-btn--whatsapp {
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  border: none;
+}
+
+/* BOTÃO AVALIAÇÃO — OUTLINE SOBRE O CLARO */
+.cta-btn--outline {
+  background-color: transparent;
+  color: var(--color-paper);
+  border: 1px solid rgba(45, 74, 56, 0.3); /* --color-ink-muted A 30% */
+}
+
+.cta-btn--outline:hover {
+  background-color: rgba(45, 74, 56, 0.06);
+}
+
+/* ------ FAB REDES SOCIAIS ------ */
+
+.cta-social-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cta-social-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  opacity: 0.5;
+}
+
+/* PISTA DO FAB — LARGURA = 52×4 + 12×3 (4 ALVOS, 3 GAPS) */
+.cta-social {
+  position: relative;
+  width: 244px;
+  height: 52px;
+  margin: 0 auto;
+}
+
+/* ÍCONES — POSIÇÕES FIXAS, REVELADOS AO ABRIR O FAB */
+.cta-social-icon {
+  position: absolute;
+  top: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-card);
+  border: 1px solid rgba(6, 48, 31, 0.18); /* --color-paper A 18% */
+  color: var(--color-paper);
+  /* ESTADO FECHADO */
+  opacity: 0;
+  transform: scale(0.8) rotate(45deg);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-social-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* BOTÃO + — CAPA A PISTA. FECHADO: DESLIZA SOBRE O 1º ÍCONE (translateX -192px) */
+.cta-social-toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-192px); /* 244 - 52 — REPOUSA SOBRE A POSIÇÃO DO 1º ÍCONE */
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1),
+              background-color 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.cta-social-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ESTADO ABERTO — + DESLIZA PARA A DIREITA (×) E OS ÍCONES SURGEM ESCALONADOS */
+.cta-social--open .cta-social-toggle {
+  transform: translateX(0) rotate(45deg);
+  background-color: var(--color-orange);
+}
+
+.cta-social--open .cta-social-icon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  pointer-events: auto;
+}
+
+/* STAGGER NA ENTRADA — 1º / 2º / 3º ÍCONE */
+.cta-social--open .cta-social-icon:nth-child(1) { transition-delay: 0.08s; }
+.cta-social--open .cta-social-icon:nth-child(2) { transition-delay: 0.14s; }
+.cta-social--open .cta-social-icon:nth-child(3) { transition-delay: 0.2s; }
+
+/* ------ MODAL DE AVALIAÇÃO ------ */
+
+.cta-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  /* ESTADO INICIAL OCULTO — GSAP (autoAlpha) ASSUME O CONTROLE NO INIT */
+  visibility: hidden;
+  opacity: 0;
+}
+
+.cta-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.cta-modal__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, 90vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--color-card);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.cta-modal__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-paper);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-modal__close svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cta-modal__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, 4vw, 26px);
+  line-height: 1.2;
+  color: var(--color-paper);
+  margin-bottom: 20px;
+  padding-right: 32px; /* NÃO ENCOSTA NO BOTÃO FECHAR */
+}
+
+.cta-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cta-field__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+}
+
+.cta-field__input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(6, 48, 31, 0.2); /* --color-paper A 20% */
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+}
+
+.cta-field__input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.cta-btn--submit {
+  width: 100%;
+  margin-top: 6px;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  border: none;
+}
+
+/* ------ FOOTER ------ */
+
+.cta-footer {
+  background-color: var(--color-black);
+  padding: clamp(24px, 4vw, 40px) clamp(24px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.cta-footer__title,
+.cta-footer__meta {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ------ GUARD PREFERS-REDUCED-MOTION — SEM TRANSIÇÕES ------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-btn,
+  .cta-social-icon,
+  .cta-social-toggle {
+    transition: none;
   }
 }
 

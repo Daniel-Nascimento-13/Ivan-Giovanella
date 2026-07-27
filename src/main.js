@@ -32,6 +32,12 @@ import { initComoFunciona } from './sections/como-funciona.js';
 
 import { initDepoimentos } from './sections/depoimentos.js';
 
+/* ========================================
+   SEÇÃO 6 — CTA FINAL
+   ======================================== */
+
+import { initCta } from './sections/cta.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (!prefersReducedMotion) {
@@ -53,4 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // SEÇÃO 5 — DEPOIMENTOS: CARDS EMPILHADOS COM NAVEGAÇÃO
   initDepoimentos();
+
+  // SEÇÃO 6 — CTA FINAL: MODAL DE AVALIAÇÃO + FAB SOCIAL + FOOTER
+  initCta();
 });
