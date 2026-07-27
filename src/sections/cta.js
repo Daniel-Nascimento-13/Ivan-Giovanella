@@ -10,7 +10,7 @@ import {
 } from '../animations/cta.js';
 
 /* ========================================
-   SEÇÃO 6 — CTA FINAL — CONVERSÃO
+   SEÇÃO 7 — CTA FINAL — CONVERSÃO
    ======================================== */
 
 // SELEÇÃO DO DOM, LINK DO WHATSAPP (FONTE ÚNICA), EVENTOS (MODAL, FAB, SUBMIT) E
@@ -56,6 +56,7 @@ function buildModalMessage(form) {
   const data = new FormData(form);
   const nome = (data.get('nome') || '').toString().trim();
   const empresa = (data.get('empresa') || '').toString().trim();
+  const cnpj = (data.get('cnpj') || '').toString().trim();
   const pessoas = (data.get('pessoas') || '').toString().trim();
   const cidade = (data.get('cidade') || '').toString().trim();
 
@@ -63,7 +64,17 @@ function buildModalMessage(form) {
   const planoSelect = form.querySelector('[name="plano"]');
   const plano = (planoSelect?.selectedOptions[0]?.textContent || '').trim();
 
-  return `Olá Ivan! Gostaria de uma avaliação do plano. *Nome:* ${nome} | *Empresa:* ${empresa} | *Plano:* ${plano} | *Pessoas:* ${pessoas} | *Cidade:* ${cidade}`;
+  /* AS QUEBRAS \n VIRAM %0A NO getWhatsappLink() (encodeURIComponent) — NÃO USAR %0A LITERAL */
+  return (
+    `Olá Ivan! \n\n` +
+    `Me chamo *${nome}* gostaria de uma avaliação completa para avaliar o que se enquadra melhor a minha necessidade.\n\n` +
+    `Empresa: ${empresa}\n` +
+    (cnpj ? `CNPJ: ${cnpj}\n` : '') +
+    `Plano: ${plano}\n` +
+    `Pessoas: ${pessoas}\n` +
+    `Cidade: ${cidade}\n\n` +
+    `Fico no aguardo, obrigado!`
+  );
 }
 
 /* ------ INIT ------ */

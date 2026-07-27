@@ -10,7 +10,7 @@ import {
 } from '../animations/como-funciona.js';
 
 /* ========================================
-   SEÇÃO 4 — COMO FUNCIONA — STEPPER ANIMADO
+   SEÇÃO 5 — COMO FUNCIONA — STEPPER ANIMADO
    ======================================== */
 
 // INICIALIZAÇÃO DA SEÇÃO: SELEÇÃO DO DOM, GUARD DE REDUCED MOTION, REBUILD DE

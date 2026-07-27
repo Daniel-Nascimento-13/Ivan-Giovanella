@@ -8,7 +8,7 @@ import {
 } from '../animations/depoimentos.js';
 
 /* ========================================
-   SEÇÃO 5 — DEPOIMENTOS — CARDS EMPILHADOS
+   SEÇÃO 6 — DEPOIMENTOS — CARDS EMPILHADOS
    ======================================== */
 
 // SELEÇÃO DO DOM, ESTADO DO CARD ATIVO, EVENTOS (NAV + CLIQUE NO CARD) E CLEANUP.

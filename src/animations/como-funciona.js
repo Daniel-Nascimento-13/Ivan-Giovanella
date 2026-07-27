@@ -9,7 +9,7 @@ import {
 } from '../constants/motion.js';
 
 /* ========================================
-   SEÇÃO 4 — COMO FUNCIONA — STEPPER ANIMADO
+   SEÇÃO 5 — COMO FUNCIONA — STEPPER ANIMADO
    ======================================== */
 
 // GEOMETRIA + TIMELINE DA LINHA QUE COSTURA OS 5 PASSOS.
@@ -168,7 +168,7 @@ export function createStepperTimeline(refs, geometry) {
   return _timeline;
 }
 
-/* ------ ROLETA DO EYEBROW — SEÇÃO 4 — COMO FUNCIONA ------ */
+/* ------ ROLETA DO EYEBROW — SEÇÃO 5 — COMO FUNCIONA ------ */
 // MESMO MECANISMO DAS SEÇÕES 1, 2 E 3: TRACK EM COLUNA QUE DESLIZA POR TRANSITION
 // CSS, COM A LARGURA DO WRAPPER ACOMPANHANDO A PALAVRA ATUAL. SEM GSAP.
 //

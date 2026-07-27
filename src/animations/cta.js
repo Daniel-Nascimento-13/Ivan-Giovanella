@@ -10,7 +10,7 @@ import {
 import { createReveal } from '../lib/reveal.js';
 
 /* ========================================
-   SEÇÃO 6 — CTA FINAL — CONVERSÃO
+   SEÇÃO 7 — CTA FINAL — CONVERSÃO
    ======================================== */
 
 // REVEAL DO HEADER/BOTÕES, ROLETA DO EYEBROW E ABERTURA/FECHAMENTO DO MODAL.
@@ -38,7 +38,7 @@ export function revealCta(refs) {
   });
 }
 
-/* ------ ROLETA DO EYEBROW — SEÇÃO 6 — CTA FINAL ------ */
+/* ------ ROLETA DO EYEBROW — SEÇÃO 7 — CTA FINAL ------ */
 // MESMO MECANISMO DAS SEÇÕES ANTERIORES: TRACK EM COLUNA QUE DESLIZA POR TRANSITION
 // CSS, COM A LARGURA DO WRAPPER SEGUINDO A PALAVRA ATUAL. UM CLONE DA PRIMEIRA
 // PALAVRA FECHA A LISTA E O TRACK VOLTA AO TOPO COM A TRANSIÇÃO DESLIGADA — SALTO

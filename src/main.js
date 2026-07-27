@@ -21,19 +21,25 @@ import { initSobre } from './animations/sobre.js';
 import { initMarcas } from './animations/marcas.js';
 
 /* ========================================
-   SEÇÃO 4 — COMO FUNCIONA
+   SEÇÃO 4 — PARA QUEM É — PERFIS DE CONTRATAÇÃO
+   ======================================== */
+
+import { initParaQuemE } from './sections/para-quem-e.js';
+
+/* ========================================
+   SEÇÃO 5 — COMO FUNCIONA
    ======================================== */
 
 import { initComoFunciona } from './sections/como-funciona.js';
 
 /* ========================================
-   SEÇÃO 5 — DEPOIMENTOS
+   SEÇÃO 6 — DEPOIMENTOS
    ======================================== */
 
 import { initDepoimentos } from './sections/depoimentos.js';
 
 /* ========================================
-   SEÇÃO 6 — CTA FINAL
+   SEÇÃO 7 — CTA FINAL
    ======================================== */
 
 import { initCta } from './sections/cta.js';
@@ -54,12 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // SEÇÃO 3 — MARCAS: CARROSSEL DE LOGOS + REVEAL
   initMarcas();
 
-  // SEÇÃO 4 — COMO FUNCIONA: STEPPER COM LINHA DESENHADA NO SCROLL
+  // SEÇÃO 4 — PARA QUEM É: ACCORDION DE PERFIS DE CONTRATAÇÃO
+  initParaQuemE();
+
+  // SEÇÃO 5 — COMO FUNCIONA: STEPPER COM LINHA DESENHADA NO SCROLL
   initComoFunciona();
 
-  // SEÇÃO 5 — DEPOIMENTOS: CARDS EMPILHADOS COM NAVEGAÇÃO
+  // SEÇÃO 6 — DEPOIMENTOS: CARDS EMPILHADOS COM NAVEGAÇÃO
   initDepoimentos();
 
-  // SEÇÃO 6 — CTA FINAL: MODAL DE AVALIAÇÃO + FAB SOCIAL + FOOTER
+  // SEÇÃO 7 — CTA FINAL: MODAL DE AVALIAÇÃO + FAB SOCIAL + FOOTER
   initCta();
 });
