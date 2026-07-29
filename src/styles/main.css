@@ -1256,63 +1256,6 @@ h1, h2, h3 {
 .como-funciona-card:nth-child(4) { --step-index: 3; }
 .como-funciona-card:nth-child(5) { --step-index: 4; }
 
-/* ------ CARD CTA — WHATSAPP — SEM PIN, SEM LINHA ------ */
-/* POSIÇÃO ABSOLUTA NO ESPAÇO LIVRE À DIREITA ABAIXO DO CARD 04 */
-.como-funciona-card--cta {
-  position: absolute;
-  right: var(--step-inset);
-  bottom: 4px;
-  width: var(--step-card-w);
-  background-color: var(--color-paper);
-  border-radius: clamp(12px, 1.6vw, 20px);
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-decoration: none;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
-}
-
-.como-funciona-card__cta-text {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 1.4;
-  color: var(--color-surface-2);
-  margin: 0;
-}
-
-.como-funciona-card__cta-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.como-funciona-card__cta-btn svg {
-  flex-shrink: 0;
-  color: #8FD9B6;
-  animation: como-funciona-cta-spin 2s linear infinite;
-}
-
-.como-funciona-card__cta-label {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 11px;
-  color: var(--color-orange);
-}
-
-@keyframes como-funciona-cta-spin {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .como-funciona-card__cta-btn svg {
-    animation: none;
-  }
-}
-
 /* ------ PIN — ÂNCORA DA LINHA NO TOPO DO CARD ------ */
 /* CENTRALIZADO POR margin NEGATIVA, NUNCA POR transform: O TRANSFORM É DO GSAP. */
 

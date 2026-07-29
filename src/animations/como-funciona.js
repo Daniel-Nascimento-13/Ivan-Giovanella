@@ -97,9 +97,6 @@ export function applyStepperStaticState(refs) {
   gsap.set(maskPath, { strokeDasharray: 'none', strokeDashoffset: 0 });
   gsap.set(cards, STEPPER_REVEAL_TO);
   gsap.set(pins, { scale: 1 });
-
-  const ctaCard = refs.section.querySelector('.como-funciona-card--cta');
-  if (ctaCard) gsap.set(ctaCard, STEPPER_REVEAL_TO);
 }
 
 /* ------ TIMELINE — LINHA CORRE E OS CARDS REVELAM NO PIN ------ */
@@ -167,22 +164,6 @@ export function createStepperTimeline(refs, geometry) {
       at
     );
   });
-
-  /* ------ CARD CTA — REVEAL APÓS O CARD 05 ------ */
-  const ctaCard = refs.section.querySelector('.como-funciona-card--cta');
-  if (ctaCard) {
-    gsap.set(ctaCard, { willChange: 'clip-path, transform, opacity' });
-
-    const lastProgress = geometry.progress[geometry.progress.length - 1];
-    const at = lastProgress * STEPPER.drawUnits;
-
-    _timeline.fromTo(
-      ctaCard,
-      { ...STEPPER_REVEAL_FROM },
-      { ...STEPPER_REVEAL_TO, duration: DURATION.base, ease: EASE.out },
-      at
-    );
-  }
 
   return _timeline;
 }

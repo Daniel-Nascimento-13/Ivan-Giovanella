@@ -1,6 +1,5 @@
 import { gsap, ScrollTrigger } from '../lib/gsap.js';
 import { STEPPER } from '../constants/motion.js';
-import { getWhatsappLink } from '../data/site-data.js';
 import {
   layoutStepperLine,
   createStepperTimeline,
@@ -55,8 +54,7 @@ function build() {
 
   /* ZERA O ESTADO DA TIMELINE ANTERIOR — OS PINS PRECISAM SER MEDIDOS EM REPOUSO, */
   /* SEM O translateY NEM O scale DO REVEAL INTERFERINDO NO RECT. */
-  const ctaCard = _refs.section.querySelector('.como-funciona-card--cta');
-  gsap.set([..._refs.cards, ..._refs.pins, ...(ctaCard ? [ctaCard] : [])], { clearProps: 'all' });
+  gsap.set([..._refs.cards, ..._refs.pins], { clearProps: 'all' });
 
   const geometry = layoutStepperLine(_refs);
   if (!geometry) return;
@@ -98,10 +96,6 @@ export function initComoFunciona() {
 
   _refs = collectRefs();
   if (!_refs) return;
-
-  /* ------ CTA WHATSAPP — FONTE ÚNICA ------ */
-  const ctaCard = _refs.section.querySelector('.como-funciona-card--cta');
-  if (ctaCard) ctaCard.href = getWhatsappLink();
 
   _viewport = { width: window.innerWidth, height: window.innerHeight };
   build();
