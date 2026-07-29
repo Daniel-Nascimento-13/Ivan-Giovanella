@@ -140,3 +140,28 @@ export const CTA = {
   revealStart: 'top 75%',   // DISPARO DO REVEAL NO SCROLLTRIGGER
   modalDuration: 0.4        // ABERTURA/FECHAMENTO DO MODAL — CLIP-PATH + AUTOALPHA
 };
+
+/* ------ SEÇÃO 0 — NAVEGAÇÃO — NAVBAR + OVERLAYS ------ */
+/* FONTE ÚNICA DOS NÚMEROS DA NAVEGAÇÃO — nav.js NÃO DECLARA CONSTANTES PRÓPRIAS. */
+/* O DESLOCAMENTO itemShiftX VIVE AQUI PELO MESMO MOTIVO DOS DEMAIS: NENHUM MAGIC */
+/* NUMBER NOS ARQUIVOS DE SEÇÃO/ANIMAÇÃO. */
+
+export const NAV = {
+  overlayDuration: 0.7,          // ENTRADA DO OVERLAY — translateX(-100%) → 0
+  overlayEase: 'expo.out',
+  overlayCloseDuration: 0.5,     // SAÍDA DO OVERLAY — translateX(0) → -100%
+  overlayCloseEase: 'power3.out',
+  itemStagger: 0.07,             // ATRASO ENTRE OS ITENS NA REVELAÇÃO
+  itemShiftX: -24,               // DESLOCAMENTO HORIZONTAL INICIAL DOS ITENS (px)
+  hamburgerDuration: 0.35,       // HAMBÚRGUER ↔ X
+  barShiftY: -20                 // DESLOCAMENTO INICIAL DA BARRA — ENTRADA VINDA DE CIMA (px)
+};
+
+/* ------ SEÇÃO 0 — OVERLAY PLANOS — CARDS EXPANSÍVEIS ------ */
+/* MORA AQUI PELA MESMA REGRA DAS DEMAIS SEÇÕES: TODA CONSTANTE DE MOVIMENTO VIVE */
+/* EM motion.js, NUNCA SOLTA NO ARQUIVO DE SEÇÃO/ANIMAÇÃO. */
+
+export const PLANOS = {
+  expandDuration: 0.5,    // ABERTURA DAS COBERTURAS OCULTAS
+  collapseDuration: 0.4   // FECHAMENTO — LIGEIRAMENTE MAIS RÁPIDO QUE A ABERTURA
+};

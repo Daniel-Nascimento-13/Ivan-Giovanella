@@ -2088,3 +2088,773 @@ h1, h2, h3 {
   }
 }
 
+/* ========================================
+   NAVEGAÇÃO — NAVBAR + OVERLAYS
+   ======================================== */
+
+/* BLOCO NO FIM DO ARQUIVO DE PROPÓSITO: A .nav-cta REAPROVEITA A RECEITA DA .hero-cta */
+/* (LINHA ~321) E PRECISA VIR DEPOIS DELA NA CASCATA PARA AJUSTAR A MARGEM. */
+
+/* ------ TOKENS LOCAIS ------ */
+/* O VERDE-MENTA DA NAVEGAÇÃO NÃO EXISTE NO @theme E É EXCLUSIVO DESTE BLOCO. */
+/* DECLARADO NOS DOIS ESCOPOS RAIZ (BARRA E OVERLAY) — CUSTOM PROPERTIES HERDAM, */
+/* ENTÃO TODO DESCENDENTE ENXERGA. ZERO HEX SOLTO NAS REGRAS ABAIXO. */
+
+.nav-bar,
+.nav-overlay {
+  --nav-h: 64px;                                  /* ALTURA DA BARRA — ANCORA OS OVERLAYS */
+  --nav-gutter: clamp(16px, 4vw, 32px);
+  --nav-mint: #8FD9B6;
+  --nav-mint-muted: rgba(143, 217, 182, 0.5);
+  --nav-hairline: rgba(143, 217, 182, 0.12);      /* BORDA DA BARRA */
+  --nav-hairline-soft: rgba(143, 217, 182, 0.1);  /* SEPARADORES DA LISTA */
+  --nav-hairline-faint: rgba(143, 217, 182, 0.08);/* HOVER DO FECHAR E DA SETA */
+  /* EMPILHAMENTO — FONTE ÚNICA. O JS LÊ A BASE DO OVERLAY VIA getComputedStyle E */
+  /* INCREMENTA A PARTIR DELA NA TROCA ENTRE OVERLAYS. */
+  /* FAIXAS SEPARADAS COM MARGEM: EMPATE DE z-index É RESOLVIDO POR ORDEM DE DOM E OS */
+  /* OVERLAYS VÊM DEPOIS DO <header>, ENTÃO QUALQUER EMPATE OS COLOCARIA POR CIMA DA BARRA. */
+  --nav-bar-z: 200;
+  --nav-overlay-z: 100;                           /* ABAIXO DA BARRA, ACIMA DE TUDO MAIS */
+}
+
+/* ------ NAVBAR ------ */
+
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--nav-bar-z);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--nav-gutter);
+  /* TRANSLÚCIDO SOBRE O TOKEN: COM O PAPER OPACO O backdrop-filter NÃO TERIA O QUE */
+  /* BORRAR. color-mix MANTÉM A COR VINDO DO @theme, SEM HEX HARDCODED. */
+  background-color: color-mix(in srgb, var(--color-paper) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nav-hairline);
+  /* ESTADO INICIAL OCULTO — A BARRA (z 200) FICARIA POR CIMA DO INTRO (z 50) E */
+  /* PISCARIA SOBRE O VÍDEO ATÉ O JS RODAR. GSAP (autoAlpha) ASSUME NO initNav() E */
+  /* revealNav() FAZ A ENTRADA QUANDO O INTRO TERMINA, DEVOLVENDO O pointer-events. */
+  /* O pointer-events É REDUNDANTE COM visibility: hidden (QUE JÁ TIRA O ELEMENTO DO */
+  /* HIT-TEST), MAS PROTEGE O CASO DE ALGUÉM SOBRESCREVER SÓ A VISIBILIDADE. */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ------ HAMBURGER ------ */
+/* AS BARRAS SÃO ANIMADAS POR GSAP (NUNCA POR TRANSITION CSS): O ARQUIVO DE ANIMAÇÃO */
+/* CONVERGE AS EXTERNAS EM ±(ALTURA + GAP) = 7px E ROTACIONA ±45deg. */
+
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  width: 44px;   /* ÁREA DE TOQUE MÍNIMA */
+  height: 44px;
+  margin-left: -10px; /* DEVOLVE O ALINHAMENTO ÓPTICO DA BARRA À GUTTER */
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.nav-hamburger__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--color-ink);
+  transform-origin: center center;
+}
+
+/* ------ WHATSAPP DA BARRA ------ */
+
+.nav-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10rem;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.nav-whatsapp:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 85%, var(--color-ink));
+}
+
+.nav-whatsapp:active {
+  transform: scale(0.97);
+}
+
+.nav-whatsapp__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+/* ------ OVERLAY — BASE COMUM AOS QUATRO ------ */
+/* REPOUSO OCULTO NO CSS PARA NÃO PISCAR ANTES DO JS; DAÍ EM DIANTE QUEM CONTROLA */
+/* visibility/opacity É O GSAP (autoAlpha) E O DESLOCAMENTO É xPercent. */
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--nav-overlay-z);
+  background-color: var(--color-paper);
+  padding-top: var(--nav-h); /* CONTEÚDO NUNCA CORRE POR BAIXO DA BARRA */
+  overflow-x: hidden;
+  /* SCROLL NATIVO INTERNO — O LENIS ESTÁ PARADO. SÓ O overflow NÃO BASTA: O LENIS */
+  /* INTERCEPTA wheel/touch NO DOCUMENTO E DÁ preventDefault MESMO DEPOIS DE stop(), */
+  /* MATANDO O SCROLL DO FILHO. POR ISSO CADA OVERLAY CARREGA data-lenis-prevent NO */
+  /* HTML — É O MECANISMO OFICIAL DO LENIS PARA ÁREAS ROLÁVEIS ANINHADAS. */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* SCROLL SUAVE NO IOS */
+  visibility: hidden;
+  opacity: 0;
+  will-change: transform;
+  /* ⚠️ SEM transform AQUI. O DESLOCAMENTO INICIAL É 100% DO GSAP (xPercent). */
+  /* UM translateX(-100%) NESTE BLOCO SERIA LIDO PELO GSAP COMO x EM PIXELS E SOMADO */
+  /* AO xPercent: O OVERLAY NASCERIA EM -200% E, AO ANIMAR xPercent → 0, PARARIA EM */
+  /* -100% — VISÍVEL, PORÉM INTEIRAMENTE FORA DA TELA. O FOUC JÁ É COBERTO PELO */
+  /* visibility/opacity ACIMA. */
+}
+
+/* BOTÃO FECHAR — CANTO SUPERIOR DIREITO, LOGO ABAIXO DA BARRA FIXA */
+.nav-overlay__close {
+  position: absolute;
+  top: calc(var(--nav-h) + 12px);
+  right: var(--nav-gutter);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--nav-hairline);
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.nav-overlay__close:hover {
+  background-color: var(--nav-hairline-faint);
+}
+
+.nav-overlay__close:active {
+  transform: scale(0.95);
+}
+
+/* AS DUAS BARRAS NASCEM SOBREPOSTAS E O GSAP AS CRUZA EM ±45deg AO ABRIR */
+.nav-overlay__close-bar {
+  position: absolute;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--nav-mint);
+  transform-origin: center center;
+}
+
+/* CONTAINER DE CONTEÚDO — PADRÃO E VARIANTE CENTRALIZADA */
+.nav-overlay__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 72px) var(--nav-gutter) clamp(40px, 8vw, 80px);
+}
+
+/* min-height: 100% JÁ DESCONTA A BARRA: O padding-top DO OVERLAY ENCOLHE O CONTENT */
+/* BOX CONTRA O QUAL A PORCENTAGEM RESOLVE. SUBTRAIR --nav-h AQUI DESCONTARIA DUAS VEZES. */
+.nav-overlay__inner--menu {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nav-overlay__inner--centered {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.nav-overlay__inner--form {
+  max-width: 560px;
+  padding-left: clamp(24px, 5vw, 64px);
+  padding-right: clamp(24px, 5vw, 64px);
+}
+
+/* ------ TIPOGRAFIA COMPARTILHADA DOS OVERLAYS ------ */
+
+.nav-eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-orange); /* MESMO LARANJA DOS EYEBROWS DAS DEMAIS SEÇÕES */
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.nav-headline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+}
+
+.nav-subtext {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 16px;
+  max-width: 420px;
+}
+
+/* ------ OVERLAY MENU ------ */
+
+.nav-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* SEPARADOR ENTRE ITENS — O PRIMEIRO TAMBÉM RECEBE, FECHANDO A LISTA POR CIMA */
+.nav-menu-item {
+  border-top: 1px solid var(--nav-hairline-soft);
+}
+
+.nav-menu-item:last-child {
+  border-bottom: 1px solid var(--nav-hairline-soft);
+}
+
+.nav-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: clamp(18px, 3vw, 28px) 0;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-menu-btn__num {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  /* SEM opacity: O LARANJA PRECISA BATER EXATAMENTE COM O DA .nav-eyebrow */
+  color: var(--color-orange);
+}
+
+.nav-menu-btn__dash {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--nav-mint);
+  opacity: 0.5;
+}
+
+.nav-menu-btn__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(24px, 5vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+}
+
+/* SETA CIRCULAR — DESLIZA À DIREITA NO HOVER (MICRO-INTERAÇÃO, CSS PURO) */
+.nav-menu-btn__arrow {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--nav-hairline);
+  color: var(--nav-mint);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-menu-btn__arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-menu-btn:hover .nav-menu-btn__arrow {
+  transform: translateX(6px);
+  background-color: var(--nav-hairline-faint);
+}
+
+.nav-menu-footer {
+  margin-top: clamp(32px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-menu-footer__line {
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--nav-mint-muted);
+}
+
+/* ------ OVERLAY IVAN ------ */
+/* MOBILE: EMPILHADO (FOTO 40vh NO TOPO). DESKTOP: DUAS COLUNAS DE ALTURA TOTAL. */
+
+.nav-overlay--ivan .nav-ivan {
+  position: relative;
+  z-index: 1;
+  min-height: 100%; /* MESMA RAZÃO DO .nav-overlay__inner--menu — VER NOTA ACIMA */
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-ivan__media {
+  position: relative; /* ÂNCORA DO ::after DO DEGRADÊ */
+  flex: 0 0 auto;
+  /* 75vh — 40vh, 55vh E 65vh AINDA CORTAVAM O IVAN VERTICALMENTE NO MOBILE */
+  height: 75vh;
+  overflow: hidden;
+}
+
+/* DEGRADÊ INFERIOR DA FOTO — TRANSIÇÃO SUAVE PARA O FUNDO DO TEXTO */
+/* O ::after VIVE NO CONTAINER, NUNCA NA .nav-ivan__photo: <img> É ELEMENTO */
+/* SUBSTITUÍDO E NÃO RENDERIZA PSEUDO-ELEMENTOS. */
+.nav-ivan__media::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  /* DEGRADÊ DUPLO: PRETO FRACO (PROFUNDIDADE) + VERDE ESCURO (TRANSIÇÃO PARA O TEXTO) */
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%),
+    linear-gradient(to top, var(--color-paper) 15%, transparent 100%);
+  pointer-events: none;
+}
+
+.nav-ivan__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 0;
+}
+
+/* TEXTO SOBREPOSTO NA PARTE INFERIOR DA FOTO */
+/* z-index 2 O MANTÉM ACIMA DO ::after DO DEGRADÊ, QUE É ABSOLUTO SEM z-index. */
+.nav-ivan__photo-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(20px, 4vw, 32px);
+  z-index: 2;
+}
+
+.nav-ivan__content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-paper);
+  padding: clamp(40px, 6vw, 80px);
+}
+
+.nav-ivan__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+}
+
+.nav-ivan__role {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--nav-mint);
+  margin-top: 8px;
+  margin-bottom: 28px;
+}
+
+.nav-ivan__text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 20px;
+  max-width: 52ch;
+}
+
+/* CTA — REAPROVEITA A RECEITA DA .hero-cta (GLOW INCLUSO), SÓ ZERA A MARGEM DELA */
+.nav-cta {
+  margin-top: 12px;
+  align-self: flex-start;
+}
+
+@media (min-width: 900px) {
+  .nav-overlay--ivan .nav-ivan {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .nav-ivan__media {
+    flex: 0 0 44%;
+    max-width: 44%;
+    height: auto;      /* ALTURA TOTAL DA COLUNA — VEM DO stretch DO FLEX */
+  }
+
+  .nav-ivan__content {
+    flex: 1 1 56%;
+    min-width: 0;
+  }
+}
+
+/* ------ OVERLAY PLANOS ------ */
+/* CABEÇALHO USA .nav-overlay__inner--centered + A TIPOGRAFIA COMPARTILHADA */
+/* (.nav-eyebrow / .nav-headline / .nav-subtext). OS CARDS VÊM ABAIXO. */
+
+/* ========================================
+   SEÇÃO PLANOS — CARDS EXPANSÍVEIS
+   ======================================== */
+
+/* MARKUP GERADO POR initPlansSection() A PARTIR DE SITE_DATA.planos. */
+/* TOKENS LOCAIS: OS VALORES DE VIDRO E MENTA NÃO EXISTEM NO @theme. AS COMPOSIÇÕES */
+/* DE LARANJA E VERDE USAM color-mix SOBRE OS TOKENS — ZERO HEX SOLTO NAS REGRAS. */
+
+/* ------ CONTAINER DOS CARDS ------ */
+.nav-plans {
+  --plan-surface: rgba(255, 255, 255, 0.05);
+  --plan-line: rgba(143, 217, 182, 0.15);
+  --plan-line-hover: rgba(143, 217, 182, 0.35);
+  --plan-diferencial: rgba(143, 217, 182, 0.8);
+  --plan-item: rgba(255, 255, 255, 0.8);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left; /* O INNER É CENTRALIZADO — O CARD NÃO */
+}
+
+/* ------ CARD BASE ------ */
+/* overflow: hidden É REQUISITO DA ANIMAÇÃO DE height DO .nav-plan__hidden */
+.nav-plan {
+  background: var(--plan-surface);
+  border: 1px solid var(--plan-line);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* MICRO-INTERAÇÃO — HOVER (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: border-color 0.3s;
+}
+
+.nav-plan:hover {
+  border-color: var(--plan-line-hover);
+}
+
+/* ------ CARD DESTAQUE ------ */
+.nav-plan--featured {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+/* ------ BADGE ------ */
+.nav-plan__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* ------ TAG ------ */
+.nav-plan__tag {
+  display: inline-block;
+  background: color-mix(in srgb, var(--color-orange) 15%, transparent);
+  color: var(--color-orange);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+/* ------ NOME DO PLANO ------ */
+.nav-plan__name {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+/* ------ DIFERENCIAL ------ */
+.nav-plan__diferencial {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--plan-diferencial);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+/* ------ LISTA DE COBERTURAS ------ */
+.nav-plan__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.nav-plan__list li {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--plan-item);
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.nav-plan__list li::before {
+  content: '✓';
+  color: var(--color-accent);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ------ ITEM DE ALERTA — LIMITAÇÃO DO PLANO, NÃO COBERTURA ------ */
+/* SEM O ✓ VERDE: O × LARANJA SINALIZA AUSÊNCIA, COERENTE COM O TEXTO DO ITEM. */
+.nav-plan__list li.nav-plan__item--alerta {
+  color: var(--color-orange);
+}
+
+.nav-plan__list li.nav-plan__item--alerta::before {
+  content: '✕';
+  color: var(--color-orange);
+}
+
+/* ------ BLOCO OCULTO ------ */
+/* A ALTURA É CONTROLADA PELO GSAP (expandPlanBody / collapsePlanBody). */
+.nav-plan__hidden {
+  overflow: hidden;
+}
+
+/* ------ BOTÃO VER TUDO ------ */
+.nav-plan__toggle {
+  background: none;
+  border: none;
+  color: var(--color-orange);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 8px 0;
+  display: block;
+  text-transform: uppercase;
+}
+
+/* ------ CTA WHATSAPP ------ */
+.nav-plan__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  margin-top: 16px;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  text-decoration: none;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: background 0.2s, transform 0.15s;
+}
+
+.nav-plan__cta:hover {
+  /* ESCURECE O ACCENT SEM HEX LITERAL — EQUIVALE AO #007a4a DA ESPECIFICAÇÃO */
+  background: color-mix(in srgb, var(--color-accent) 82%, var(--color-black));
+  transform: scale(1.02);
+}
+
+.nav-plan__cta svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--color-ink);
+  flex-shrink: 0;
+}
+
+/* ------ REDUCED MOTION ------ */
+@media (prefers-reduced-motion: reduce) {
+  .nav-plan,
+  .nav-plan__hidden,
+  .nav-plan__cta {
+    transition: none;
+  }
+
+  .nav-plan__cta:hover {
+    transform: none;
+  }
+}
+
+/* ------ OVERLAY AVALIAÇÃO ------ */
+/* MESMA GEOMETRIA DE CAMPO DO MODAL DA SEÇÃO 7, REPINTADA PARA O FUNDO ESCURO. */
+
+.nav-form {
+  width: 100%;
+  margin-top: clamp(24px, 4vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.nav-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-field__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--nav-mint);
+}
+
+/* MESMA ESTÉTICA DO .cta-field__input DA SEÇÃO 7 — CAMPO CLARO, TEXTO ESCURO. */
+/* A BORDA USA color-mix NO LUGAR DO rgba(6,48,31,.2) LITERAL DA SEÇÃO 7: MESMO */
+/* RESULTADO, MAS DERIVADO DO TOKEN. */
+.nav-field__input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-paper) 20%, transparent);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+}
+
+/* AS OPÇÕES DO SELECT SÃO PINTADAS PELO SO — FIXADAS PARA ACOMPANHAR O CAMPO CLARO */
+.nav-field__input option {
+  color: var(--color-paper);
+  background-color: var(--color-card);
+}
+
+/* PLACEHOLDER ESCURO — O CAMPO AGORA É CLARO; O BRANCO ANTERIOR SUMIRIA NO FUNDO */
+.nav-field__input::placeholder {
+  color: color-mix(in srgb, var(--color-paper) 45%, transparent);
+}
+
+.nav-field__input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.nav-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 6px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 10rem;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.nav-form__submit:active {
+  transform: scale(0.98);
+}
+
+/* ------ REDUCED MOTION ------ */
+/* O DESLOCAMENTO HORIZONTAL É DESLIGADO NO JS (SÓ OPACIDADE). AQUI CAEM AS */
+/* MICRO-INTERAÇÕES CSS DO BLOCO DE NAVEGAÇÃO. */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-whatsapp,
+  .nav-overlay__close,
+  .nav-menu-btn__arrow,
+  .nav-form__submit {
+    transition: none;
+  }
+
+  .nav-menu-btn:hover .nav-menu-btn__arrow {
+    transform: none;
+  }
+}
+
