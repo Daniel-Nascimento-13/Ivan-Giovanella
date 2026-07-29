@@ -1102,7 +1102,7 @@ h1, h2, h3 {
   /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
   /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
   /* PADDING-BOTTOM REDUZIDO PARA DEVOLVER PISTA AO 6º SLOT (CARD CTA). */
-  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
+  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(20px, 2vw, 40px);
   background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
   overflow: hidden;
   isolation: isolate;
