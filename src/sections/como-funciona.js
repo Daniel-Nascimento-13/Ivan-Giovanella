@@ -1,5 +1,6 @@
 import { gsap, ScrollTrigger } from '../lib/gsap.js';
 import { STEPPER } from '../constants/motion.js';
+import { getWhatsappLink } from '../data/site-data.js';
 import {
   layoutStepperLine,
   createStepperTimeline,
@@ -96,6 +97,12 @@ export function initComoFunciona() {
 
   _refs = collectRefs();
   if (!_refs) return;
+
+  /* ------ CTA WHATSAPP DO CARD FINAL — FONTE ÚNICA ------ */
+  /* FORA DO build(): O HREF NÃO PODE DEPENDER DA TIMELINE, QUE NÃO É CRIADA */
+  /* SOB prefers-reduced-motion. */
+  const ctaLink = _refs.section.querySelector('.como-funciona-card__cta-link');
+  if (ctaLink) ctaLink.href = getWhatsappLink();
 
   _viewport = { width: window.innerWidth, height: window.innerHeight };
   build();

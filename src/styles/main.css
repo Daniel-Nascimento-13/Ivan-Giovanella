@@ -1075,14 +1075,14 @@ h1, h2, h3 {
 
 #como-funciona {
   /* ------ TOKENS DO STEPPER — GEOMETRIA DA CASCATA ------ */
-  --step-count: 5;                     /* TOTAL DE PASSOS — DIVISOR DO ESPAÇAMENTO VERTICAL */
+  --step-count: 6;                     /* TOTAL DE CARDS — 5 PASSOS + CARD CTA */
   --step-inset: 2%;                    /* AFASTAMENTO LATERAL DOS CARDS */
   --step-tilt: 2deg;                   /* INCLINAÇÃO ALTERNADA (ÍMPARES +, PARES −) */
   --step-card-w: 44%;                  /* MOBILE — VER NOTA DE LEGIBILIDADE NO BREAKPOINT 768px */
   --step-card-h: min(30%, clamp(118px, 18svh, 176px));
-  /* O TETO DE 30% DA PISTA É ESTRUTURAL: COM 5 CARDS EM CASCATA, OS DO MESMO LADO */
-  /* (01-03 E 03-05) FICAM A 2 PASSOS DE DISTÂNCIA — SÓ NÃO COLIDEM SE A ALTURA */
-  /* DO CARD FOR MENOR QUE 1/3 DA PISTA. */
+  /* O TETO PERCENTUAL DA PISTA É ESTRUTURAL: OS CARDS DO MESMO LADO (01-03-05 E */
+  /* 02-04-CTA) FICAM A 2 PASSOS DE DISTÂNCIA. COM 6 CARDS O PASSO VALE */
+  /* (100% - h) / 5, ENTÃO SÓ NÃO COLIDEM ENQUANTO h <= 200/7 ≈ 28.5% DA PISTA. */
   --step-pin-size: 14px;               /* DIÂMETRO DO PIN — ORIGEM/DESTINO DA LINHA */
 
   position: relative;
@@ -1091,8 +1091,8 @@ h1, h2, h3 {
   /* SE OCULTAVA NO SCROLL, A VIEWPORT CRESCIA E SOBRAVA UMA FAIXA PRETA NO RODAPÉ */
   /* (O PIN-SPACER TRANSPARENTE SOBRE O FUNDO PRETO DO BODY). lvh COBRE OS DOIS ESTADOS. */
   height: 100vh;                       /* FALLBACK — vh = LARGE VIEWPORT NA MAIORIA DOS BROWSERS */
-  height: 100lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
-  min-height: 560px;
+  height: 110lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
+  min-height: 660px;
   display: flex;
   flex-direction: column;
   /* PADDING-TOP AFASTA O EYEBROW DA ONDA DE ENTRADA, QUE FICA COLADA NO TOPO */
@@ -1101,7 +1101,8 @@ h1, h2, h3 {
   /* AO STEPPER: A SEÇÃO TEM ALTURA TRAVADA (100svh, EXIGÊNCIA DO PIN), ENTÃO O HEADER */
   /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
   /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
-  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
+  /* PADDING-BOTTOM REDUZIDO PARA DEVOLVER PISTA AO 6º SLOT (CARD CTA). */
+  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(32px, 4vw, 48px);
   background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
   overflow: hidden;
   isolation: isolate;
@@ -1254,6 +1255,21 @@ h1, h2, h3 {
 .como-funciona-card:nth-child(3) { --step-index: 2; }
 .como-funciona-card:nth-child(4) { --step-index: 3; }
 .como-funciona-card:nth-child(5) { --step-index: 4; }
+.como-funciona-card:nth-child(6) { --step-index: 5; }
+
+/* CARD CTA — 6º E ÚLTIMO SLOT DA CASCATA. O --step-index VEM DA REGRA nth-child(6) */
+/* E O --step-count DO TOKEN GLOBAL DA SEÇÃO: SEM OVERRIDE LOCAL DE GEOMETRIA. */
+/* O LADO DIREITO E A INCLINAÇÃO NEGATIVA JÁ VIRIAM DO nth-child(even), MAS FICAM */
+/* EXPLÍCITOS AQUI PORQUE O CARD NÃO DEPENDE DA PARIDADE — É SEMPRE À DIREITA. */
+.como-funciona-card--cta {
+  right: var(--step-inset);
+  left: auto;
+  transform: rotate(calc(var(--step-tilt) * -1));
+  background-color: var(--color-paper);
+  min-height: unset;
+  height: auto;
+  padding: clamp(6px, 1vw, 10px);
+}
 
 /* ------ PIN — ÂNCORA DA LINHA NO TOPO DO CARD ------ */
 /* CENTRALIZADO POR margin NEGATIVA, NUNCA POR transform: O TRANSFORM É DO GSAP. */
@@ -1327,6 +1343,61 @@ h1, h2, h3 {
   /* MOBILE: SEM CLIP E SEM SHRINK — O TEXTO OCUPA A ALTURA QUE PRECISAR E O CARD */
   /* ACOMPANHA VIA min-height. O CLIP VOLTA NO BREAKPOINT 768px. */
   flex: 0 0 auto;
+}
+
+/* ------ CARD CTA — CONTEÚDO ------ */
+/* O LINK COBRE O CARD INTEIRO: TEXTO + BOTÃO SÃO UMA SÓ ÁREA CLICÁVEL */
+.como-funciona-card__cta-link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+}
+
+.como-funciona-card__cta-text {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(11px, 1.6vw, 13px);
+  line-height: 1.5;
+  color: var(--color-surface-2);
+  margin: 0;
+}
+
+.como-funciona-card__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  margin-top: 12px;
+  color: var(--color-orange);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  width: 100%;
+}
+
+.como-funciona-card__cta-btn svg {
+  flex-shrink: 0;
+  color: #8FD9B6;
+  animation: como-funciona-cta-spin 2s linear infinite;
+}
+
+.como-funciona-card__cta-label {
+  color: var(--color-orange);
+}
+
+@keyframes como-funciona-cta-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .como-funciona-card__cta-btn svg {
+    animation: none;
+  }
 }
 
 /* ------ TABLET/DESKTOP — LARGURA DE CARD DA ESPECIFICAÇÃO (34%) ------ */
