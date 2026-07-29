@@ -1079,7 +1079,7 @@ h1, h2, h3 {
   --step-inset: 2%;                    /* AFASTAMENTO LATERAL DOS CARDS */
   --step-tilt: 2deg;                   /* INCLINAÇÃO ALTERNADA (ÍMPARES +, PARES −) */
   --step-card-w: 44%;                  /* MOBILE — VER NOTA DE LEGIBILIDADE NO BREAKPOINT 768px */
-  --step-card-h: min(26%, clamp(100px, 15svh, 155px));
+  --step-card-h: min(30%, clamp(118px, 18svh, 176px));
   /* O TETO PERCENTUAL DA PISTA É ESTRUTURAL: OS CARDS DO MESMO LADO (01-03-05 E */
   /* 02-04-CTA) FICAM A 2 PASSOS DE DISTÂNCIA. COM 6 CARDS O PASSO VALE */
   /* (100% - h) / 5, ENTÃO SÓ NÃO COLIDEM ENQUANTO h <= 200/7 ≈ 28.5% DA PISTA. */
@@ -1102,7 +1102,7 @@ h1, h2, h3 {
   /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
   /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
   /* PADDING-BOTTOM REDUZIDO PARA DEVOLVER PISTA AO 6º SLOT (CARD CTA). */
-  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(20px, 2vw, 40px);
+  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
   background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
   overflow: hidden;
   isolation: isolate;
