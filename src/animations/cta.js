@@ -8,6 +8,7 @@ import {
   REVEAL_TO
 } from '../constants/motion.js';
 import { createReveal } from '../lib/reveal.js';
+import { getLenis } from '../lib/smooth-scroll.js';
 
 /* ========================================
    SEÇÃO 7 — CTA FINAL — CONVERSÃO
@@ -127,6 +128,11 @@ export function openModal(refs) {
   const { modal, modalCard } = refs;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* LENIS PARA — O body NÃO RECEBE overflow: hidden, MESMO PADRÃO DOS OVERLAYS DA NAV. */
+  /* OPTIONAL CHAINING OBRIGATÓRIO: SOB prefers-reduced-motion O main.js NÃO CRIA O */
+  /* LENIS E getLenis() DEVOLVE null — O SCROLL ALI JÁ É NATIVO. */
+  getLenis()?.stop?.();
+
   modal.setAttribute('aria-hidden', 'false');
 
   if (prefersReduced) {
@@ -144,7 +150,13 @@ export function closeModal(refs) {
   const { modal } = refs;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const finish = () => modal.setAttribute('aria-hidden', 'true');
+  /* LENIS RETOMA SÓ APÓS A SAÍDA — EVITA SCROLL POR BAIXO DO MODAL AINDA VISÍVEL. */
+  /* MESMO PADRÃO DO closeOverlay() DA NAV. finish() COBRE OS DOIS CAMINHOS: O */
+  /* onComplete DO FADE E O ATALHO DE prefers-reduced-motion LOGO ABAIXO. */
+  const finish = () => {
+    modal.setAttribute('aria-hidden', 'true');
+    getLenis()?.start?.();
+  };
 
   if (prefersReduced) {
     gsap.set(modal, { autoAlpha: 0 });

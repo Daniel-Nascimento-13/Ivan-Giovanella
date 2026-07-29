@@ -35,9 +35,12 @@ body {
   background-color: var(--color-black);
   color: var(--color-ink);
   overflow-x: hidden;
-  /* SEM RUBBER-BAND HORIZONTAL E SEM PAN-X — GESTO SÓ VERTICAL */
+  /* SEM RUBBER-BAND HORIZONTAL. O TRAVAMENTO LATERAL JÁ VEM DO overflow-x ACIMA (E DO */
+  /* PAR IDÊNTICO NO html): NÃO HÁ CONTEÚDO EXCEDENTE PARA ARRASTAR. */
+  /* ⚠️ SEM touch-action AQUI. UM pan-y NO body MATA O PINCH-TO-ZOOM DA PÁGINA INTEIRA */
+  /* — FALHA DE WCAG 1.4.4. SE ALGUM DIA FOR PRECISO RESTRINGIR GESTO, RESTRINJA NO */
+  /* ELEMENTO QUE PRECISA (CARROSSEL, TRACK ARRASTÁVEL), NUNCA NA RAIZ DO DOCUMENTO. */
   overscroll-behavior-x: none;
-  touch-action: pan-y;
 }
 
 /* ========================================
@@ -1958,10 +1961,12 @@ h1, h2, h3 {
 
 /* ------ MODAL DE AVALIAÇÃO ------ */
 
+/* O MARKUP VIVE COMO FILHO DIRETO DE <body>, NUNCA DENTRO DE #cta: AQUELA SEÇÃO TEM */
+/* isolation: isolate E O STACKING CONTEXT LOCAL ANULARIA O z-index ABAIXO. */
 .cta-modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 300; /* ACIMA DA NAVBAR (200) E DO OVERLAY DE NAV (100) */
   /* ESTADO INICIAL OCULTO — GSAP (autoAlpha) ASSUME O CONTROLE NO INIT */
   visibility: hidden;
   opacity: 0;
@@ -2158,7 +2163,7 @@ h1, h2, h3 {
   gap: 5px;
   width: 44px;   /* ÁREA DE TOQUE MÍNIMA */
   height: 44px;
-  margin-left: -10px; /* DEVOLVE O ALINHAMENTO ÓPTICO DA BARRA À GUTTER */
+  margin-left: 0; /* BARRAS NA GUTTER — SIMÉTRICO COM O .nav-whatsapp DO OUTRO LADO */
   padding: 0;
   border: none;
   background-color: transparent;

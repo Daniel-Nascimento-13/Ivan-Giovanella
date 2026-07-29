@@ -35,7 +35,11 @@ function collectRefs() {
   const socialToggle = section.querySelector('[data-cta-social-toggle]');
   const whatsappBtn = section.querySelector('.cta-btn--whatsapp');
   const openBtn = section.querySelector('[data-cta-open-modal]');
-  const modal = section.querySelector('[data-cta-modal]');
+
+  /* MODAL — BUSCA NO DOCUMENTO, NÃO NA SEÇÃO: O MARKUP FOI PROMOVIDO A FILHO DIRETO */
+  /* DE <body> PARA ESCAPAR DO isolation: isolate DE #cta (VER NOTA NO index.html). */
+  /* UM section.querySelector AQUI DEVOLVERIA null E O GUARD ABAIXO DERRUBARIA A SEÇÃO 7 INTEIRA. */
+  const modal = document.querySelector('[data-cta-modal]');
   const modalCard = modal?.querySelector('.cta-modal__card');
   const modalOverlay = modal?.querySelector('[data-cta-modal-overlay]');
   const modalClose = modal?.querySelector('[data-cta-modal-close]');

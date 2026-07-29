@@ -48,6 +48,10 @@ function initEyebrowRoulette() {
   const words = Array.from(track.querySelectorAll('.eyebrow-roulette__word'));
   if (words.length < 2) return;
 
+  /* GUARD — A CHAMADA AGORA É ASSÍNCRONA (document.fonts.ready): DUAS PROMISES */
+  /* PENDENTES DEIXARIAM DOIS setInterval VIVOS COM UM SÓ HANDLE RASTREADO. */
+  destroyEyebrowRoulette();
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
@@ -176,7 +180,18 @@ function animateHero(elements) {
     stagger: STAGGER.base,
     onComplete: () => {
       gsap.set(elements, { willChange: 'auto' });
-      initEyebrowRoulette();
+
+      /* ------ ROLETA DO EYEBROW ------ */
+      /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA VIA offsetWidth E, */
+      /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO — O BUG */
+      /* SÓ SOME NO RELOAD, COM A FONTE JÁ EM CACHE. SEM SCROLLTRIGGER AQUI: A ROLETA É */
+      /* SÓ TRANSITION CSS + setInterval. MESMO PADRÃO DOS ARQUIVOS DE SEÇÃO 4, 5, 6 E 7. */
+      if (document.fonts) {
+        document.fonts.ready.then(() => initEyebrowRoulette());
+      } else {
+        initEyebrowRoulette();
+      }
+
       initCtaAnimation();
     }
   });

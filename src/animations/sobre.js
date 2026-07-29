@@ -165,6 +165,11 @@ function initSobreEyebrowRoulette(section) {
   const words = Array.from(track.querySelectorAll('.sobre-eyebrow-roulette__word'));
   if (words.length < 2) return;
 
+  /* GUARD — A CHAMADA AGORA É ASSÍNCRONA (document.fonts.ready): DUAS PROMISES */
+  /* PENDENTES DEIXARIAM DOIS setInterval VIVOS COM UM SÓ HANDLE RASTREADO. */
+  clearInterval(_sobreRouletteTimer);
+  _sobreRouletteTimer = null;
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
@@ -211,7 +216,15 @@ export function initSobre() {
   initCardsStack(section, prefersReducedMotion);
 
   /* ------ ROLETA DO EYEBROW — TROCA DE TEXTO EM LOOP ------ */
-  initSobreEyebrowRoulette(section);
+  /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA VIA offsetWidth E, */
+  /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO — O BUG */
+  /* SÓ SOME NO RELOAD, COM A FONTE JÁ EM CACHE. SEM SCROLLTRIGGER AQUI: A ROLETA É */
+  /* SÓ TRANSITION CSS + setInterval, ENTÃO NADA É CRIADO FORA DO INIT SÍNCRONO. */
+  if (document.fonts) {
+    document.fonts.ready.then(() => initSobreEyebrowRoulette(section));
+  } else {
+    initSobreEyebrowRoulette(section);
+  }
 
   /* ------ GUARD REDUCED MOTION — MOSTRA TUDO SEM ANIMAR ------ */
   if (prefersReducedMotion) {
