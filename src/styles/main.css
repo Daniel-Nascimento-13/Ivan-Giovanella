@@ -1075,7 +1075,7 @@ h1, h2, h3 {
 
 #como-funciona {
   /* ------ TOKENS DO STEPPER — GEOMETRIA DA CASCATA ------ */
-  --step-count: 6;                     /* TOTAL DE CARDS — 5 PASSOS + CARD CTA */
+  --step-count: 5;                     /* TOTAL DE CARDS — 5 PASSOS + CARD CTA */
   --step-inset: 2%;                    /* AFASTAMENTO LATERAL DOS CARDS */
   --step-tilt: 2deg;                   /* INCLINAÇÃO ALTERNADA (ÍMPARES +, PARES −) */
   --step-card-w: 44%;                  /* MOBILE — VER NOTA DE LEGIBILIDADE NO BREAKPOINT 768px */
@@ -1092,7 +1092,7 @@ h1, h2, h3 {
   /* (O PIN-SPACER TRANSPARENTE SOBRE O FUNDO PRETO DO BODY). lvh COBRE OS DOIS ESTADOS. */
   height: 100vh;                       /* FALLBACK — vh = LARGE VIEWPORT NA MAIORIA DOS BROWSERS */
   height: 100lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
-  min-height: 600px;
+  min-height: 560px;
   display: flex;
   flex-direction: column;
   /* PADDING-TOP AFASTA O EYEBROW DA ONDA DE ENTRADA, QUE FICA COLADA NO TOPO */
@@ -1102,7 +1102,7 @@ h1, h2, h3 {
   /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
   /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
   /* PADDING-BOTTOM REDUZIDO PARA DEVOLVER PISTA AO 6º SLOT (CARD CTA). */
-  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(32px, 4vw, 48px);
+  padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
   background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
   overflow: hidden;
   isolation: isolate;
@@ -1255,20 +1255,62 @@ h1, h2, h3 {
 .como-funciona-card:nth-child(3) { --step-index: 2; }
 .como-funciona-card:nth-child(4) { --step-index: 3; }
 .como-funciona-card:nth-child(5) { --step-index: 4; }
-.como-funciona-card:nth-child(6) { --step-index: 5; }
 
-/* CARD CTA — 6º E ÚLTIMO SLOT DA CASCATA. O --step-index VEM DA REGRA nth-child(6) */
-/* E O --step-count DO TOKEN GLOBAL DA SEÇÃO: SEM OVERRIDE LOCAL DE GEOMETRIA. */
-/* O LADO DIREITO E A INCLINAÇÃO NEGATIVA JÁ VIRIAM DO nth-child(even), MAS FICAM */
-/* EXPLÍCITOS AQUI PORQUE O CARD NÃO DEPENDE DA PARIDADE — É SEMPRE À DIREITA. */
+/* ------ CARD CTA — WHATSAPP — SEM PIN, SEM LINHA ------ */
+/* POSIÇÃO ABSOLUTA NO ESPAÇO LIVRE À DIREITA ABAIXO DO CARD 04 */
 .como-funciona-card--cta {
+  position: absolute;
   right: var(--step-inset);
-  left: auto;
-  transform: rotate(calc(var(--step-tilt) * -1));
+  bottom: 4px;
+  width: var(--step-card-w);
   background-color: var(--color-paper);
-  min-height: unset;
-  height: auto;
-  padding: clamp(6px, 1vw, 10px);
+  border-radius: clamp(12px, 1.6vw, 20px);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
+}
+
+.como-funciona-card__cta-text {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--color-surface-2);
+  margin: 0;
+}
+
+.como-funciona-card__cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.como-funciona-card__cta-btn svg {
+  flex-shrink: 0;
+  color: #8FD9B6;
+  animation: como-funciona-cta-spin 2s linear infinite;
+}
+
+.como-funciona-card__cta-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--color-orange);
+}
+
+@keyframes como-funciona-cta-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .como-funciona-card__cta-btn svg {
+    animation: none;
+  }
 }
 
 /* ------ PIN — ÂNCORA DA LINHA NO TOPO DO CARD ------ */
@@ -1343,61 +1385,6 @@ h1, h2, h3 {
   /* MOBILE: SEM CLIP E SEM SHRINK — O TEXTO OCUPA A ALTURA QUE PRECISAR E O CARD */
   /* ACOMPANHA VIA min-height. O CLIP VOLTA NO BREAKPOINT 768px. */
   flex: 0 0 auto;
-}
-
-/* ------ CARD CTA — CONTEÚDO ------ */
-/* O LINK COBRE O CARD INTEIRO: TEXTO + BOTÃO SÃO UMA SÓ ÁREA CLICÁVEL */
-.como-funciona-card__cta-link {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-decoration: none;
-  width: 100%;
-  height: 100%;
-}
-
-.como-funciona-card__cta-text {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(11px, 1.6vw, 13px);
-  line-height: 1.5;
-  color: var(--color-surface-2);
-  margin: 0;
-}
-
-.como-funciona-card__cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-decoration: none;
-  margin-top: 12px;
-  color: var(--color-orange);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 14px;
-  width: 100%;
-}
-
-.como-funciona-card__cta-btn svg {
-  flex-shrink: 0;
-  color: #8FD9B6;
-  animation: como-funciona-cta-spin 2s linear infinite;
-}
-
-.como-funciona-card__cta-label {
-  color: var(--color-orange);
-}
-
-@keyframes como-funciona-cta-spin {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .como-funciona-card__cta-btn svg {
-    animation: none;
-  }
 }
 
 /* ------ TABLET/DESKTOP — LARGURA DE CARD DA ESPECIFICAÇÃO (34%) ------ */

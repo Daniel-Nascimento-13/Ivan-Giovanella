@@ -86,7 +86,7 @@ export const PARA_QUEM = {
 
 export const STEPPER = {
   start: 'top top',        // PIN COMEÇA QUANDO A SEÇÃO ENCOSTA NO TOPO
-  end: '+=200%',           // DISTÂNCIA DE SCROLL COM A SEÇÃO PINADA (1.8x A VIEWPORT)
+  end: '+=180%',           // DISTÂNCIA DE SCROLL COM A SEÇÃO PINADA (1.8x A VIEWPORT)
   scrub: 1,                // SUAVIZAÇÃO DO SCRUB — A LINHA SEGUE O SCROLL COM 1s DE INÉRCIA
   drawUnits: 5,            // DURAÇÃO DO DESENHO DA LINHA NA TIMELINE (UNIDADES INTERNAS)
   curveTension: 0.5,       // FORÇA DOS CONTROL POINTS — 0.5 = TANGENTE VERTICAL SUAVE

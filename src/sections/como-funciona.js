@@ -55,7 +55,8 @@ function build() {
 
   /* ZERA O ESTADO DA TIMELINE ANTERIOR — OS PINS PRECISAM SER MEDIDOS EM REPOUSO, */
   /* SEM O translateY NEM O scale DO REVEAL INTERFERINDO NO RECT. */
-  gsap.set([..._refs.cards, ..._refs.pins], { clearProps: 'all' });
+  const ctaCard = _refs.section.querySelector('.como-funciona-card--cta');
+  gsap.set([..._refs.cards, ..._refs.pins, ...(ctaCard ? [ctaCard] : [])], { clearProps: 'all' });
 
   const geometry = layoutStepperLine(_refs);
   if (!geometry) return;
@@ -98,11 +99,9 @@ export function initComoFunciona() {
   _refs = collectRefs();
   if (!_refs) return;
 
-  /* ------ CTA WHATSAPP DO CARD FINAL — FONTE ÚNICA ------ */
-  /* FORA DO build(): O HREF NÃO PODE DEPENDER DA TIMELINE, QUE NÃO É CRIADA */
-  /* SOB prefers-reduced-motion. */
-  const ctaLink = _refs.section.querySelector('.como-funciona-card__cta-link');
-  if (ctaLink) ctaLink.href = getWhatsappLink();
+  /* ------ CTA WHATSAPP — FONTE ÚNICA ------ */
+  const ctaCard = _refs.section.querySelector('.como-funciona-card--cta');
+  if (ctaCard) ctaCard.href = getWhatsappLink();
 
   _viewport = { width: window.innerWidth, height: window.innerHeight };
   build();
