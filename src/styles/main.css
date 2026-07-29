@@ -1091,8 +1091,8 @@ h1, h2, h3 {
   /* SE OCULTAVA NO SCROLL, A VIEWPORT CRESCIA E SOBRAVA UMA FAIXA PRETA NO RODAPÉ */
   /* (O PIN-SPACER TRANSPARENTE SOBRE O FUNDO PRETO DO BODY). lvh COBRE OS DOIS ESTADOS. */
   height: 100vh;                       /* FALLBACK — vh = LARGE VIEWPORT NA MAIORIA DOS BROWSERS */
-  height: 110lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
-  min-height: 660px;
+  height: 100lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   /* PADDING-TOP AFASTA O EYEBROW DA ONDA DE ENTRADA, QUE FICA COLADA NO TOPO */

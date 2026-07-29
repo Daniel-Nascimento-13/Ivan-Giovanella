@@ -24,10 +24,10 @@ const TEXT_TO   = { y: 0, autoAlpha: 1 };
 function selectTextElements(section) {
   const eyebrow = section.querySelector('.sobre-eyebrow');
   const name    = section.querySelector('.sobre-name');
-  const text    = section.querySelector('.sobre-text');
+  const texts   = Array.from(section.querySelectorAll('.sobre-text'));
   const stack   = section.querySelector('.sobre-stack');
 
-  return [eyebrow, name, text, stack].filter(Boolean);
+  return [eyebrow, name, ...texts, stack].filter(Boolean);
 }
 
 /* ========================================
