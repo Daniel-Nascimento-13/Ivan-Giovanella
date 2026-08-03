@@ -1,5 +1,5 @@
 import { gsap } from '../lib/gsap.js';
-import { EASE, NAV, PLANOS } from '../constants/motion.js';
+import { EASE, NAV, PLANOS, REVEAL_FROM, REVEAL_TO } from '../constants/motion.js';
 
 /* ========================================
    SEÇÃO 0 — NAVEGAÇÃO — NAVBAR + OVERLAYS
@@ -125,21 +125,45 @@ function revealItems(overlay) {
     /* REDUCED MOTION — SEM DESLOCAMENTO, SÓ OPACIDADE */
     const from = prefersReduced()
       ? { autoAlpha: 0 }
-      : { autoAlpha: 0, x: NAV.itemShiftX };
+      : { ...REVEAL_FROM, x: NAV.itemShiftX };
 
     gsap.fromTo(
       items,
       from,
       {
-        autoAlpha: 1,
+        ...REVEAL_TO,
         x: 0,
         duration: NAV.overlayDuration,
         ease: EASE.out,
         stagger: NAV.itemStagger,
-        clearProps: 'transform' /* DEVOLVE O LAYOUT AO CSS APÓS A ENTRADA */
+        clearProps: 'transform,clipPath' /* DEVOLVE O LAYOUT AO CSS APÓS A ENTRADA */
       }
     );
   });
+}
+
+/* ------ REVEAL DA FOTO — IVAN OVERLAY ------ */
+// ENTRADA CINEMATOGRÁFICA DA FOTO: CLIP-PATH + Y, IGUAL ÀS SEÇÕES DA LP.
+
+function revealIvanPhoto(overlay) {
+  const photo = overlay.querySelector('.nav-ivan__photo');
+  if (!photo) return;
+
+  if (prefersReduced()) {
+    gsap.set(photo, { autoAlpha: 1 });
+    return;
+  }
+
+  gsap.fromTo(
+    photo,
+    { ...REVEAL_FROM },
+    {
+      ...REVEAL_TO,
+      duration: NAV.overlayDuration + 0.2,
+      ease: EASE.out,
+      clearProps: 'transform,clipPath'
+    }
+  );
 }
 
 /* ========================================
@@ -256,6 +280,7 @@ function openOverlay(id) {
   overlay.scrollTop = 0;
 
   drawCloseIcon(overlay);
+  if (id === 'ivan') revealIvanPhoto(overlay);
   revealItems(overlay);
 
   /* FOCO NO BOTÃO FECHAR — DIÁLOGO MODAL PRECISA RECEBER O FOCO AO ABRIR */

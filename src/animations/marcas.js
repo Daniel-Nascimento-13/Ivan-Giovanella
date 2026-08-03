@@ -1,9 +1,9 @@
-import { gsap, ScrollTrigger } from '../lib/gsap.js';
+import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, STAGGER } from '../constants/motion.js';
 import { createReveal } from '../lib/reveal.js';
 
 /* ========================================
-   SEÇÃO 3 — MARCAS — CARROSSEL DE LOGOS
+   SEÇÃO 3 — MARCAS
    ======================================== */
 
 /* LISTA DE LOGOS — CAMINHO RELATIVO A public/ */

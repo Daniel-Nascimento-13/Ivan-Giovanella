@@ -39,6 +39,7 @@ export function prepareHero() {
 /* ------ ROLETA DO EYEBROW ------ */
 let _rouletteTimer = null;
 let _ctaTimer = null;
+let _ctaTimeouts = [];
 
 function initEyebrowRoulette() {
   const rouletteEl = document.querySelector('.eyebrow-roulette');
@@ -111,25 +112,36 @@ function initCtaAnimation() {
     });
 
     /* ENTRADA — LETRAS SOBEM POR BAIXO */
-    setTimeout(() => {
+    const tIn = setTimeout(() => {
+      _ctaTimeouts = _ctaTimeouts.filter(h => h !== tIn);
       spans.forEach((s, i) => {
         s.style.animation = 'none';
         void s.offsetWidth;
         s.style.animation = 'ctaCharIn 0.5s ease backwards ' + (i * 0.03) + 's';
       });
     }, 500);
+    _ctaTimeouts.push(tIn);
 
     /* LIMPA ANIMAÇÕES */
-    setTimeout(() => {
+    const tClean = setTimeout(() => {
+      _ctaTimeouts = _ctaTimeouts.filter(h => h !== tClean);
       spans.forEach(s => { s.style.animation = ''; s.style.animationDelay = ''; });
     }, 1100);
+    _ctaTimeouts.push(tClean);
   }
 
-  setTimeout(animate, 2000);
+  const tInit = setTimeout(() => {
+    _ctaTimeouts = _ctaTimeouts.filter(h => h !== tInit);
+    animate();
+  }, 2000);
+  _ctaTimeouts.push(tInit);
   _ctaTimer = setInterval(animate, 5000);
 }
 
 function destroyCtaAnimation() {
+  /* CANCELA TIMEOUTS PENDENTES — EVITA ESCRITA EM SPANS APÓS DESTROY */
+  _ctaTimeouts.forEach(clearTimeout);
+  _ctaTimeouts = [];
   clearInterval(_ctaTimer);
   _ctaTimer = null;
 }

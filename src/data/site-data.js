@@ -50,7 +50,7 @@ export const SITE_DATA = {
       featured: false,
       badge: null,
       diferencial: 'Sem internações clínicas, cirúrgicas ou UTI',
-      whatsappMessage: 'Olá Ivan! Tenho interesse em saber mais sobre o Plano Essencial da Unimed. Pode me ajudar?',
+      whatsappMessage: 'Olá Ivan!\n\nTenho interesse em saber mais sobre o Plano Essencial da Unimed.\n\nPode me ajudar?',
       coberturas: [
         'Consultas com todas as especialidades médicas',
         'Exames simples (hemograma, raio x, ecografia, eletrocardiograma, pré câncer, entre outros)',
@@ -73,7 +73,7 @@ export const SITE_DATA = {
       featured: true,
       badge: 'Mais escolhido',
       diferencial: 'Com internações clínicas, cirúrgicas, obstétricas e UTI/CTI',
-      whatsappMessage: 'Olá Ivan! Tenho interesse em saber mais sobre o Plano Total da Unimed. Pode me ajudar?',
+      whatsappMessage: 'Olá Ivan!\n\nTenho interesse em saber mais sobre o Plano Total da Unimed.\n\nPode me ajudar?',
       coberturas: [
         'Consultas com todas as especialidades médicas',
         'Exames simples (hemograma, raio x, ecografia, eletrocardiograma, pré câncer, entre outros)',

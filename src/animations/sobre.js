@@ -1,4 +1,4 @@
-import { gsap, ScrollTrigger } from '../lib/gsap.js';
+import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, STAGGER, REVEAL_FROM_DEEP, OVERLAP, CARDS } from '../constants/motion.js';
 
 /* ========================================
@@ -7,7 +7,7 @@ import { EASE, DURATION, STAGGER, REVEAL_FROM_DEEP, OVERLAP, CARDS } from '../co
 
 let sobreTimeline = null;
 let cardsCleanup = null;
-const cardsTimeouts = [];
+let cardsTimeouts = [];
 let _sobreRouletteTimer = null;
 
 /* ------ ESTADOS DE REVEAL ------ */
@@ -90,7 +90,10 @@ function initCardsStack(section, prefersReducedMotion) {
       if (doAnimate && i === prevTop && prevTop !== newTop) {
         /* CARD DO TOPO ATUAL SAI PARA BAIXO, DEPOIS RECICLA AO SLOT NOVO SEM ANIMAR */
         card.className = 'sobre-card sobre-card--exit';
-        const t = setTimeout(() => setCardState(card, slot, true), CARDS.transitionMs);
+        const t = setTimeout(() => {
+          cardsTimeouts = cardsTimeouts.filter(h => h !== t);
+          setCardState(card, slot, true);
+        }, CARDS.transitionMs);
         cardsTimeouts.push(t);
       } else {
         setCardState(card, slot, !doAnimate);

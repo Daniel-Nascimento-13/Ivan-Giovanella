@@ -14,8 +14,8 @@
   <!-- TODO: URL absoluta quando o domínio de produção for definido -->
   <!-- <meta property="og:url" content="https://DOMINIO/" /> -->
   <!-- <meta property="og:image" content="https://DOMINIO/images/ivan/foto-1.webp" /> -->
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <!-- <meta property="og:image:width" content="1200" /> -->
+  <!-- <meta property="og:image:height" content="630" /> -->
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Ivan Giovanella | Consultor Unimed" />
@@ -26,11 +26,11 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- WEBFONT TABLER ICONS — ÍCONES DA SEÇÃO 4 (PARA QUEM É) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css" />
 </head>
 <body>
   <!-- ========================================
-       SEÇÃO 0 — NAVEGAÇÃO — NAVBAR FIXA + OVERLAYS
+       SEÇÃO 0 — NAVEGAÇÃO — NAVBAR + OVERLAYS
        ======================================== -->
   <!-- A NAVBAR FICA ACIMA DOS OVERLAYS (z 100 vs 90): O HAMBÚRGUER VIRA × E SEGUE -->
   <!-- CLICÁVEL COM O OVERLAY ABERTO. POR ISSO OS OVERLAYS TÊM padding-top DE 64px E -->
@@ -184,7 +184,9 @@
     </div>
   </div>
 
-  <!-- ------ OVERLAY 3 — PLANOS (PLACEHOLDER) ------ -->
+  <!-- ------ OVERLAY 3 — PLANOS ------ -->
+  <!-- OS CARDS SÃO GERADOS POR initPlansSection() A PARTIR DE SITE_DATA.planos -->
+  <!-- EM src/sections/nav.js — O CONTÊINER [data-nav-plans] NASCE VAZIO AQUI. -->
   <div
     class="nav-overlay nav-overlay--planos"
     id="nav-overlay-planos"
@@ -262,8 +264,8 @@
           <span class="nav-field__label">Plano de interesse</span>
           <select class="nav-field__input" name="plano" required>
             <option value="" disabled selected>Selecione</option>
-            <option value="empresarial">Empresarial</option>
-            <option value="pessoal">Pessoal</option>
+            <option value="Essencial">Plano Essencial</option>
+            <option value="Total">Plano Total</option>
           </select>
         </label>
 
@@ -324,7 +326,7 @@
     </section>
 
     <!-- ========================================
-         SEÇÃO 2 — SOBRE — APRESENTAÇÃO DO CONSULTOR
+         SEÇÃO 2 — SOBRE
          ======================================== -->
     <!-- TEXTO DE REFERÊNCIA EM src/data/site-data.js — sobre.js APENAS SELECIONA E ANIMA -->
     <section id="sobre" aria-label="Sobre o consultor">
@@ -467,7 +469,7 @@
     </section>
 
     <!-- ========================================
-         SEÇÃO 3 — MARCAS — EMPRESAS QUE CONFIAM
+         SEÇÃO 3 — MARCAS
          ======================================== -->
     <section id="marcas" aria-label="Empresas que confiam na Unimed">
       <div class="marcas-inner">
@@ -482,9 +484,9 @@
         </p>
         <h2 class="marcas-title">Empresas que investem<br><span class="marcas-title--highlight">na saúde de seus colaboradores</span></h2>
         <div class="marcas-carousel" aria-hidden="true">
-          <div class="marcas-col" data-col="0"></div>
-          <div class="marcas-col" data-col="1"></div>
-          <div class="marcas-col" data-col="2"></div>
+          <div class="marcas-col"></div>
+          <div class="marcas-col"></div>
+          <div class="marcas-col"></div>
         </div>
       </div>
     </section>
@@ -1077,8 +1079,8 @@
           <span class="cta-field__label">Plano de interesse</span>
           <select class="cta-field__input" name="plano" required>
             <option value="" disabled selected>Selecione</option>
-            <option value="empresarial">Empresarial</option>
-            <option value="pessoal">Pessoal</option>
+            <option value="Essencial">Plano Essencial</option>
+            <option value="Total">Plano Total</option>
           </select>
         </label>
         <label class="cta-field">
