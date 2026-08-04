@@ -90,7 +90,8 @@ function destroyEyebrowRoulette() {
 /* ------ ANIMAÇÃO DE LETRAS DO CTA ------ */
 
 function initCtaAnimation() {
-  const cta = document.querySelector('.hero-cta-label');
+  const heroEl = document.querySelector('#hero');
+  const cta = heroEl?.querySelector('.hero-cta-label');
   if (!cta) return;
 
   const originalText = cta.textContent.trim();

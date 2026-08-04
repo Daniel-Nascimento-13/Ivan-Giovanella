@@ -25,6 +25,8 @@ let _onOpenModal = null;
 let _onCloseModal = null;
 let _onSubmit = null;
 let _onSocialToggle = null;
+let _opener = null;
+let _onModalKeydown = null;
 
 /* ------ SELEÇÃO DO DOM ------ */
 
@@ -81,6 +83,50 @@ function buildModalMessage(form) {
   );
 }
 
+/* ------ FOCO DO MODAL ------ */
+
+function _onTrapReady(modal) {
+  _onModalKeydown = (e) => _handleModalKey(e, modal);
+  document.addEventListener('keydown', _onModalKeydown);
+}
+
+function _onFocusFirst(modal) {
+  const focusable = getFocusable(modal);
+  focusable[0]?.focus({ preventScroll: true });
+}
+
+function _onRestoreFocus() {
+  document.removeEventListener('keydown', _onModalKeydown);
+  _onModalKeydown = null;
+  _opener?.focus({ preventScroll: true });
+  _opener = null;
+}
+
+function _handleModalKey(e, modal) {
+  if (e.key === 'Escape') {
+    closeModal(_refs, _onRestoreFocus);
+    return;
+  }
+  if (e.key === 'Tab') {
+    const focusable = getFocusable(modal);
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last?.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first?.focus();
+    }
+  }
+}
+
+function getFocusable(container) {
+  return [...container.querySelectorAll(
+    'input, select, textarea, button, [href], [tabindex]:not([tabindex="-1"])'
+  )].filter(el => !el.disabled && !el.closest('[aria-hidden="true"]'));
+}
+
 /* ------ INIT ------ */
 
 export function initCta() {
@@ -95,10 +141,13 @@ export function initCta() {
 
   revealCta(_refs);
 
-  _onOpenModal = () => openModal(_refs);
+  _onOpenModal = () => {
+    _opener = document.activeElement;
+    openModal(_refs, _onTrapReady, _onFocusFirst);
+  };
   _refs.openBtn?.addEventListener('click', _onOpenModal);
 
-  _onCloseModal = () => closeModal(_refs);
+  _onCloseModal = () => closeModal(_refs, _onRestoreFocus);
   _refs.modalClose?.addEventListener('click', _onCloseModal);
   _refs.modalOverlay?.addEventListener('click', _onCloseModal);
 
@@ -106,7 +155,7 @@ export function initCta() {
     e.preventDefault();
     const message = buildModalMessage(_refs.form);
     window.open(getWhatsappLink(message), '_blank', 'noopener,noreferrer');
-    closeModal(_refs);
+    closeModal(_refs, _onRestoreFocus);
   };
   _refs.form.addEventListener('submit', _onSubmit);
 
@@ -133,6 +182,12 @@ export function initCta() {
 export function destroyCta() {
   destroyCtaRoulette();
   killCtaReveal();
+
+  if (_onModalKeydown) {
+    document.removeEventListener('keydown', _onModalKeydown);
+    _onModalKeydown = null;
+  }
+  _opener = null;
 
   if (_refs) {
     if (_onOpenModal)    _refs.openBtn?.removeEventListener('click', _onOpenModal);

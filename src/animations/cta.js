@@ -113,7 +113,7 @@ export function destroyCtaRoulette() {
 /* ------ MODAL — ABERTURA / FECHAMENTO ------ */
 // GSAP ANIMA APENAS CLIP-PATH E AUTOALPHA — O translate(-50%,-50%) DO CSS É PRESERVADO.
 
-export function openModal(refs) {
+export function openModal(refs, onTrapReady, onReady) {
   const { modal, modalCard } = refs;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -122,18 +122,26 @@ export function openModal(refs) {
 
   modal.setAttribute('aria-hidden', 'false');
 
+  onTrapReady?.(modal);
+
   if (prefersReduced) {
     gsap.set(modal, { autoAlpha: 1 });
     gsap.set(modalCard, { clipPath: REVEAL_TO.clipPath });
+    onReady?.(modal);
     return;
   }
 
   gsap.set(modalCard, { clipPath: REVEAL_FROM.clipPath });
   gsap.to(modal, { autoAlpha: 1, duration: CTA.modalDuration, ease: EASE.out });
-  gsap.to(modalCard, { clipPath: REVEAL_TO.clipPath, duration: CTA.modalDuration, ease: EASE.out });
+  gsap.to(modalCard, {
+    clipPath: REVEAL_TO.clipPath,
+    duration: CTA.modalDuration,
+    ease: EASE.out,
+    onComplete: () => onReady?.(modal)
+  });
 }
 
-export function closeModal(refs) {
+export function closeModal(refs, onDone) {
   const { modal } = refs;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -141,6 +149,7 @@ export function closeModal(refs) {
   const finish = () => {
     modal.setAttribute('aria-hidden', 'true');
     getLenis()?.start?.();
+    onDone?.();
   };
 
   if (prefersReduced) {
