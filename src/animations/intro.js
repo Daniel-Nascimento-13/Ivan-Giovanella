@@ -1,8 +1,12 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, TIMEOUT } from '../constants/motion.js';
 
 /* ========================================
-   SEÇÃO 1 — HERO — VÍDEO ANIMADO DE ENTRADA
+   SEÇÃO 0 — INTRO — VÍDEO DE ENTRADA
    ======================================== */
 
 const INTRO_SESSION_KEY = 'unimed_intro_played';
@@ -23,15 +27,18 @@ export function initIntro(onComplete) {
   }
 
   /* ------ ATRIBUTOS OBRIGATÓRIOS PARA IOS ------ */
-  video.muted        = true;
-  video.playsInline  = true;
-  video.autoplay     = false;
+  
+  video.muted       = true;
+  video.playsInline = true;
+  video.autoplay    = false;
   video.setAttribute('playsinline', '');
   video.setAttribute('muted', '');
   video.setAttribute('webkit-playsinline', '');
 
   let fallback;
   let finished = false;
+
+  /* ------ SAÍDA ------ */
 
   const finishIntro = () => {
     if (finished) return;
@@ -54,6 +61,7 @@ export function initIntro(onComplete) {
   };
 
   /* ------ FALLBACK ------ */
+
   const scheduleFallback = () => {
     clearTimeout(fallback);
 
@@ -64,11 +72,13 @@ export function initIntro(onComplete) {
     fallback = setTimeout(finishIntro, Math.min(knownDuration, TIMEOUT.introFallbackMax));
   };
 
-  /* ------ PRIMING IOS: play/pause antes do play real ------ */
+  /* ------ PRIMING IOS ------ */
+  // play/pause OBRIGATÓRIO ANTES DO PLAY REAL — IOS NÃO RENDERIZA O PRIMEIRO FRAME SEM ISSO.
+  // MUTED + playsinline PERMITE play() PROGRAMÁTICO SEM GESTO DO USUÁRIO.
+
   const primeAndPlay = () => {
     try { video.currentTime = 0; } catch { /* IGNORADO */ }
 
-    /* PRIMING — OBRIGATÓRIO NO IOS PARA RENDERIZAR O PRIMEIRO FRAME */
     const primePromise = video.play();
 
     if (primePromise !== undefined) {
@@ -76,8 +86,6 @@ export function initIntro(onComplete) {
         .then(() => {
           video.pause();
           video.currentTime = 0;
-
-          /* PLAY REAL APÓS PRIMING */
           return video.play();
         })
         .then(() => {
@@ -88,7 +96,6 @@ export function initIntro(onComplete) {
         })
         .catch(finishIntro);
     } else {
-      /* FALLBACK PARA BROWSERS SEM PROMISE (RARO) */
       try { video.play(); } catch { finishIntro(); }
       scheduleFallback();
     }
@@ -103,12 +110,6 @@ export function initIntro(onComplete) {
     fallback = setTimeout(finishIntro, TIMEOUT.introFallback);
   }
 
-  /* ------ IOS: NÃO ESPERAR readyState/loadeddata ANTES DE TOCAR ------ */
-  /* IOS SAFARI IGNORA preload="auto" E NÃO BUFFERIZA VÍDEO SEM UM play(). */
-  /* SE ESPERARMOS loadeddata (readyState >= 2), ELE NUNCA CHEGA — DEADLOCK: */
-  /* SÓ O FALLBACK DISPARA E O OVERLAY VERDE SOME SEM O VÍDEO NUNCA PINTAR. */
-  /* MUTED + playsinline PERMITE play() PROGRAMÁTICO SEM GESTO; O PRÓPRIO */
-  /* play() FORÇA O IOS A CARREGAR, DECODIFICAR E RENDERIZAR O PRIMEIRO FRAME. */
   video.load();
   primeAndPlay();
 }

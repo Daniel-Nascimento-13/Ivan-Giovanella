@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { getWhatsappLink, SITE_DATA } from '../lib/whatsapp.js';
 import {
   initNavAnimations,
@@ -11,9 +15,8 @@ import {
    SEÇÃO 0 — NAVEGAÇÃO — NAVBAR + OVERLAYS
    ======================================== */
 
-// SELEÇÃO DO DOM, LINK DO WHATSAPP (FONTE ÚNICA) E O FORM DA AVALIAÇÃO.
-// AS ANIMAÇÕES VIVEM EM src/animations/nav.js — ESTE ARQUIVO NÃO CRIA TWEENS.
-// MESMO PADRÃO DE src/sections/cta.js.
+// SELEÇÃO DO DOM, LINK DO WHATSAPP E FORM DA AVALIAÇÃO.
+// TWEENS VIVEM EM src/animations/nav.js — ESTE ARQUIVO NÃO CRIA TWEENS.
 
 let _refs = null;
 let _controller = null;
@@ -25,13 +28,11 @@ function collectRefs() {
   if (!bar) return null;
 
   const hamburger = bar.querySelector('[data-nav-hamburger]');
-  const bars = Array.from(bar.querySelectorAll('.nav-hamburger__bar'));
+  const bars      = Array.from(bar.querySelectorAll('.nav-hamburger__bar'));
 
-  /* GUARD — MARKUP INCOMPLETO NÃO INICIALIZA NADA */
   if (!hamburger || bars.length !== 3) return null;
 
-  /* MAPA CHAVE → ELEMENTO: A CHAVE É O VALOR DE data-nav-overlay E BATE COM O */
-  /* data-nav-open DOS BOTÕES DO MENU. */
+  // MAPA CHAVE → ELEMENTO: CHAVE = data-nav-overlay, BATE COM data-nav-open DOS BOTÕES.
   const overlays = new Map();
   document.querySelectorAll('[data-nav-overlay]').forEach((el) => {
     overlays.set(el.dataset.navOverlay, el);
@@ -40,30 +41,26 @@ function collectRefs() {
   if (!overlays.has('menu')) return null;
 
   const whatsappLinks = Array.from(document.querySelectorAll('[data-nav-whatsapp]'));
-  const form = document.querySelector('[data-nav-form]');
+  const form          = document.querySelector('[data-nav-form]');
 
   return { bar, hamburger, bars, overlays, whatsappLinks, form };
 }
 
-/* ------ MENSAGEM DO WHATSAPP A PARTIR DO FORMULÁRIO ------ */
-// MESMA RECEITA DO buildModalMessage() DA SEÇÃO 7, COM OS CAMPOS DESTE FORM.
-// AS QUEBRAS \n VIRAM %0A NO getWhatsappLink() (encodeURIComponent) — NUNCA %0A LITERAL.
+/* ------ MENSAGEM DO WHATSAPP ------ */
 
 function buildFormMessage(form) {
-  const data = new FormData(form);
-  const nome = (data.get('nome') || '').toString().trim();
+  const data    = new FormData(form);
+  const nome    = (data.get('nome')    || '').toString().trim();
   const empresa = (data.get('empresa') || '').toString().trim();
-  const cnpj = (data.get('cnpj') || '').toString().trim();
-  const cidade = (data.get('cidade') || '').toString().trim();
+  const cnpj    = (data.get('cnpj')    || '').toString().trim();
+  const cidade  = (data.get('cidade')  || '').toString().trim();
 
-  /* SELECTS — TEXTO LEGÍVEL DA OPÇÃO (EX: "10 A 29"), NÃO O VALUE CRU */
   const colaboradoresSelect = form.querySelector('[name="colaboradores"]');
   const colaboradores = (colaboradoresSelect?.selectedOptions[0]?.textContent || '').trim();
 
   const planoSelect = form.querySelector('[name="plano"]');
   const plano = (planoSelect?.selectedOptions[0]?.textContent || '').trim();
 
-  /* CNPJ É OPCIONAL — SÓ ENTRA NA MENSAGEM SE PREENCHIDO, IGUAL À SEÇÃO 7 */
   return (
     `Olá Ivan! \n\n` +
     `Me chamo *${nome}* e gostaria de uma avaliação completa para avaliar o que se enquadra melhor à minha necessidade.\n\n` +
@@ -80,33 +77,29 @@ function buildFormMessage(form) {
    SEÇÃO PLANOS — CARDS EXPANSÍVEIS
    ======================================== */
 
-// MARKUP GERADO A PARTIR DE SITE_DATA.planos, HREF DO WHATSAPP POR PLANO E O TOGGLE
-// DE EXPANSÃO. OS TWEENS VIVEM EM src/animations/nav.js — AQUI SÓ DOM E ESTADO.
+// MARKUP GERADO A PARTIR DE SITE_DATA.planos.
+// TWEENS VIVEM EM src/animations/nav.js — AQUI SÓ DOM E ESTADO.
 
-/* RÓTULOS DO BOTÃO DE EXPANSÃO — SEM STRING SOLTA NO MEIO DA LÓGICA */
 const PLAN_LABELS = {
   more: 'Ver tudo',
   less: 'Ver menos'
 };
 
-/* ÍCONE WHATSAPP DO CTA — MESMO PATH USADO NA NAVBAR E NA SEÇÃO 7 */
 const PLAN_WHATSAPP_ICON = `
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23 2.2 0 4.26.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.98-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
   </svg>
 `;
 
-/* ------ MARKUP DE UM CARD ------ */
-/* O ✓ DE CADA ITEM VEM DO ::before NO CSS — NADA DE ÍCONE NO MARKUP */
-/* CADA COBERTURA É UMA STRING OU UM OBJETO { texto, alerta }. COM alerta: true O ITEM */
-/* MARCA UMA LIMITAÇÃO DO PLANO E RECEBE A CLASSE QUE TROCA O ✓ VERDE PELO × LARANJA. */
+/* ------ MARKUP DOS ITENS ------ */
+// STRING = COBERTURA NORMAL | OBJETO { texto, alerta } = LIMITAÇÃO DO PLANO.
 
 function buildPlanItems(coberturas) {
   return coberturas
     .map((item) => {
       const isAlerta = typeof item === 'object' && item !== null && item.alerta;
-      const texto = typeof item === 'string' ? item : item.texto;
-      const cls = isAlerta ? ' class="nav-plan__item--alerta"' : '';
+      const texto    = typeof item === 'string' ? item : item.texto;
+      const cls      = isAlerta ? ' class="nav-plan__item--alerta"' : '';
       return `<li${cls}>${texto}</li>`;
     })
     .join('');
@@ -114,7 +107,7 @@ function buildPlanItems(coberturas) {
 
 function buildPlanCard(plan) {
   const featured = plan.featured ? ' nav-plan--featured' : '';
-  const badge = plan.badge
+  const badge    = plan.badge
     ? `<span class="nav-plan__badge">${plan.badge}</span>`
     : '';
 
@@ -162,7 +155,7 @@ function collapsePlan(card, instant = false) {
   collapsePlanBody(card.querySelector('[data-plan-hidden]'), instant);
 }
 
-/* ------ INICIALIZA OS CARDS DE PLANOS COM EXPANSÃO GSAP ------ */
+/* ------ INIT DOS CARDS DE PLANOS ------ */
 
 function initPlansSection(signal) {
   const root = document.querySelector('[data-nav-plans]');
@@ -175,22 +168,18 @@ function initPlansSection(signal) {
 
   const cards = Array.from(root.querySelectorAll('.nav-plan'));
 
-  /* REPOUSO — SÓ AS COBERTURAS EM DESTAQUE VISÍVEIS, SEM ANIMAR */
   cards.forEach((card) => collapsePlan(card, true));
 
   cards.forEach((card) => {
     card.addEventListener(
       'click',
       (e) => {
-        /* O CTA DO WHATSAPP NÃO PODE DISPARAR A EXPANSÃO */
         if (e.target.closest('[data-plan-whatsapp]')) return;
 
         const isOpen = card.classList.contains('nav-plan--open');
 
-        /* APENAS UM CARD EXPANDIDO POR VEZ */
-        cards.forEach((other) => {
-          if (other !== card) collapsePlan(other);
-        });
+        // APENAS UM CARD EXPANDIDO POR VEZ.
+        cards.forEach((other) => { if (other !== card) collapsePlan(other); });
 
         if (isOpen) collapsePlan(card);
         else expandPlan(card);
@@ -208,21 +197,14 @@ export function initNav(lenis) {
   _refs = collectRefs();
   if (!_refs) return;
 
-  /* CONTROLLER ÚNICO — DERRUBA OS LISTENERS DOS PLANOS E DO FORM DE UMA VEZ */
   const { signal } = (_controller = new AbortController());
 
-  /* LINK DO WHATSAPP — FONTE ÚNICA (NUNCA HARDCODED NO MARKUP) */
-  _refs.whatsappLinks.forEach((link) => {
-    link.href = getWhatsappLink();
-  });
+  _refs.whatsappLinks.forEach((link) => { link.href = getWhatsappLink(); });
 
-  /* ANIMAÇÕES, LISTENERS DE ABERTURA/FECHAMENTO E CONTROLE DO LENIS */
   initNavAnimations(_refs, lenis);
 
-  /* ------ OVERLAY PLANOS — CARDS GERADOS E EXPANSÃO ------ */
   initPlansSection(signal);
 
-  /* ------ FORM DA AVALIAÇÃO — MONTA A MENSAGEM E ABRE O WHATSAPP ------ */
   if (_refs.form) {
     _refs.form.addEventListener(
       'submit',
@@ -241,7 +223,6 @@ export function initNav(lenis) {
 
 export function destroyNav() {
   destroyNavAnimations();
-
   _controller?.abort();
   _controller = null;
   _refs = null;

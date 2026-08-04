@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, STAGGER, REVEAL_FROM_DEEP, OVERLAP, CARDS } from '../constants/motion.js';
 
@@ -11,15 +15,16 @@ let cardsTimeouts = [];
 let _sobreRouletteTimer = null;
 
 /* ------ ESTADOS DE REVEAL ------ */
-/* FOTO: CLIP DA ESQUERDA + FADE — RETÂNGULO ABRE DA ESQUERDA PARA A DIREITA, SEM CORTE BRUSCO */
+// FOTO: CLIP DA ESQUERDA — RETÂNGULO ABRE DA ESQUERDA PARA A DIREITA.
+// TEXTO: translateY + autoAlpha SEM CLIP.
+
 const PHOTO_FROM = { clipPath: 'inset(0 100% 0 0)', autoAlpha: 0 };
 const PHOTO_TO   = { clipPath: 'inset(0 0% 0 0)',   autoAlpha: 1 };
+const TEXT_FROM  = { y: REVEAL_FROM_DEEP.y, autoAlpha: 0 };
+const TEXT_TO    = { y: 0, autoAlpha: 1 };
 
-/* TEXTO: translateY + autoAlpha (SEM CLIP) — REUSA O DESLOCAMENTO PROFUNDO */
-const TEXT_FROM = { y: REVEAL_FROM_DEEP.y, autoAlpha: 0 };
-const TEXT_TO   = { y: 0, autoAlpha: 1 };
-
-/* ------ SELEÇÃO — ORDEM DEFINE O STAGGER: EYEBROW → NOME → PARÁGRAFO → STACK ------ */
+/* ------ SELEÇÃO ------ */
+// ORDEM DEFINE O STAGGER: EYEBROW → NOME → PARÁGRAFOS → STACK.
 
 function selectTextElements(section) {
   const eyebrow = section.querySelector('.sobre-eyebrow');
@@ -31,26 +36,25 @@ function selectTextElements(section) {
 }
 
 /* ========================================
-   CARDS STACK — NAVEGAÇÃO MANUAL (ARROW + DOTS, CSS TRANSITION, SEM GSAP)
+   CARDS STACK
    ======================================== */
 
-/* SLOT 0 = TOPO | 1 = MEIO | 2 = TRÁS | DEMAIS = ESCONDIDO NO FUNDO */
+// SLOT 0 = TOPO | 1 = MEIO | 2 = TRÁS | DEMAIS = OCULTO.
 const STACK_STATE = ['top', 'mid', 'back'];
 
 function stateForSlot(slot) {
   return STACK_STATE[slot] || 'hidden';
 }
 
-/* APLICA O ESTADO — instant=true TROCA SEM TRANSIÇÃO (ESTADO INICIAL / RECICLAGEM) */
+// instant=true TROCA SEM TRANSIÇÃO (ESTADO INICIAL / RECICLAGEM).
 function setCardState(card, slot, instant) {
   card.className = 'sobre-card sobre-card--' + stateForSlot(slot) + (instant ? ' sobre-card--instant' : '');
   if (instant) {
-    void card.offsetWidth; // FORÇA REFLOW — APLICA O ESTADO SEM ANIMAR
+    void card.offsetWidth;
     card.classList.remove('sobre-card--instant');
   }
 }
 
-/* INICIALIZA O STACK E LIGA A NAVEGAÇÃO MANUAL */
 function initCardsStack(section, prefersReducedMotion) {
   const stack = section.querySelector('.sobre-cards');
   if (!stack) return;
@@ -64,13 +68,12 @@ function initCardsStack(section, prefersReducedMotion) {
   const n = cards.length;
   let currentTop = 0;
 
-  /* TIMING VINDO DE motion.js → CSS TRANSITION VIA CUSTOM PROPERTY */
   stack.style.setProperty('--card-transition', `${CARDS.transitionMs}ms ${CARDS.transitionEase}`);
 
-  /* SLOT DE CADA CARD DADO O CARD DO TOPO */
   const slotFor = (i, top) => (i - top + n) % n;
 
-  /* ------ DOTS — REFLETE O CARD ATIVO ------ */
+  /* ------ DOTS ------ */
+
   const updateDots = (top) => {
     dots.forEach((dot, i) => {
       const active = i === top;
@@ -79,7 +82,8 @@ function initCardsStack(section, prefersReducedMotion) {
     });
   };
 
-  /* ------ RENDER — POSICIONA TODOS OS CARDS PARA UM NOVO TOPO ------ */
+  /* ------ RENDER ------ */
+
   const render = (newTop, animate) => {
     const doAnimate = animate && !prefersReducedMotion;
     const prevTop = currentTop;
@@ -88,7 +92,6 @@ function initCardsStack(section, prefersReducedMotion) {
       const slot = slotFor(i, newTop);
 
       if (doAnimate && i === prevTop && prevTop !== newTop) {
-        /* CARD DO TOPO ATUAL SAI PARA BAIXO, DEPOIS RECICLA AO SLOT NOVO SEM ANIMAR */
         card.className = 'sobre-card sobre-card--exit';
         const t = setTimeout(() => {
           cardsTimeouts = cardsTimeouts.filter(h => h !== t);
@@ -104,22 +107,25 @@ function initCardsStack(section, prefersReducedMotion) {
     updateDots(newTop);
   };
 
-  /* ------ ESTADO INICIAL — INSTANTÂNEO ------ */
   render(0, false);
 
   /* ------ NAVEGAÇÃO MANUAL ------ */
-  const onArrow = () => render((currentTop + 1) % n, true); // PRÓXIMO — LOOP INFINITO
+
+  const onArrow = () => render((currentTop + 1) % n, true);
   arrow?.addEventListener('click', onArrow);
 
   const dotHandlers = dots.map((dot, i) => {
-    const handler = () => { if (i !== currentTop) render(i, true); }; // VAI DIRETO AO CARD
+    const handler = () => { if (i !== currentTop) render(i, true); };
     dot.addEventListener('click', handler);
     return handler;
   });
 
-  /* ------ TAP / CLICK NOS CARDS — AVANÇA IGUAL À ARROW, IGNORA SCROLL ------ */
-  const TAP_THRESHOLD = 10; // PX — SE O DEDO MOVER MAIS QUE ISSO É SCROLL, NÃO TAP
-  const goNext = () => render((currentTop + 1) % n, true); // PRÓXIMO — LOOP INFINITO, IGUAL À ARROW
+  /* ------ TAP / CLICK NOS CARDS ------ */
+  // THRESHOLD 10px — MOVIMENTO MAIOR É SCROLL, NÃO TAP.
+
+  const TAP_THRESHOLD = 10;
+  const goNext = () => render((currentTop + 1) % n, true);
+
   const cardTouchHandlers = cards.map((card) => {
     let startX = 0;
     let startY = 0;
@@ -133,12 +139,11 @@ function initCardsStack(section, prefersReducedMotion) {
     const onTouchEnd = (e) => {
       const touch = e.changedTouches[0];
       const moved = Math.hypot(touch.clientX - startX, touch.clientY - startY);
-      if (moved > TAP_THRESHOLD) return; // MOVIMENTO = SCROLL — IGNORA
-      e.preventDefault(); // SUPRIME O CLICK SINTÉTICO — EVITA AVANÇAR DUAS VEZES NO TOUCH
+      if (moved > TAP_THRESHOLD) return;
+      e.preventDefault(); // SUPRIME CLICK SINTÉTICO — EVITA AVANÇAR DUAS VEZES NO TOUCH
       goNext();
     };
 
-    /* CLICK — MOUSE NO DESKTOP (NO TOUCH É SUPRIMIDO PELO preventDefault ACIMA) */
     const onClick = () => goNext();
 
     card.addEventListener('touchstart', onTouchStart, { passive: true });
@@ -147,7 +152,8 @@ function initCardsStack(section, prefersReducedMotion) {
     return { onTouchStart, onTouchEnd, onClick };
   });
 
-  /* ------ CLEANUP DOS LISTENERS ------ */
+  /* ------ CLEANUP ------ */
+
   cardsCleanup = () => {
     arrow?.removeEventListener('click', onArrow);
     dots.forEach((dot, i) => dot.removeEventListener('click', dotHandlers[i]));
@@ -159,7 +165,9 @@ function initCardsStack(section, prefersReducedMotion) {
   };
 }
 
-/* ------ ROLETA DO EYEBROW — SOBRE ------ */
+/* ------ ROLETA DO EYEBROW ------ */
+// AGUARDA FONTES — offsetWidth SEM FONTE CARREGADA GERA PÍLULA COM TAMANHO ERRADO.
+
 function initSobreEyebrowRoulette(section) {
   const rouletteEl = section.querySelector('.sobre-eyebrow-roulette');
   const track = section.querySelector('.sobre-eyebrow-roulette__track');
@@ -168,15 +176,12 @@ function initSobreEyebrowRoulette(section) {
   const words = Array.from(track.querySelectorAll('.sobre-eyebrow-roulette__word'));
   if (words.length < 2) return;
 
-  /* GUARD — A CHAMADA AGORA É ASSÍNCRONA (document.fonts.ready): DUAS PROMISES */
-  /* PENDENTES DEIXARIAM DOIS setInterval VIVOS COM UM SÓ HANDLE RASTREADO. */
   clearInterval(_sobreRouletteTimer);
   _sobreRouletteTimer = null;
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
-  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
   const widths = words.map(w => w.offsetWidth);
   const h = words[0].offsetHeight;
 
@@ -200,7 +205,7 @@ function initSobreEyebrowRoulette(section) {
 }
 
 /* ========================================
-   INIT — SCROLLTRIGGER CRIADO DE FORMA SÍNCRONA
+   INIT
    ======================================== */
 
 export function initSobre() {
@@ -215,32 +220,23 @@ export function initSobre() {
 
   destroySobre();
 
-  /* ------ CARDS: ESTADO INICIAL + NAVEGAÇÃO MANUAL (SÍNCRONO) ------ */
   initCardsStack(section, prefersReducedMotion);
 
-  /* ------ ROLETA DO EYEBROW — TROCA DE TEXTO EM LOOP ------ */
-  /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA VIA offsetWidth E, */
-  /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO — O BUG */
-  /* SÓ SOME NO RELOAD, COM A FONTE JÁ EM CACHE. SEM SCROLLTRIGGER AQUI: A ROLETA É */
-  /* SÓ TRANSITION CSS + setInterval, ENTÃO NADA É CRIADO FORA DO INIT SÍNCRONO. */
   if (document.fonts) {
     document.fonts.ready.then(() => initSobreEyebrowRoulette(section));
   } else {
     initSobreEyebrowRoulette(section);
   }
 
-  /* ------ GUARD REDUCED MOTION — MOSTRA TUDO SEM ANIMAR ------ */
   if (prefersReducedMotion) {
     gsap.set(media, PHOTO_TO);
     gsap.set(textElements, TEXT_TO);
     return;
   }
 
-  /* ------ ESTADO INICIAL ESCONDIDO ------ */
   gsap.set(media, { ...PHOTO_FROM, willChange: 'clip-path, opacity' });
   gsap.set(textElements, { ...TEXT_FROM, willChange: 'transform, opacity' });
 
-  /* ------ TIMELINE ANCORADA NA SEÇÃO ------ */
   sobreTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: section,
@@ -253,14 +249,12 @@ export function initSobre() {
     }
   });
 
-  /* FOTO: REVEAL DA ESQUERDA */
   sobreTimeline.to(media, {
     ...PHOTO_TO,
     duration: DURATION.cinematic,
     ease: EASE.out
   });
 
-  /* TEXTO + STACK: STAGGER — INICIA QUASE AO FIM DA ABERTURA DA FOTO */
   sobreTimeline.to(textElements, {
     ...TEXT_TO,
     duration: DURATION.slow,
@@ -278,17 +272,14 @@ export function destroySobre() {
     sobreTimeline = null;
   }
 
-  /* ------ REMOVE LISTENERS DA NAVEGAÇÃO ------ */
   if (cardsCleanup) {
     cardsCleanup();
     cardsCleanup = null;
   }
 
-  /* ------ LIMPA TIMEOUTS PENDENTES DE RECICLAGEM ------ */
   cardsTimeouts.forEach(clearTimeout);
   cardsTimeouts.length = 0;
 
-  /* ------ PARA A ROLETA DO EYEBROW ------ */
   clearInterval(_sobreRouletteTimer);
   _sobreRouletteTimer = null;
 }

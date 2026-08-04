@@ -3,41 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ------ TÍTULO E DESCRIÇÃO ------ -->
   <title>Ivan Giovanella | Consultor Unimed Vales do Taquari e Rio Pardo</title>
   <meta name="description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade para sua empresa. Consultoria especializada com Ivan Giovanella." />
-
   <meta name="theme-color" content="#06301F" />
 
+  <!-- ------ OPEN GRAPH (FACEBOOK / WHATSAPP) ------ -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ivan Giovanella | Consultor Unimed" />
   <meta property="og:description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade." />
-  <!-- TODO: URL absoluta quando o domínio de produção for definido -->
+  <!-- TODO: ATIVAR QUANDO O DOMÍNIO DE PRODUÇÃO FOR DEFINIDO -->
   <!-- <meta property="og:url" content="https://DOMINIO/" /> -->
   <!-- <meta property="og:image" content="https://DOMINIO/images/ivan/foto-1.webp" /> -->
   <!-- <meta property="og:image:width" content="1200" /> -->
   <!-- <meta property="og:image:height" content="630" /> -->
 
+  <!-- ------ TWITTER CARD ------ -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Ivan Giovanella | Consultor Unimed" />
   <meta name="twitter:description" content="Plano de saúde empresarial Unimed: mais saúde, mais engajamento e menos rotatividade." />
-  <!-- TODO: URL absoluta quando o domínio de produção for definido -->
+  <!-- TODO: ATIVAR QUANDO O DOMÍNIO DE PRODUÇÃO FOR DEFINIDO -->
   <!-- <meta name="twitter:image" content="https://DOMINIO/images/ivan/foto-1.webp" /> -->
 
+  <!-- ------ FAVICON ------ -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- WEBFONT TABLER ICONS — ÍCONES DA SEÇÃO 4 (PARA QUEM É) -->
+  <!-- ------ ÍCONES (CDN, VERSÃO FIXADA) ------ -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css" />
 </head>
 <body>
+
   <!-- ========================================
        SEÇÃO 0 — NAVEGAÇÃO — NAVBAR + OVERLAYS
        ======================================== -->
-  <!-- A NAVBAR FICA ACIMA DOS OVERLAYS (z 100 vs 90): O HAMBÚRGUER VIRA × E SEGUE -->
-  <!-- CLICÁVEL COM O OVERLAY ABERTO. POR ISSO OS OVERLAYS TÊM padding-top DE 64px E -->
-  <!-- O BOTÃO FECHAR DE CADA UM NASCE LOGO ABAIXO DA BARRA — NUNCA SOB ELA. -->
 
   <header class="nav-bar">
-    <!-- ------ HAMBÚRGUER — ABRE O MENU / FECHA O OVERLAY ATIVO ------ -->
+
+    <!-- HAMBÚRGUER — ABRE O MENU / FECHA O OVERLAY ATIVO -->
     <button
       class="nav-hamburger"
       type="button"
@@ -51,7 +54,7 @@
       <span class="nav-hamburger__bar"></span>
     </button>
 
-    <!-- ------ WHATSAPP — HREF INJETADO POR nav.js A PARTIR DE getWhatsappLink() ------ -->
+    <!-- HREF INJETADO POR nav.js -->
     <a class="nav-whatsapp" href="#" data-nav-whatsapp target="_blank" rel="noopener noreferrer">
       <svg class="nav-whatsapp__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23 2.2 0 4.26.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.98-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
@@ -79,8 +82,6 @@
     <div class="nav-overlay__inner nav-overlay__inner--menu" data-nav-stagger>
       <p class="nav-eyebrow">Menu</p>
 
-      <!-- SEGUNDO GRUPO DE STAGGER: OS <li> ESCALONAM ENTRE SI, ALÉM DO ESCALONAMENTO -->
-      <!-- DO BLOCO (EYEBROW → LISTA → RODAPÉ) QUE VEM DO WRAPPER ACIMA. -->
       <ul class="nav-menu-list" data-nav-stagger>
         <li class="nav-menu-item">
           <button class="nav-menu-btn" type="button" data-nav-open="ivan">
@@ -89,8 +90,7 @@
             <span class="nav-menu-btn__label">Conheça o Ivan</span>
             <span class="nav-menu-btn__arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
               </svg>
             </span>
           </button>
@@ -103,8 +103,7 @@
             <span class="nav-menu-btn__label">Planos</span>
             <span class="nav-menu-btn__arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
               </svg>
             </span>
           </button>
@@ -117,8 +116,7 @@
             <span class="nav-menu-btn__label">Avaliação Completa</span>
             <span class="nav-menu-btn__arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
               </svg>
             </span>
           </button>
@@ -149,7 +147,6 @@
     </button>
 
     <div class="nav-ivan">
-      <!-- FOTO — COLUNA ESQUERDA NO DESKTOP, TOPO NO MOBILE -->
       <div class="nav-ivan__media">
         <img
           class="nav-ivan__photo"
@@ -159,9 +156,7 @@
           decoding="async"
         />
 
-        <!-- EYEBROW + NOME + CARGO — SOBREPOSTOS NA BASE DA FOTO, SOBRE O DEGRADÊ -->
-        <!-- data-nav-stagger PRÓPRIO: AO SAIR DO .nav-ivan__content ESTES ELEMENTOS -->
-        <!-- PERDERIAM O REVEAL DE ENTRADA DO OVERLAY. -->
+        <!-- data-nav-stagger PRÓPRIO — FORA DO .nav-ivan__content, PERDERIA O REVEAL. -->
         <div class="nav-ivan__photo-text" data-nav-stagger>
           <p class="nav-eyebrow">Conheça o Ivan</p>
           <h2 class="nav-ivan__name">Ivan Giovanella</h2>
@@ -169,13 +164,12 @@
         </div>
       </div>
 
-      <!-- TEXTO — COLUNA DIREITA NO DESKTOP, ABAIXO NO MOBILE -->
       <div class="nav-ivan__content" data-nav-stagger>
         <p class="nav-ivan__text">Sou consultor de vendas da Unimed VTRP e atuo ajudando empresas a encontrar soluções em saúde que atendam às necessidades dos seus colaboradores e da realidade financeira do negócio.</p>
         <p class="nav-ivan__text">Meu trabalho vai além da apresentação de um plano de saúde. Busco entender cada empresa para oferecer alternativas que contribuam para a retenção de talentos, valorização das equipes e promoção da qualidade de vida.</p>
         <p class="nav-ivan__text">Atendo empresas de diferentes portes e acompanho todo o processo, desde a análise das necessidades até a implantação do plano.</p>
 
-        <!-- HREF INJETADO POR nav.js A PARTIR DE getWhatsappLink() -->
+        <!-- HREF INJETADO POR nav.js -->
         <a href="#" class="hero-cta nav-cta" data-nav-whatsapp target="_blank" rel="noopener noreferrer">
           <span class="hero-cta-label">Falar no WhatsApp</span>
           <span class="hero-cta-glow" aria-hidden="true"><span></span></span>
@@ -185,8 +179,7 @@
   </div>
 
   <!-- ------ OVERLAY 3 — PLANOS ------ -->
-  <!-- OS CARDS SÃO GERADOS POR initPlansSection() A PARTIR DE SITE_DATA.planos -->
-  <!-- EM src/sections/nav.js — O CONTÊINER [data-nav-plans] NASCE VAZIO AQUI. -->
+  <!-- CARDS GERADOS POR initPlansSection() A PARTIR DE SITE_DATA.planos — NASCE VAZIO. -->
   <div
     class="nav-overlay nav-overlay--planos"
     id="nav-overlay-planos"
@@ -205,15 +198,12 @@
     <div class="nav-overlay__inner nav-overlay__inner--centered" data-nav-stagger>
       <p class="nav-eyebrow">Planos</p>
       <h2 class="nav-headline">Escolha o plano <br>ideal para você</h2>
-
-      <!-- CARDS INJETADOS POR initPlansSection() A PARTIR DE SITE_DATA.planos -->
       <div class="nav-plans" data-nav-plans></div>
     </div>
   </div>
 
   <!-- ------ OVERLAY 4 — AVALIAÇÃO COMPLETA ------ -->
-  <!-- FORM DUPLICADO DO MODAL DA SEÇÃO 7 (#cta). O DA SEÇÃO 7 SEGUE INTACTO — ESTE É -->
-  <!-- UMA SEGUNDA ENTRADA PELO MENU. HOOKS PREFIXADOS COM nav- PARA NÃO COLIDIR. -->
+  <!-- FORM INDEPENDENTE DO MODAL DA SEÇÃO 7 — SEGUNDA ENTRADA PELO MENU. -->
   <div
     class="nav-overlay nav-overlay--avaliacao"
     id="nav-overlay-avaliacao"
@@ -285,13 +275,11 @@
          SEÇÃO 1 — HERO — VÍDEO ANIMADO DE ENTRADA
          ======================================== -->
 
-    <!-- ------ INTRO EM VÍDEO ------ -->
     <div id="intro-overlay" aria-hidden="true">
       <video id="intro-video" src="/videos/VIDEO-UNIMED-LOGO.mp4" muted playsinline webkit-playsinline preload="auto"></video>
     </div>
 
-    <!-- ------ CONTEÚDO DO HERO — MARKUP ESTÁTICO (LCP/CLS) ------ -->
-    <!-- TEXTO DE REFERÊNCIA EM src/data/site-data.js — hero.js APENAS SELECIONA E ANIMA -->
+    <!-- MARKUP ESTÁTICO (LCP/CLS) — hero.js APENAS SELECIONA E ANIMA. -->
     <section id="hero" aria-label="Apresentação">
       <div class="hero-content">
         <p class="hero-eyebrow">
@@ -310,14 +298,13 @@
           <span class="hero-line-wrap"><span class="hero-line" data-highlight="true">e valorizar quem faz o negócio crescer.</span></span>
         </h1>
         <p class="hero-subheadline">Sua empresa ganha em produtividade, retenção e qualidade de vida.</p>
-        <!-- HREF INJETADO POR hero.js A PARTIR DE getWhatsappLink() (FONTE ÚNICA: src/data/site-data.js) -->
+        <!-- HREF INJETADO POR hero.js -->
         <a href="#" class="hero-cta" target="_blank" rel="noopener noreferrer">
           <span class="hero-cta-label">Falar no WhatsApp</span>
           <span class="hero-cta-glow" aria-hidden="true"><span></span></span>
         </a>
       </div>
 
-      <!-- ------ DIVISÓRIA EM ONDA — TRANSIÇÃO HERO → SOBRE ------ -->
       <div class="hero-wave" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#E8F0EB"/>
@@ -328,11 +315,11 @@
     <!-- ========================================
          SEÇÃO 2 — SOBRE
          ======================================== -->
-    <!-- TEXTO DE REFERÊNCIA EM src/data/site-data.js — sobre.js APENAS SELECIONA E ANIMA -->
+
+    <!-- MARKUP ESTÁTICO — sobre.js APENAS SELECIONA E ANIMA. -->
     <section id="sobre" aria-label="Sobre o consultor">
       <div class="sobre-inner">
 
-        <!-- ------ FOTO — ESQUERDA NO DESKTOP, TOPO NO MOBILE ------ -->
         <div class="sobre-media">
           <div class="sobre-photo-wave-top" aria-hidden="true">
             <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -350,7 +337,6 @@
           />
         </div>
 
-        <!-- ------ TEXTO — DIREITA NO DESKTOP, ABAIXO NO MOBILE ------ -->
         <div class="sobre-content">
           <p class="sobre-eyebrow">
             Sobre o
@@ -366,78 +352,70 @@
           <p class="sobre-text">Meu atendimento é consultivo e personalizado. Antes de apresentar qualquer proposta, busco compreender a realidade da empresa, o perfil dos colaboradores e seus objetivos, para indicar a solução que ofereça o melhor equilíbrio entre cobertura, custo-benefício e qualidade.</p>
           <p class="sobre-text">Mais do que vender um plano de saúde, meu compromisso é orientar sua empresa com transparência, segurança e acompanhamento em todas as etapas, para que você tome uma decisão com confiança.</p>
 
-          <!-- ------ CARDS STACK — NAVEGAÇÃO MANUAL: ARROW + DOTS (sobre.js) ------ -->
           <div class="sobre-stack">
+            <ul class="sobre-cards" aria-label="Destaques do consultor">
 
-          <ul class="sobre-cards" aria-label="Destaques do consultor">
+              <li class="sobre-card">
+                <span class="sobre-card__tag">Ivan Giovanella</span>
+                <p class="sobre-card__stat">
+                  <span class="sobre-card__number">+5</span>
+                  <span class="sobre-card__suffix">anos</span>
+                </p>
+                <p class="sobre-card__label">de experiência com planos Unimed</p>
+              </li>
 
-            <!-- CARD 1 — EXPERIÊNCIA -->
-            <li class="sobre-card">
-              <span class="sobre-card__tag">Ivan Giovanella</span>
-              <p class="sobre-card__stat">
-                <span class="sobre-card__number">+5</span>
-                <span class="sobre-card__suffix">anos</span>
-              </p>
-              <p class="sobre-card__label">de experiência com planos Unimed</p>
-            </li>
+              <li class="sobre-card">
+                <span class="sobre-card__tag">Alcance</span>
+                <p class="sobre-card__stat">
+                  <span class="sobre-card__number">+500</span>
+                </p>
+                <p class="sobre-card__label">vidas atendidas e protegidas</p>
+              </li>
 
-            <!-- CARD 2 — ALCANCE -->
-            <li class="sobre-card">
-              <span class="sobre-card__tag">Alcance</span>
-              <p class="sobre-card__stat">
-                <span class="sobre-card__number">+500</span>
-              </p>
-              <p class="sobre-card__label">vidas atendidas e protegidas</p>
-            </li>
+              <li class="sobre-card">
+                <span class="sobre-card__tag">Satisfação</span>
+                <p class="sobre-card__stat">
+                  <span class="sobre-card__number">98%</span>
+                </p>
+                <p class="sobre-card__label">de clientes satisfeitos</p>
+              </li>
 
-            <!-- CARD 3 — SATISFAÇÃO -->
-            <li class="sobre-card">
-              <span class="sobre-card__tag">Satisfação</span>
-              <p class="sobre-card__stat">
-                <span class="sobre-card__number">98%</span>
-              </p>
-              <p class="sobre-card__label">de clientes satisfeitos</p>
-            </li>
+              <li class="sobre-card">
+                <span class="sobre-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
+                  </svg>
+                </span>
+                <h3 class="sobre-card__title">Atendimento personalizado</h3>
+                <p class="sobre-card__label">Você fala com uma pessoa real</p>
+              </li>
 
-            <!-- CARD 4 — ATENDIMENTO HUMANIZADO -->
-            <li class="sobre-card">
-              <span class="sobre-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
-                </svg>
-              </span>
-              <h3 class="sobre-card__title">Atendimento personalizado</h3>
-              <p class="sobre-card__label">Você fala com uma pessoa real</p>
-            </li>
+              <li class="sobre-card">
+                <span class="sobre-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                </span>
+                <h3 class="sobre-card__title">Transparência e ética</h3>
+                <p class="sobre-card__label">Sem letras miúdas, sem surpresas</p>
+              </li>
 
-            <!-- CARD 5 — TRANSPARÊNCIA E ÉTICA -->
-            <li class="sobre-card">
-              <span class="sobre-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/>
-                  <path d="m9 12 2 2 4-4"/>
-                </svg>
-              </span>
-              <h3 class="sobre-card__title">Transparência e ética</h3>
-              <p class="sobre-card__label">Sem letras miúdas, sem surpresas</p>
-            </li>
+              <li class="sobre-card">
+                <span class="sobre-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                  </svg>
+                </span>
+                <h3 class="sobre-card__title">Agilidade no processo</h3>
+                <p class="sobre-card__label">Do contato à proposta em horas</p>
+              </li>
 
-            <!-- CARD 6 — AGILIDADE NO PROCESSO -->
-            <li class="sobre-card">
-              <span class="sobre-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                  <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                  <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-                  <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
-                </svg>
-              </span>
-              <h3 class="sobre-card__title">Agilidade no processo</h3>
-              <p class="sobre-card__label">Do contato à proposta em horas</p>
-            </li>
+            </ul>
 
-          </ul>
-            <!-- ------ DOTS — NAVEGAÇÃO DIRETA, LATERAL DIREITA ------ -->
             <div class="sobre-dots" aria-label="Selecionar destaque">
               <button type="button" class="sobre-dot" aria-label="Ir para o card 1"></button>
               <button type="button" class="sobre-dot" aria-label="Ir para o card 2"></button>
@@ -447,20 +425,16 @@
               <button type="button" class="sobre-dot" aria-label="Ir para o card 6"></button>
             </div>
 
-            <!-- ------ BOTÃO PRÓXIMO — ABAIXO DO STACK, CENTRALIZADO ------ -->
             <button type="button" class="sobre-nav-arrow" aria-label="Próximo card">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 5v14" />
-                <path d="m19 12-7 7-7-7" />
+                <path d="M12 5v14" /><path d="m19 12-7 7-7-7" />
               </svg>
             </button>
-
           </div>
         </div>
 
       </div>
 
-      <!-- ------ DIVISÓRIA EM ONDA — TRANSIÇÃO SOBRE → MARCAS ------ -->
       <div class="sobre-wave" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#06301F"/>
@@ -471,6 +445,7 @@
     <!-- ========================================
          SEÇÃO 3 — MARCAS
          ======================================== -->
+
     <section id="marcas" aria-label="Empresas que confiam na Unimed">
       <div class="marcas-inner">
         <p class="marcas-eyebrow">
@@ -494,12 +469,10 @@
     <!-- ========================================
          SEÇÃO 4 — PARA QUEM É — PERFIS DE CONTRATAÇÃO
          ======================================== -->
-    <!-- ACCORDION DE PERFIS: LISTA DE BOTÕES À ESQUERDA + CARD DE DETALHE À DIREITA. -->
-    <!-- FUNDO CLARO (--color-surface-2), IGUAL À SEÇÃO 2 E À SEÇÃO 5 (COMO FUNCIONA). -->
+
     <section id="para-quem-e" aria-label="Para quem é — perfis de contratação">
 
-      <!-- ------ DIVISÓRIA EM ONDA — TRANSIÇÃO MARCAS (ESCURA) → PARA QUEM É (CLARA) ------ -->
-      <!-- PREENCHE COM #06301F, A COR DA SEÇÃO 3, SOBRE O FUNDO CLARO DESTA SEÇÃO. -->
+      <!-- TRANSIÇÃO MARCAS (ESCURA) → PARA QUEM É (CLARA) -->
       <div class="para-quem-wave-top" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#06301F"/>
@@ -508,10 +481,7 @@
 
       <div class="para-quem-inner">
 
-        <!-- ------ CABEÇALHO ------ -->
         <div class="para-quem-header">
-          <!-- ROLETA — MESMA ESTRUTURA DAS DEMAIS SEÇÕES. O CLONE DA PRIMEIRA -->
-          <!-- PALAVRA É INJETADO POR para-quem-e.js PARA O RESET SILENCIOSO. -->
           <p class="para-quem-eyebrow">
             Feito para
             <span class="pq-eyebrow-roulette" aria-live="polite" aria-label="você">
@@ -528,93 +498,70 @@
           <h2 class="para-quem-title">O plano certo <span class="para-quem-title--highlight">para cada perfil</span></h2>
         </div>
 
-        <!-- ------ ACCORDION — COLUNA DE ITENS (BOTÃO + DETALHE PRÓPRIO) ------ -->
-        <!-- CADA ITEM ABRE SEU CARD LOGO ABAIXO DO BOTÃO, EMPURRANDO OS SEGUINTES. -->
-        <!-- OS ATRIBUTOS data-detail* SÃO EXIGIDOS PELO GUARD DE sections/para-quem-e.js. -->
         <div class="para-quem-accordion" aria-label="Perfis de contratação">
 
-          <!-- PERFIL 01 — PESSOA FÍSICA -->
           <div class="para-quem-item">
-            <button class="para-quem-btn" type="button" data-index="0"
-                    aria-expanded="false" aria-controls="para-quem-detail-0">
+            <button class="para-quem-btn" type="button" data-index="0" aria-expanded="false" aria-controls="para-quem-detail-0">
               <span class="para-quem-btn__label">Pessoa Física</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 5v14" />
-                  <path d="M5 12h14" />
+                  <path d="M12 5v14" /><path d="M5 12h14" />
                 </svg>
               </span>
             </button>
             <div class="para-quem-detail" id="para-quem-detail-0" data-detail>
-              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
-                <i class="ti ti-user"></i>
-              </span>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true"><i class="ti ti-user"></i></span>
               <span class="para-quem-detail__tag" data-detail-tag>Cuidado individual</span>
               <h3 class="para-quem-detail__title" data-detail-title>Pessoa Física</h3>
               <p class="para-quem-detail__text" data-detail-text>Para quem quer cobertura completa sem depender de plano empresarial. A partir de uma vida, com atendimento personalizado.</p>
             </div>
           </div>
 
-          <!-- PERFIL 02 — MEI -->
           <div class="para-quem-item">
-            <button class="para-quem-btn" type="button" data-index="1"
-                    aria-expanded="false" aria-controls="para-quem-detail-1">
+            <button class="para-quem-btn" type="button" data-index="1" aria-expanded="false" aria-controls="para-quem-detail-1">
               <span class="para-quem-btn__label">MEI</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 5v14" />
-                  <path d="M5 12h14" />
+                  <path d="M12 5v14" /><path d="M5 12h14" />
                 </svg>
               </span>
             </button>
             <div class="para-quem-detail" id="para-quem-detail-1" data-detail>
-              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
-                <i class="ti ti-briefcase"></i>
-              </span>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true"><i class="ti ti-briefcase"></i></span>
               <span class="para-quem-detail__tag" data-detail-tag>Você é seu negócio</span>
               <h3 class="para-quem-detail__title" data-detail-title>MEI</h3>
               <p class="para-quem-detail__text" data-detail-text>Tenha um plano que protege quem faz tudo acontecer. Cobertura completa para o empreendedor que não pode parar.</p>
             </div>
           </div>
 
-          <!-- PERFIL 03 — PEQUENAS EMPRESAS -->
           <div class="para-quem-item">
-            <button class="para-quem-btn" type="button" data-index="2"
-                    aria-expanded="false" aria-controls="para-quem-detail-2">
+            <button class="para-quem-btn" type="button" data-index="2" aria-expanded="false" aria-controls="para-quem-detail-2">
               <span class="para-quem-btn__label">Pequenas empresas</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 5v14" />
-                  <path d="M5 12h14" />
+                  <path d="M12 5v14" /><path d="M5 12h14" />
                 </svg>
               </span>
             </button>
             <div class="para-quem-detail" id="para-quem-detail-2" data-detail>
-              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
-                <i class="ti ti-building-community"></i>
-              </span>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true"><i class="ti ti-building-community"></i></span>
               <span class="para-quem-detail__tag" data-detail-tag>Sem burocracia</span>
               <h3 class="para-quem-detail__title" data-detail-title>Pequenas empresas</h3>
               <p class="para-quem-detail__text" data-detail-text>Ofereça um benefício real para sua equipe sem complicação. Planos acessíveis que cabem no orçamento do seu negócio.</p>
             </div>
           </div>
 
-          <!-- PERFIL 04 — MÉDIAS EMPRESAS -->
           <div class="para-quem-item">
-            <button class="para-quem-btn" type="button" data-index="3"
-                    aria-expanded="false" aria-controls="para-quem-detail-3">
+            <button class="para-quem-btn" type="button" data-index="3" aria-expanded="false" aria-controls="para-quem-detail-3">
               <span class="para-quem-btn__label">Médias e grandes empresas</span>
               <span class="para-quem-btn__toggle" aria-hidden="true">
                 <svg class="para-quem-btn__toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 5v14" />
-                  <path d="M5 12h14" />
+                  <path d="M12 5v14" /><path d="M5 12h14" />
                 </svg>
               </span>
             </button>
             <div class="para-quem-detail" id="para-quem-detail-3" data-detail>
-              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true">
-                <i class="ti ti-building"></i>
-              </span>
+              <span class="para-quem-detail__icon" data-detail-icon aria-hidden="true"><i class="ti ti-building"></i></span>
               <span class="para-quem-detail__tag" data-detail-tag>Reduza rotatividade</span>
               <h3 class="para-quem-detail__title" data-detail-title>Médias e grandes empresas</h3>
               <p class="para-quem-detail__text" data-detail-text>Atraia e retenha talentos com saúde de qualidade. Um benefício que faz diferença na hora de contratar.</p>
@@ -622,23 +569,18 @@
           </div>
 
         </div>
-
       </div>
     </section>
 
     <!-- ========================================
          SEÇÃO 5 — COMO FUNCIONA — STEPPER ANIMADO
          ======================================== -->
-    <!-- CONTINUIDADE VISUAL: MESMO FUNDO CLARO DA SEÇÃO 2 E DA SEÇÃO 4 (--color-surface-2). -->
-    <!-- SEM ONDA DE ENTRADA: A SEÇÃO 4 (PARA QUEM É) JÁ É CLARA — AS DUAS COMPARTILHAM O FUNDO. -->
-    <section id="como-funciona" aria-label="Como funciona">
 
+    <!-- MESMO FUNDO CLARO DA SEÇÃO 4 — SEM ONDA DE ENTRADA ENTRE ELAS. -->
+    <section id="como-funciona" aria-label="Como funciona">
       <div class="como-funciona-inner">
 
-        <!-- ------ CABEÇALHO ------ -->
         <div class="como-funciona-header">
-          <!-- ROLETA — MESMA ESTRUTURA DAS SEÇÕES 1, 2 E 3. O CLONE DA PRIMEIRA -->
-          <!-- PALAVRA É INJETADO POR como-funciona.js PARA O RESET SILENCIOSO. -->
           <p class="como-funciona-eyebrow">
             Como funciona:
             <span class="como-funciona-eyebrow-roulette" aria-live="polite" aria-label="5 passos">
@@ -654,12 +596,10 @@
           <h2 class="como-funciona-title">Em poucos passos,<br><span class="como-funciona-title--highlight">ajudamos sua empresa a encontrar o plano ideal</span></h2>
         </div>
 
-        <!-- ------ STEPPER — PISTA DA LINHA + CARDS ALTERNADOS ------ -->
         <div class="como-funciona-stepper">
 
-          <!-- LINHA — PATH CALCULADO EM JS A PARTIR DO RECT DE CADA PIN (NUNCA COORDENADAS FIXAS) -->
-          <!-- A MÁSCARA CARREGA O MESMO PATH: O TRAÇO BRANCO É DESENHADO VIA STROKEDASHOFFSET -->
-          <!-- E REVELA PROGRESSIVAMENTE A LINHA TRACEJADA VISÍVEL -->
+          <!-- PATH CALCULADO EM JS A PARTIR DO RECT DE CADA PIN — NUNCA COORDENADAS FIXAS.
+               MÁSCARA COM O MESMO PATH: TRAÇO BRANCO DESENHADO VIA STROKEDASHOFFSET. -->
           <svg class="como-funciona-line" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <mask id="como-funciona-line-mask">
@@ -671,7 +611,6 @@
 
           <ol class="como-funciona-steps">
 
-            <!-- CARD 01 — PRIMEIRO CONTATO -->
             <li class="como-funciona-card">
               <span class="como-funciona-card__pin" aria-hidden="true"></span>
               <div class="como-funciona-card__head">
@@ -687,7 +626,6 @@
               <p class="como-funciona-card__text">Você entra em contato pelo WhatsApp direto ou através do formulário.</p>
             </li>
 
-            <!-- CARD 02 — ANÁLISE DO PERFIL -->
             <li class="como-funciona-card">
               <span class="como-funciona-card__pin" aria-hidden="true"></span>
               <div class="como-funciona-card__head">
@@ -705,7 +643,6 @@
               <p class="como-funciona-card__text">Analisamos o seu perfil PF ou PJ e suas necessidades.</p>
             </li>
 
-            <!-- CARD 03 — PROPOSTA PERSONALIZADA -->
             <li class="como-funciona-card">
               <span class="como-funciona-card__pin" aria-hidden="true"></span>
               <div class="como-funciona-card__head">
@@ -714,9 +651,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                     <path d="M17 21H7a2 2 0 0 1 -2 -2V5a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-                    <path d="M9 9h1" />
-                    <path d="M9 13h6" />
-                    <path d="M9 17h6" />
+                    <path d="M9 9h1" /><path d="M9 13h6" /><path d="M9 17h6" />
                   </svg>
                 </span>
               </div>
@@ -724,7 +659,6 @@
               <p class="como-funciona-card__text">Apresentamos uma proposta personalizada, explicando cada opção de forma clara para que você escolha a solução mais adequada.</p>
             </li>
 
-            <!-- CARD 04 — CONTRATACAO E IMPLANTACAO -->
             <li class="como-funciona-card">
               <span class="como-funciona-card__pin" aria-hidden="true"></span>
               <div class="como-funciona-card__head">
@@ -743,7 +677,6 @@
               <p class="como-funciona-card__text">Cuidamos de toda a contratação e implantação para que sua empresa tenha tranquilidade durante o processo.</p>
             </li>
 
-            <!-- CARD 05 — PÓS-VENDA -->
             <li class="como-funciona-card">
               <span class="como-funciona-card__pin" aria-hidden="true"></span>
               <div class="como-funciona-card__head">
@@ -762,19 +695,14 @@
           </ol>
         </div>
       </div>
-
-      <!-- ------ SAÍDA DA SEÇÃO 5 ------ -->
-      <!-- SEM ONDA DE SAÍDA AQUI: A TRANSIÇÃO S4 (CLARA) → S5 (ESCURA) É FEITA POR UMA -->
-      <!-- ÚNICA ONDA, A .depoimentos-wave-top NO TOPO DA SEÇÃO 6. DUAS ONDAS NO MESMO -->
-      <!-- SEAM CRIAVAM UMA FAIXA CLARA (light → dark → LIGHT → dark). -->
     </section>
 
     <!-- ========================================
          SEÇÃO 6 — DEPOIMENTOS — CARDS EMPILHADOS
          ======================================== -->
+
     <section id="depoimentos" aria-label="Depoimentos de clientes">
 
-      <!-- ------ FUNDO — LETRAS VAZADAS (DECORATIVO) ------ -->
       <div class="depoimentos-bg-text" aria-hidden="true">
         <span>FEEDBACK</span>
         <span>FEEDBACK</span>
@@ -782,8 +710,7 @@
         <span>FEEDBACK</span>
       </div>
 
-      <!-- ------ DIVISÓRIA EM ONDA — TRANSIÇÃO SEÇÃO 5 → DEPOIMENTOS ------ -->
-      <!-- SEÇÃO ANTERIOR É CLARA (--color-surface-2): ONDA PREENCHE COM ELA SOBRE O VERDE -->
+      <!-- TRANSIÇÃO SEÇÃO 5 (CLARA) → DEPOIMENTOS (ESCURA) -->
       <div class="depoimentos-wave-top" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#E8F0EB"/>
@@ -792,10 +719,7 @@
 
       <div class="depoimentos-inner">
 
-        <!-- ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO ------ -->
         <div class="depoimentos-header">
-          <!-- ROLETA — MESMA ESTRUTURA DA SEÇÃO 5. O CLONE DA PRIMEIRA PALAVRA É -->
-          <!-- INJETADO POR depoimentos.js PARA O RESET SILENCIOSO. -->
           <p class="depoimentos-eyebrow">
             O que dizem:
             <span class="depoimentos-eyebrow-roulette" aria-live="polite" aria-label="nossos clientes">
@@ -810,13 +734,11 @@
           <h2 class="depoimentos-title">Empresas que já cuidam<br><span class="depoimentos-title--highlight">de quem faz acontecer</span></h2>
         </div>
 
-        <!-- ------ PALCO — CARDS EMPILHADOS (POSIÇÕES DEFINIDAS POR depoimentos.js) ------ -->
         <div class="depoimentos-stage">
           <ul class="depoimentos-cards" aria-label="Depoimentos">
 
-            <!-- CARD 01 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Eu adiava isso faz tempo. O Ivan me ligou, explicou tudo sem enrolação e em menos de uma semana minha equipe já tinha cobertura. Simples assim.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -824,9 +746,8 @@
               </div>
             </li>
 
-            <!-- CARD 02 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">A gente tinha um plano caro que não atendia bem. O Ivan analisou o que a gente usava de verdade e reduziu o custo em quase 30%. Os funcionários adoraram a troca.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -834,9 +755,8 @@
               </div>
             </li>
 
-            <!-- CARD 03 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Contratei pra mim e pros meus 4 sócios. O atendimento foi rápido, sem burocracia e o Ivan ainda nos ajudou a entender o que cada cobertura significava na prática.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -844,9 +764,8 @@
               </div>
             </li>
 
-            <!-- CARD 04 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Nossa rotatividade caiu depois que oferecemos o plano. Os colaboradores valorizam muito. Foi um investimento que fez sentido desde o primeiro mês.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -854,9 +773,8 @@
               </div>
             </li>
 
-            <!-- CARD 05 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Já tentei contratar plano empresarial antes e foi um pesadelo. Com o Ivan foi diferente — ele acompanhou tudo, tirou dúvida até no domingo.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -864,9 +782,8 @@
               </div>
             </li>
 
-            <!-- CARD 06 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Tenho 18 funcionários e nunca pensei que conseguiria oferecer plano de saúde. O Ivan montou uma solução que coube no nosso orçamento. Hoje é um diferencial na hora de contratar.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -874,9 +791,8 @@
               </div>
             </li>
 
-            <!-- CARD 07 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">O que me surpreendeu foi o pós-venda. Tivemos um problema com um reembolso e o Ivan resolveu em dois dias. Isso faz diferença.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -884,9 +800,8 @@
               </div>
             </li>
 
-            <!-- CARD 08 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Indicaria sem pensar duas vezes. Minha empresa tem 8 pessoas e o Ivan tratou a gente como se fosse uma grande conta. Atendimento de verdade.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -894,9 +809,8 @@
               </div>
             </li>
 
-            <!-- CARD 09 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">A proposta chegou no mesmo dia. Sem letra miúda, sem surpresa no boleto. O que foi prometido foi entregue. Renovei sem hesitar.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -904,9 +818,8 @@
               </div>
             </li>
 
-            <!-- CARD 10 -->
             <li class="depoimento-card">
-              <span class="depoimento-card__quote" aria-hidden="true">“</span>
+              <span class="depoimento-card__quote" aria-hidden="true">"</span>
               <p class="depoimento-card__label">Depoimento</p>
               <p class="depoimento-card__text">Eu precisava de algo rápido porque estava perdendo um funcionário-chave para uma empresa maior. O Ivan entrou com o plano em tempo recorde. Consegui segurar o colaborador.</p>
               <div class="depoimento-card__stars" aria-label="5 de 5 estrelas">
@@ -917,7 +830,6 @@
           </ul>
         </div>
 
-        <!-- ------ NAVEGAÇÃO — ANTERIOR / PRÓXIMO ------ -->
         <div class="depoimentos-nav">
           <button type="button" class="depoimentos-nav-arrow" data-dir="prev" aria-label="Depoimento anterior">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -932,16 +844,15 @@
         </div>
 
       </div>
-
     </section>
 
     <!-- ========================================
          SEÇÃO 7 — CTA FINAL — CONVERSÃO
          ======================================== -->
+
     <section id="cta">
 
-      <!-- ------ ONDA DE ENTRADA — TRANSIÇÃO SEÇÃO 6 (VERDE) → CTA (CLARO) ------ -->
-      <!-- SEÇÃO ANTERIOR É ESCURA (--color-paper): ONDA PREENCHE COM ELA SOBRE O CLARO -->
+      <!-- TRANSIÇÃO SEÇÃO 6 (ESCURA) → CTA (CLARA) -->
       <div class="cta-wave-top" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#06301F"/>
@@ -950,10 +861,7 @@
 
       <div class="cta-inner">
 
-        <!-- ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO + SUBTÍTULO ------ -->
         <div class="cta-header">
-          <!-- ROLETA — MESMA ESTRUTURA DAS SEÇÕES ANTERIORES. O CLONE DA PRIMEIRA -->
-          <!-- PALAVRA É INJETADO POR cta.js PARA O RESET SILENCIOSO. -->
           <p class="cta-eyebrow">
             Próximo
             <span class="cta-eyebrow-roulette" aria-live="polite" aria-label="passo">
@@ -969,9 +877,8 @@
           <p class="cta-subtitle">Fale agora com Ivan e descubra o plano ideal para a sua empresa.</p>
         </div>
 
-        <!-- ------ BOTÕES PRINCIPAIS ------ -->
         <div class="cta-actions">
-          <!-- HREF INJETADO POR cta.js A PARTIR DE getWhatsappLink() (FONTE ÚNICA: src/data/site-data.js) -->
+          <!-- HREF INJETADO POR cta.js -->
           <a href="#" class="cta-btn cta-btn--whatsapp" target="_blank" rel="noopener noreferrer">
             <svg class="cta-btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23 2.2 0 4.26.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.98-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
@@ -989,7 +896,6 @@
           </button>
         </div>
 
-        <!-- ------ FAB REDES SOCIAIS ------ -->
         <div class="cta-social-wrap">
           <p class="cta-social-label">Siga nas redes</p>
           <div class="cta-social" data-cta-social>
@@ -1026,13 +932,6 @@
         </div>
 
       </div>
-
-      <!-- ------ MODAL DE AVALIAÇÃO ------ -->
-      <!-- O MARKUP DO MODAL NÃO VIVE MAIS AQUI: ELE FOI PROMOVIDO A FILHO DIRETO DE -->
-      <!-- <body>, LOGO APÓS O <footer>. #cta TEM isolation: isolate, QUE CRIA UM -->
-      <!-- STACKING CONTEXT LOCAL — DENTRO DELE O z-index DO MODAL NUNCA ALCANÇAVA A -->
-      <!-- .nav-bar (z 200 NA RAIZ), QUE PINTAVA POR CIMA DO TÍTULO E DO BOTÃO ×. -->
-
     </section>
 
   </main>
@@ -1045,10 +944,9 @@
   <!-- ========================================
        SEÇÃO 7 — MODAL DE AVALIAÇÃO — FILHO DIRETO DE <body>
        ======================================== -->
-  <!-- FORA DE #cta DE PROPÓSITO: AQUELA SEÇÃO TEM isolation: isolate E O STACKING -->
-  <!-- CONTEXT LOCAL PRENDIA O z-index DO MODAL ABAIXO DA .nav-bar (z 200 NA RAIZ). -->
-  <!-- NA RAIZ O z-index: 300 DO CSS VALE DE VERDADE. position: fixed NÃO DEPENDE DO -->
-  <!-- PAI, ENTÃO A GEOMETRIA DO MODAL NÃO MUDA COM A MOVIDA. -->
+  <!-- FORA DE #cta: isolation: isolate NAQUELA SEÇÃO PRENDIA O z-index ABAIXO DA .nav-bar.
+       NA RAIZ O z-index: 300 VALE DE VERDADE. position: fixed NÃO DEPENDE DO PAI. -->
+
   <div class="cta-modal" data-cta-modal aria-hidden="true">
     <div class="cta-modal__overlay" data-cta-modal-overlay></div>
     <div class="cta-modal__card" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="cta-modal-title">

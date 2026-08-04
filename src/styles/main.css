@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
 @import "@fontsource/bricolage-grotesque/800.css";
@@ -5,15 +9,15 @@
 @theme {
   --color-paper: #06301F;
   --color-surface: #0D1F17;
-  --color-surface-2: #E8F0EB; /* SEÇÃO 2 — VERDE OFF-WHITE, FUNDO CLARO */
-  --color-card: #F0F4F1; /* CARD — BRANCO LEVEMENTE ESVERDEADO, PREMIUM */
+  --color-surface-2: #E8F0EB;
+  --color-card: #F0F4F1;
   --color-black: #0A0A0A;
   --color-ink: #ffffff;
-  --color-ink-muted: #2D4A38; /* VERDE ESCURO MÉDIO — TEXTO SOBRE FUNDO CLARO */
+  --color-ink-muted: #2D4A38;
   --color-accent: #00995D;
-  --color-tint: #E1F5EE; /* VERDE CLARO — TEXTO E SUPERFÍCIES SOBRE FUNDO ESCURO */
-  --color-tint-strong: #d4f0e4; /* VERDE CLARO SATURADO — REALCES SOBRE FUNDO ESCURO */
-  --color-gold: #D4AF37; /* DOURADO — NUMERAÇÃO DO STEPPER (SEÇÃO 5) */
+  --color-tint: #E1F5EE;
+  --color-tint-strong: #d4f0e4;
+  --color-gold: #D4AF37;
   --color-orange: #E8621A;
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Inter Variable", sans-serif;
@@ -25,7 +29,6 @@
 
 html {
   scroll-behavior: auto;
-  /* TRAVA MOVIMENTO LATERAL NO MOBILE — body SOZINHO NÃO SEGURA overflow-x */
   overflow-x: hidden;
   overscroll-behavior-x: none;
 }
@@ -35,21 +38,17 @@ body {
   background-color: var(--color-black);
   color: var(--color-ink);
   overflow-x: hidden;
-  /* SEM RUBBER-BAND HORIZONTAL. O TRAVAMENTO LATERAL JÁ VEM DO overflow-x ACIMA (E DO */
-  /* PAR IDÊNTICO NO html): NÃO HÁ CONTEÚDO EXCEDENTE PARA ARRASTAR. */
-  /* ⚠️ SEM touch-action AQUI. UM pan-y NO body MATA O PINCH-TO-ZOOM DA PÁGINA INTEIRA */
-  /* — FALHA DE WCAG 1.4.4. SE ALGUM DIA FOR PRECISO RESTRINGIR GESTO, RESTRINJA NO */
-  /* ELEMENTO QUE PRECISA (CARROSSEL, TRACK ARRASTÁVEL), NUNCA NA RAIZ DO DOCUMENTO. */
   overscroll-behavior-x: none;
+  /* ⚠️ SEM touch-action: pan-y — MATA PINCH-TO-ZOOM (WCAG 1.4.4).
+     RESTRINGIR GESTOS SÓ NO ELEMENTO QUE PRECISAR, NUNCA NA RAIZ. */
 }
 
 /* ========================================
-   TRANSIÇÃO CINEMATOGRÁFICA ENTRE SEÇÕES
+   TRANSIÇÕES ENTRE SEÇÕES
    ======================================== */
 
-/* ------ TRANSIÇÕES ENTRE SEÇÕES VIA GRADIENTE ------ */
+/* ------ HERO — SOMBRA DO TOPO (LEGIBILIDADE DA NAV) ------ */
 
-/* HERO — TOPO: SOMBRA SUTIL PARA LEGIBILIDADE DA NAV */
 #hero::before {
   content: '';
   position: absolute;
@@ -62,23 +61,11 @@ body {
   z-index: 2;
 }
 
-/* HERO → SOBRE: GRADIENTE DESATIVADO — SUBSTITUÍDO PELA .hero-wave (SVG) */
-/* #hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, var(--color-paper), var(--color-surface-2));
-  pointer-events: none;
-  z-index: 2;
-} */
+/* ------ HERO → SOBRE ------ */
 
-/* HERO → SOBRE: DIVISÓRIA EM ONDA (SVG) */
 .hero-wave {
   position: absolute;
-  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL */
   left: 0;
   right: 0;
   z-index: 3;
@@ -88,26 +75,14 @@ body {
 .hero-wave svg {
   display: block;
   width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+  height: calc(clamp(40px, 6vw, 80px) + 2px);
 }
 
-/* SOBRE → MARCAS: GRADIENTE DESATIVADO — SUBSTITUÍDO PELA .sobre-wave (SVG) */
-/* #sobre::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, var(--color-surface-2), var(--color-paper));
-  pointer-events: none;
-  z-index: 0;
-} */
+/* ------ SOBRE → MARCAS ------ */
 
-/* SOBRE → MARCAS: DIVISÓRIA EM ONDA (SVG) */
 .sobre-wave {
   position: absolute;
-  bottom: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  bottom: -2px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -117,32 +92,15 @@ body {
 .sobre-wave svg {
   display: block;
   width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+  height: calc(clamp(40px, 6vw, 80px) + 2px);
 }
 
-/* MARCAS → PARA QUEM É: FADE PARA PRETO DESATIVADO */
-/* A TRANSIÇÃO ESCURO → CLARO É FEITA PELA .para-quem-wave-top (SVG). */
-/* #marcas::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, var(--color-paper), var(--color-black));
-  pointer-events: none;
-  z-index: 2;
-  transform: translateZ(0);
-  will-change: transform;
-} */
+/* ------ MARCAS → PARA QUEM É ------ */
+/* ANCORADA NO TOPO DA SEÇÃO 4 — PREENCHE COM A COR DA SEÇÃO 3 SOBRE O FUNDO CLARO. */
 
-/* MARCAS → PARA QUEM É: DIVISÓRIA EM ONDA (SVG) NO TOPO DA SEÇÃO 4 */
-/* ANCORADA NO TOPO E NÃO NO RODAPÉ DA SEÇÃO 3: O PADRÃO .sobre-photo-wave-top. */
-/* PREENCHE COM #06301F — A COR DA SEÇÃO ANTERIOR — SOBRE O FUNDO CLARO. */
-/* A SEÇÃO 5 (COMO FUNCIONA) NÃO TEM MAIS ONDA DE ENTRADA: A SEÇÃO 4 JÁ É CLARA. */
 .para-quem-wave-top {
   position: absolute;
-  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  top: -2px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -153,13 +111,11 @@ body {
 .para-quem-wave-top svg {
   display: block;
   width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+  height: calc(clamp(40px, 6vw, 80px) + 2px);
 }
 
-/* PARA QUEM É → COMO FUNCIONA: SEM ONDA. AS SEÇÕES 4 E 5 COMPARTILHAM O FUNDO CLARO. */
-/* COMO FUNCIONA → DEPOIMENTOS: SEM ONDA DE SAÍDA NA SEÇÃO 5. */
-/* A TRANSIÇÃO É FEITA POR UMA ÚNICA ONDA — .depoimentos-wave-top, NO TOPO DA SEÇÃO 6. */
-/* DUAS ONDAS NO MESMO SEAM PRODUZIAM UMA FAIXA CLARA INTERMEDIÁRIA. */
+/* SEÇÕES 4 E 5 COMPARTILHAM O FUNDO CLARO — SEM ONDA ENTRE ELAS.
+   TRANSIÇÃO 5 → 6 FEITA POR .depoimentos-wave-top NO TOPO DA SEÇÃO 6. */
 
 h1, h2, h3 {
   font-family: var(--font-display);
@@ -181,8 +137,7 @@ h1, h2, h3 {
   inset: 0;
   z-index: 50;
   background-color: #00995D;
-  /* ------ IOS: SEM isolation/overflow — EVITA STACKING CONTEXT QUE IMPEDE ------ */
-  /* ------ O COMPOSITING DO VÍDEO. STACKING CONTROLADO SÓ VIA z-index. ------ */
+  /* SEM isolation/overflow — EVITA STACKING CONTEXT QUE IMPEDE COMPOSITING DO VÍDEO NO IOS. */
 }
 
 #intro-video {
@@ -192,17 +147,14 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  /* ------ IOS: FORÇA CAMADA GPU PRÓPRIA ------ */
-  /* SEM ISSO, O SAFARI iOS DECODIFICA E TOCA O VÍDEO (TIMER PASSA) MAS */
-  /* NÃO COMPÕE OS FRAMES DENTRO DO STACKING CONTEXT FIXO/ISOLADO DO OVERLAY */
-  /* — SÓ O FUNDO VERDE APARECE. translateZ PROMOVE O VÍDEO A UMA CAMADA PRÓPRIA. */
+  /* translateZ PROMOVE O VÍDEO A UMA CAMADA GPU PRÓPRIA — CORRIGE COMPOSITING NO IOS SAFARI. */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* ------ CONTEÚDO DO HERO ------ */
+/* ------ HERO ------ */
 
 #hero {
   position: relative;
@@ -226,7 +178,7 @@ h1, h2, h3 {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 13px;
-  line-height: 1.2; /* EXPLÍCITO — CASA COM A ALTURA DA ROLETA (1.2em) */
+  line-height: 1.2;
   letter-spacing: 1.5px;
   color: var(--color-orange);
   text-transform: uppercase;
@@ -261,7 +213,8 @@ h1, h2, h3 {
   max-width: 480px;
 }
 
-/* ------ ROLETA DO EYEBROW — TRACK DESLIZANTE (transição CSS pura) ------ */
+/* ------ ROLETA DO EYEBROW — TRACK DESLIZANTE (CSS PURO) ------ */
+
 .eyebrow-roulette,
 .sobre-eyebrow-roulette,
 .marcas-eyebrow-roulette,
@@ -310,7 +263,8 @@ h1, h2, h3 {
   line-height: 1.4;
 }
 
-/* ------ CTA — EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER, NÃO REVEAL DE SCROLL. CSS PURO, FORA DO ESCOPO DO GSAP. ------ */
+/* ------ CTA ------ */
+/* EXCEÇÃO DOCUMENTADA: GLOW É MICRO-INTERAÇÃO DE HOVER — CSS PURO, FORA DO GSAP. */
 
 .hero-cta {
   display: inline-flex;
@@ -393,9 +347,10 @@ h1, h2, h3 {
   to { transform: rotate(360deg); }
 }
 
-/* ------ ANIMAÇÃO DE LETRAS DO CTA — SAÍDA/ENTRADA COM BLUR ------ */
+/* ------ ANIMAÇÃO DE LETRAS DO CTA ------ */
+
 @keyframes ctaCharOut {
-  0%   { transform: translateY(0);   opacity: 1; filter: blur(0);   }
+  0%   { transform: translateY(0);    opacity: 1; filter: blur(0);   }
   100% { transform: translateY(-80%); opacity: 0; filter: blur(3px); }
 }
 
@@ -417,7 +372,7 @@ h1, h2, h3 {
 
 #sobre {
   position: relative;
-  margin: 0; /* SEM GAP ENTRE AS SEÇÕES — O FADE PRETO FAZ A TRANSIÇÃO */
+  margin: 0;
   overflow: hidden;
   background-color: var(--color-surface-2);
   padding: clamp(16px, 3vw, 40px) clamp(24px, 6vw, 80px) clamp(100px, 14vw, 180px);
@@ -434,7 +389,6 @@ h1, h2, h3 {
 /* ------ FOTO ------ */
 
 .sobre-media {
-  /* CLIP APLICADO NO ELEMENTO — REVEAL DA ESQUERDA VIA GSAP */
   position: relative;
   z-index: 3;
   background-color: var(--color-surface-2);
@@ -450,7 +404,6 @@ h1, h2, h3 {
   object-position: center top;
 }
 
-/* ------ ONDA NO TOPO DA FOTO ------ */
 .sobre-photo-wave-top {
   position: absolute;
   top: 0;
@@ -478,20 +431,17 @@ h1, h2, h3 {
   font-weight: 500;
   font-size: 13px;
   letter-spacing: 1.5px;
-  color: var(--color-accent);
   color: var(--color-orange);
   text-transform: uppercase;
   margin-bottom: 12px;
 }
-
-/* ------ ROLETA DO EYEBROW — SOBRE: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
 
 .sobre-name {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(30px, 4.5vw, 48px);
   line-height: 1.1;
-  color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO */
+  color: var(--color-paper);
   margin-bottom: 20px;
 }
 
@@ -500,25 +450,24 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: clamp(15px, 2vw, 17px);
   line-height: 1.7;
-  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — LEGÍVEL NO FUNDO CLARO */
+  color: var(--color-ink-muted);
   max-width: 560px;
   margin-bottom: 16px;
 }
 
 /* ------ CARDS STACK ------ */
 
-/* WRAPPER — ANCORA CARDS + DOTS (LATERAL) + ARROW (ABAIXO), CENTRALIZADO NA COLUNA */
 .sobre-stack {
   position: relative;
   z-index: 1;
-  width: 300px; /* MANTIDO — LARGURA FIXA DO STACK */
+  width: 300px;
   margin: 40px auto 0;
 }
 
 .sobre-cards {
   position: relative;
   width: 100%;
-  height: 200px; /* ALTURA FIXA — EVITA LAYOUT SHIFT ENTRE CARDS DE ALTURAS DIFERENTES */
+  height: 200px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -529,23 +478,22 @@ h1, h2, h3 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 180px;      /* ALTURA FIXA — TODOS OS CARDS IGUAIS, SEM DESPOSICIONAR */
-  overflow: hidden;   /* CONTÉM O CONTEÚDO DENTRO DA ALTURA FIXA */
+  height: 180px;
+  overflow: hidden;
   padding: 1.5rem;
   border-radius: 20px;
-  background-color: var(--color-card); /* BRANCO ESVERDEADO — TOQUE PREMIUM */
-  border: 1px solid rgba(0, 153, 93, 0.12); /* BORDA LEVEMENTE VERDE */
-  box-shadow: 0 4px 24px rgba(6, 48, 31, 0.08); /* SOMBRA SUTIL ESVERDEADA */
+  background-color: var(--color-card);
+  border: 1px solid rgba(0, 153, 93, 0.12);
+  box-shadow: 0 4px 24px rgba(6, 48, 31, 0.08);
   transform-origin: top center;
   will-change: transform;
-  opacity: 0; /* ESTADO PADRÃO ANTES DO JS — EVITA FLASH DE STACK EMPILHADO */
+  opacity: 0;
   /* TRANSIÇÃO INJETADA POR sobre.js VIA --card-transition (FONTE: motion.js) */
   transition:
     transform var(--card-transition, 0.8s ease),
     opacity var(--card-transition, 0.8s ease);
 }
 
-/* MUDANÇA INSTANTÂNEA — USADO AO RECICLAR O CARD QUE SAIU PARA O FUNDO */
 .sobre-card--instant {
   transition: none;
 }
@@ -607,7 +555,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: clamp(40px, 6vw, 52px);
   line-height: 1;
-  color: var(--color-paper); /* VERDE ESCURO — NÚMERO SOBRE CARD BRANCO */
+  color: var(--color-paper);
 }
 
 .sobre-card__suffix {
@@ -639,7 +587,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: 20px;
   line-height: 1.2;
-  color: var(--color-paper); /* VERDE ESCURO — TÍTULO SOBRE CARD BRANCO */
+  color: var(--color-paper);
   margin: 0 0 8px;
 }
 
@@ -648,17 +596,17 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — LABEL SOBRE CARD BRANCO */
+  color: var(--color-ink-muted);
   margin: 0;
 }
 
-/* ------ DOTS — NAVEGAÇÃO DIRETA (LATERAL DIREITA DO STACK) ------ */
+/* ------ DOTS ------ */
 
 .sobre-dots {
   position: absolute;
   top: 0;
   right: -28px;
-  height: 200px; /* ALINHA VERTICALMENTE COM A ÁREA DOS CARDS */
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -672,9 +620,8 @@ h1, h2, h3 {
   padding: 0;
   border: none;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2); /* DOT INATIVO — ESCURO SOBRE FUNDO CLARO */
+  background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  /* MICRO-INTERAÇÃO — TRANSIÇÃO DE ESTADO DO DOT (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
 }
 
@@ -684,28 +631,27 @@ h1, h2, h3 {
   background-color: var(--color-accent);
 }
 
-/* ------ BOTÃO PRÓXIMO — ABAIXO DO STACK, CENTRALIZADO ------ */
+/* ------ BOTÃO PRÓXIMO ------ */
 
 .sobre-nav-arrow {
-  position: relative; /* HABILITA z-index — FICA ACIMA DO GRADIENTE #sobre::after */
+  position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;  /* ÁREA DE TOQUE MÍNIMA */
+  width: 44px;
   height: 44px;
   margin: 24px auto 0;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.2); /* BORDA ESCURA — SOBRE FUNDO CLARO */
+  border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: transparent;
-  color: var(--color-paper); /* ÍCONE VERDE ESCURO */
+  color: var(--color-paper);
   cursor: pointer;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE DO BOTÃO (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
 .sobre-nav-arrow:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* HOVER SUTIL — SOBRE FUNDO CLARO */
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .sobre-nav-arrow:active {
@@ -717,8 +663,6 @@ h1, h2, h3 {
   height: 20px;
 }
 
-/* ------ GUARD PREFERS-REDUCED-MOTION — TROCA INSTANTÂNEA, SEM DESLIZE ------ */
-
 @media (prefers-reduced-motion: reduce) {
   .sobre-card,
   .sobre-dot,
@@ -727,7 +671,7 @@ h1, h2, h3 {
   }
 }
 
-/* ------ DESKTOP: DUAS COLUNAS — FOTO 45% / TEXTO 55% ------ */
+/* ------ DESKTOP: DUAS COLUNAS ------ */
 
 @media (min-width: 900px) {
   .sobre-inner {
@@ -750,15 +694,13 @@ h1, h2, h3 {
    ======================================== */
 
 #marcas {
-  position: relative; /* CONTÉM OS ::before/::after ABSOLUTOS DAS TRANSIÇÕES */
-  background-color: var(--color-paper); /* VERDE ESCURO — IGUAL AO HERO */
+  position: relative;
+  background-color: var(--color-paper);
   padding: clamp(200px, 25vw, 320px) clamp(24px, 6vw, 80px);
   margin: 0;
-  /* overflow: hidden CLIPA FILHOS ABSOLUTOS FORA DA BORDA. TROCADO POR */
-  /* clip-path: inset(0) — MESMO RECORTE VISUAL, MAS PERMITE O OVERLAP DO SEAM. */
   overflow: visible;
-  clip-path: inset(0);
-  isolation: isolate; /* ISOLA O CONTEXTO DE EMPILHAMENTO — ::after SEMPRE POR CIMA */
+  clip-path: inset(0); /* MESMO RECORTE DO overflow: hidden, MAS PERMITE O OVERLAP DO SEAM */
+  isolation: isolate;
 }
 
 .marcas-inner {
@@ -771,8 +713,6 @@ h1, h2, h3 {
   gap: clamp(32px, 5vw, 56px);
 }
 
-/* ------ EYEBROW — MESMO ESTILO DO .sobre-eyebrow MAS CLARO (FUNDO ESCURO) ------ */
-
 .marcas-eyebrow {
   font-family: var(--font-body);
   font-size: clamp(0.7rem, 1.2vw, 0.85rem);
@@ -783,24 +723,20 @@ h1, h2, h3 {
   opacity: 0.8;
 }
 
-/* ------ ROLETA DO EYEBROW — MARCAS: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
-
-/* ------ TÍTULO ------ */
-
 .marcas-title {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 4vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
   text-align: center;
-  color: var(--color-ink); /* TOKEN BRANCO DO @theme */
+  color: var(--color-ink);
 }
 
 .marcas-title--highlight {
-  color: var(--color-accent); /* TOKEN VERDE DO @theme */
+  color: var(--color-accent);
 }
 
-/* ------ CARROSSEL — COLUNAS DE LOGOS ------ */
+/* ------ CARROSSEL ------ */
 
 .marcas-carousel {
   position: relative;
@@ -816,11 +752,8 @@ h1, h2, h3 {
   position: relative;
   flex: 1;
   max-width: 200px;
-  aspect-ratio: 3 / 2; /* MESMO RATIO DO LOGO — ALTURA FIXA */
+  aspect-ratio: 3 / 2;
 }
-
-/* ------ LOGO — CARD COM MOLDURA SUTIL ------ */
-/* SLOT ABSOLUTO — OLD E NEXT SE SOBREPÕEM, COLUNA NÃO MUDA DE ALTURA NA TRANSIÇÃO */
 
 .marcas-logo {
   position: absolute;
@@ -836,7 +769,7 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: brightness(0) invert(1); /* LOGOS BRANCOS NO FUNDO ESCURO */
+  filter: brightness(0) invert(1);
   opacity: 0.75;
   transition: opacity 0.3s ease;
 }
@@ -845,15 +778,10 @@ h1, h2, h3 {
    SEÇÃO 4 — PARA QUEM É — PERFIS DE CONTRATAÇÃO
    ======================================== */
 
-/* ACCORDION: LISTA DE BOTÕES (200px) + CARD DE DETALHE (flex: 1). FUNDO CLARO IGUAL */
-/* À SEÇÃO 2 E À SEÇÃO 5. O ESTADO ATIVO/INATIVO DOS BOTÕES E A ABERTURA DO CARD SÃO */
-/* CONTROLADOS POR para-quem-e.js — AQUI FICAM AS BASES E AS TRANSITIONS. */
-
 #para-quem-e {
   position: relative;
-  /* PADDING-TOP MAIOR AFASTA O EYEBROW DA ONDA COLADA NO TOPO (top: -2px). */
   padding: clamp(88px, 12vw, 160px) clamp(24px, 6vw, 80px) clamp(64px, 9vw, 112px);
-  background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
+  background-color: var(--color-surface-2);
   overflow: hidden;
   isolation: isolate;
 }
@@ -873,7 +801,6 @@ h1, h2, h3 {
   text-align: center;
 }
 
-/* TIPOGRAFIA IDÊNTICA À .hero-eyebrow / .sobre-eyebrow / .como-funciona-eyebrow. */
 .para-quem-eyebrow {
   font-family: var(--font-body);
   font-weight: 500;
@@ -885,7 +812,6 @@ h1, h2, h3 {
   margin-bottom: 20px;
 }
 
-/* MESMA ESCALA DA .como-funciona-title — TÍTULO VERDE ESCURO SOBRE FUNDO CLARO. */
 .para-quem-title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -898,8 +824,8 @@ h1, h2, h3 {
   color: var(--color-accent);
 }
 
-/* ------ ACCORDION — COLUNA DE ITENS (BOTÃO + DETALHE PRÓPRIO) ------ */
-/* CADA ITEM ABRE SEU CARD LOGO ABAIXO DO BOTÃO, EMPURRANDO OS SEGUINTES PARA BAIXO. */
+/* ------ ACCORDION ------ */
+/* CADA ITEM ABRE SEU CARD ABAIXO DO BOTÃO, EMPURRANDO OS SEGUINTES. */
 
 .para-quem-accordion {
   width: 100%;
@@ -907,18 +833,15 @@ h1, h2, h3 {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* ESPAÇAMENTO ENTRE ITENS (PERFIS) */
+  gap: 8px;
 }
 
-/* ITEM — BOTÃO + SEU CARD, EMPILHADOS. SEM gap: O CARD ENCOSTA NO BOTÃO (CONEXÃO */
-/* VISUAL) E, FECHADO (max-height 0), NÃO DEIXA ESPAÇO FANTASMA. */
 .para-quem-item {
   display: flex;
   flex-direction: column;
 }
 
-/* BOTÃO — ESTADO INATIVO É O DEFAULT DO CSS. O ESTADO ATIVO É APLICADO POR JS */
-/* (INLINE: BACKGROUND/BORDER/COLOR LARANJA), QUE SOBRESCREVE ESTAS REGRAS. */
+/* ESTADO INATIVO VEM DO CSS; ATIVO É APLICADO INLINE POR JS (SOBRESCREVE). */
 .para-quem-btn {
   display: flex;
   justify-content: space-between;
@@ -932,9 +855,9 @@ h1, h2, h3 {
   font-weight: 600;
   text-align: left;
   cursor: pointer;
-  background-color: var(--color-card); /* INATIVO */
-  border: 0.5px solid rgba(6, 48, 31, 0.15); /* INATIVO */
-  color: var(--color-paper); /* INATIVO */
+  background-color: var(--color-card);
+  border: 0.5px solid rgba(6, 48, 31, 0.15);
+  color: var(--color-paper);
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
@@ -943,7 +866,7 @@ h1, h2, h3 {
   min-width: 0;
 }
 
-/* ÍCONE "+" — VERDE (ACCENT) NO INATIVO; JS ROTACIONA 45deg (VIRA ×) NO ATIVO. */
+/* ÍCONE "+" — JS ROTACIONA 45deg (VIRA ×) NO ATIVO. */
 .para-quem-btn__toggle {
   flex: 0 0 auto;
   display: inline-flex;
@@ -955,13 +878,10 @@ h1, h2, h3 {
   transition: transform 0.3s ease;
 }
 
-/* CARD DE DETALHE — UM POR ITEM, LOGO ABAIXO DO BOTÃO. */
-/* FECHADO: max-height 0 + overflow hidden + opacity 0 (COLAPSA POR COMPLETO). */
-/* ABERTO (.open, VIA JS): max-height 400px + opacity 1. O PADDING VIVE DENTRO, */
-/* ENTÃO O overflow hidden O CLIPA A ZERO QUANDO FECHADO — SEM ESPAÇO RESIDUAL. */
+/* FECHADO: max-height 0 + overflow hidden + opacity 0.
+   ABERTO (.open, VIA JS): max-height 400px + opacity 1.
+   PADDING INTERNO É CLIPADO A ZERO — SEM ESPAÇO RESIDUAL FECHADO. */
 .para-quem-detail {
-  /* CARD: FUNDO/BORDA/RAIO NO PRÓPRIO WRAPPER. COM box-sizing: border-box (GLOBAL DO */
-  /* TAILWIND) O max-height 0 CLIPA A BORDA — NENHUM SLIVER FICA VISÍVEL FECHADO. */
   background-color: var(--color-card);
   border: 1px solid rgba(6, 48, 31, 0.12);
   border-radius: 16px;
@@ -977,8 +897,6 @@ h1, h2, h3 {
   opacity: 1;
 }
 
-/* PADDING/RADIUS NO CONTEÚDO INTERNO DO CARD — MARGIN-TOP DE 8px SEPARA DO BOTÃO */
-/* (FICA DENTRO DO overflow hidden, LOGO SÓ APARECE QUANDO O CARD ABRE). */
 .para-quem-detail__icon,
 .para-quem-detail__tag,
 .para-quem-detail__title,
@@ -989,7 +907,7 @@ h1, h2, h3 {
 
 .para-quem-detail__icon {
   display: inline-flex;
-  color: var(--color-accent); /* ÍCONE VERDE NO CARD */
+  color: var(--color-accent);
   margin-top: 1.25rem;
   margin-bottom: 0.75rem;
 }
@@ -1007,7 +925,7 @@ h1, h2, h3 {
   font-size: 12px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--color-accent); /* TAG VERDE NO CARD */
+  color: var(--color-accent);
   margin-bottom: 0.5rem;
 }
 
@@ -1016,7 +934,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: clamp(20px, 3.2vw, 28px);
   line-height: 1.2;
-  color: var(--color-paper); /* VERDE ESCURO SOBRE CARD CLARO */
+  color: var(--color-paper);
   margin-bottom: 0.5rem;
 }
 
@@ -1033,36 +951,24 @@ h1, h2, h3 {
    ======================================== */
 
 #como-funciona {
-  /* ------ TOKENS DO STEPPER — GEOMETRIA DA CASCATA ------ */
-  --step-count: 5;                     /* TOTAL DE CARDS — 5 PASSOS + CARD CTA */
-  --step-inset: 2%;                    /* AFASTAMENTO LATERAL DOS CARDS */
-  --step-tilt: 2deg;                   /* INCLINAÇÃO ALTERNADA (ÍMPARES +, PARES −) */
-  --step-card-w: 44%;                  /* MOBILE — VER NOTA DE LEGIBILIDADE NO BREAKPOINT 768px */
+  --step-count: 5;
+  --step-inset: 2%;
+  --step-tilt: 2deg;
+  --step-card-w: 44%;           /* MOBILE — 34% NO BREAKPOINT 768px */
   --step-card-h: min(30%, clamp(118px, 18svh, 176px));
-  /* O TETO PERCENTUAL DA PISTA É ESTRUTURAL: OS CARDS DO MESMO LADO (01-03-05 E */
-  /* 02-04-CTA) FICAM A 2 PASSOS DE DISTÂNCIA. COM 6 CARDS O PASSO VALE */
-  /* (100% - h) / 5, ENTÃO SÓ NÃO COLIDEM ENQUANTO h <= 200/7 ≈ 28.5% DA PISTA. */
-  --step-pin-size: 14px;               /* DIÂMETRO DO PIN — ORIGEM/DESTINO DA LINHA */
+  /* TETO ESTRUTURAL: COM 6 CARDS O PASSO VALE (100% - h) / 5.
+     CARDS DO MESMO LADO NÃO COLIDEM SE h <= 28.5% DA PISTA. */
+  --step-pin-size: 14px;
 
   position: relative;
-  /* SEÇÃO PINADA: USA LARGE VIEWPORT (lvh). A SEÇÃO É position: fixed DURANTE O PIN; */
-  /* COM 100svh ELA MEDIA A ALTURA COM A BARRA DE ENDEREÇO VISÍVEL E, QUANDO A BARRA */
-  /* SE OCULTAVA NO SCROLL, A VIEWPORT CRESCIA E SOBRAVA UMA FAIXA PRETA NO RODAPÉ */
-  /* (O PIN-SPACER TRANSPARENTE SOBRE O FUNDO PRETO DO BODY). lvh COBRE OS DOIS ESTADOS. */
-  height: 100vh;                       /* FALLBACK — vh = LARGE VIEWPORT NA MAIORIA DOS BROWSERS */
-  height: 100lvh;                      /* LARGE VIEWPORT — COBRE A TELA COM OU SEM A BARRA */
+  height: 100vh;
+  height: 100lvh; /* LARGE VIEWPORT — COBRE COM E SEM BARRA DE ENDEREÇO */
   min-height: 560px;
   display: flex;
   flex-direction: column;
-  /* PADDING-TOP AFASTA O EYEBROW DA ONDA DE ENTRADA, QUE FICA COLADA NO TOPO */
-  /* (top: -1px) E NÃO ACOMPANHA O PADDING. */
-  /* OS DOIS VALORES VERTICAIS FORAM APERTADOS EM ~28px NO MOBILE PARA DEVOLVER PISTA */
-  /* AO STEPPER: A SEÇÃO TEM ALTURA TRAVADA (100svh, EXIGÊNCIA DO PIN), ENTÃO O HEADER */
-  /* MAIOR — PÍLULA DA ROLETA + TÍTULO — TINHA COMIDO 27px DA CASCATA DE CARDS. */
-  /* FOLGA MANTIDA SOBRE AS ONDAS (40px CADA NO MOBILE): 36px EM CIMA, 16px EMBAIXO. */
-  /* PADDING-BOTTOM REDUZIDO PARA DEVOLVER PISTA AO 6º SLOT (CARD CTA). */
+  /* PADDING APERTADO NO MOBILE PARA DEVOLVER PISTA AO STEPPER. */
   padding: clamp(76px, 9.5vw, 144px) clamp(24px, 6vw, 80px) clamp(56px, 8vw, 96px);
-  background-color: var(--color-surface-2); /* MESMO FUNDO DA SEÇÃO 2 — SOBRE */
+  background-color: var(--color-surface-2);
   overflow: hidden;
   isolation: isolate;
 }
@@ -1085,15 +991,6 @@ h1, h2, h3 {
   text-align: center;
 }
 
-/* TIPOGRAFIA IDÊNTICA À .hero-eyebrow E À .sobre-eyebrow — CORPO, PESO, TRACKING E COR. */
-/* SEM text-align PRÓPRIO: HERDA O center DO .como-funciona-header, COMO O EYEBROW */
-/* DA SEÇÃO 3 HERDA O DO .marcas-inner. */
-/* ------ */
-/* FLUXO INLINE PURO, IGUAL AO .hero-eyebrow — SEM display, SEM FLEX, SEM gap. */
-/* A CENTRALIZAÇÃO VEM DO text-align: center DO .como-funciona-header. */
-/* A ROLETA É inline-block COM vertical-align: text-bottom (REGRA COMPARTILHADA) E */
-/* FLUI LOGO APÓS O TEXTO FIXO. QUANDO NÃO CABE, A LINHA QUEBRA E A CAIXA DA PÍLULA */
-/* ENTRA INTEIRA NA LINHA DE BAIXO — O LINE BOX CRESCE PARA CONTÊ-LA. */
 .como-funciona-eyebrow {
   font-family: var(--font-body);
   font-weight: 500;
@@ -1105,28 +1002,20 @@ h1, h2, h3 {
   margin-bottom: 20px;
 }
 
-/* ------ ROLETA DO EYEBROW — SEÇÃO 5: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
-/* SEM OVERRIDE ALGUM: display, vertical-align, height, CORES, PADDING E RADIUS VÊM */
-/* TODOS DO BLOCO COMPARTILHADO — EXATAMENTE COMO NAS SEÇÕES 1, 2 E 3. */
-
-/* PESO, LINE-HEIGHT E TETO (44px) IGUAIS À .hero-line. O PISO DIVERGE DE PROPÓSITO: */
-/* O HERO USA clamp(28px, 5vw, 44px), MAS "CINCO PASSOS SIMPLES ATÉ" É MAIS LONGA QUE */
-/* QUALQUER LINHA DO HERO E, A 28px, ESTOURA A LARGURA ÚTIL DO MOBILE — O TÍTULO IA */
-/* PARA 3 LINHAS EM VEZ DE 2. MEDIDO: 28px QUEBRA A 390px, 27px AINDA CABE. */
-/* O PISO MENOR + vw MAIOR MANTÉM 2 LINHAS DE 320px A 430px E CHEGA AOS MESMOS 44px. */
+/* PISO MENOR QUE O HERO (20px vs 22px) — EVITA QUEBRA DE 3 LINHAS NO MOBILE. */
 .como-funciona-title {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(20px, 6.4vw, 44px);
   line-height: 1.15;
-  color: var(--color-paper); /* VERDE ESCURO — LEGÍVEL NO FUNDO CLARO, IGUAL À .sobre-name */
+  color: var(--color-paper);
 }
 
 .como-funciona-title--highlight {
   color: var(--color-accent);
 }
 
-/* ------ PISTA — CONTÊINER DA LINHA E DOS CARDS ------ */
+/* ------ PISTA ------ */
 
 .como-funciona-stepper {
   position: relative;
@@ -1134,8 +1023,8 @@ h1, h2, h3 {
   min-height: 0;
 }
 
-/* ------ LINHA SVG — ATRÁS DOS CARDS ------ */
-/* O viewBox E O ATRIBUTO d SÃO ESCRITOS POR como-funciona.js A PARTIR DO RECT DOS PINS */
+/* ------ LINHA SVG ------ */
+/* viewBox E d ESCRITOS POR como-funciona.js A PARTIR DO RECT DOS PINS. */
 
 .como-funciona-line {
   position: absolute;
@@ -1156,8 +1045,7 @@ h1, h2, h3 {
   opacity: 0.45;
 }
 
-/* TRAÇO DA MÁSCARA — MAIS GROSSO QUE A LINHA VISÍVEL PARA COBRI-LA POR INTEIRO. */
-/* linecap BUTT MANTÉM A FRENTE DO DESENHO RETA ENQUANTO O DASHOFFSET CORRE. */
+/* MÁSCARA MAIS GROSSA QUE A LINHA — COBRE POR INTEIRO. linecap butt = FRENTE RETA. */
 .como-funciona-line__mask {
   fill: none;
   stroke: #ffffff;
@@ -1165,7 +1053,7 @@ h1, h2, h3 {
   stroke-linecap: butt;
 }
 
-/* ------ CARDS — POSIÇÃO ABSOLUTA, CASCATA ALTERNADA ------ */
+/* ------ CARDS ------ */
 
 .como-funciona-steps {
   position: absolute;
@@ -1179,44 +1067,31 @@ h1, h2, h3 {
 .como-funciona-card {
   position: absolute;
   width: var(--step-card-w);
-  /* MOBILE: min-height NO LUGAR DE height — O CARD 03 ("PROPOSTA PERSONALIZADA") TEM */
-  /* TÍTULO DE 2 LINHAS E ESTOURA O SLOT EM TELAS BAIXAS. AQUI O CARD PODE CRESCER. */
-  /* NO BREAKPOINT 768px A ALTURA VOLTA A SER FIXA — VER NOTA LÁ. */
+  /* MOBILE: min-height — CARD 03 TEM TÍTULO DE 2 LINHAS E ESTOURA O SLOT. */
+  /* ALTURA FIXA VOLTA NO BREAKPOINT 768px. */
   min-height: var(--step-card-h);
   top: calc(var(--step-index) * (100% - var(--step-card-h)) / (var(--step-count) - 1));
   display: flex;
   flex-direction: column;
   padding: clamp(10px, 1.8vw, 20px);
   border-radius: clamp(12px, 1.6vw, 20px);
-  /* SEM backdrop-filter: 5 CARDS COM BLUR DE FUNDO CUSTAM CARO NUM PIN COM SCRUB */
-  /* MESMA RECEITA DO .sobre-card — CARD CLARO SOBRE FUNDO CLARO */
   background-color: var(--color-card);
   border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
   box-shadow: 0 10px 28px -14px color-mix(in srgb, var(--color-paper) 30%, transparent);
   transform-origin: center center;
 }
 
-/* ÍMPARES (01-03-05) — ESQUERDA, INCLINAÇÃO POSITIVA */
-.como-funciona-card:nth-child(odd) {
-  left: var(--step-inset);
-  transform: rotate(var(--step-tilt));
-}
+.como-funciona-card:nth-child(odd)  { left: var(--step-inset);  transform: rotate(var(--step-tilt)); }
+.como-funciona-card:nth-child(even) { right: var(--step-inset); transform: rotate(calc(var(--step-tilt) * -1)); }
 
-/* PARES (02-04) — DIREITA, INCLINAÇÃO NEGATIVA */
-.como-funciona-card:nth-child(even) {
-  right: var(--step-inset);
-  transform: rotate(calc(var(--step-tilt) * -1));
-}
-
-/* ÍNDICE DE CASCATA — DEFINE O top DE CADA CARD SEM style INLINE NO HTML */
 .como-funciona-card:nth-child(1) { --step-index: 0; }
 .como-funciona-card:nth-child(2) { --step-index: 1; }
 .como-funciona-card:nth-child(3) { --step-index: 2; }
 .como-funciona-card:nth-child(4) { --step-index: 3; }
 .como-funciona-card:nth-child(5) { --step-index: 4; }
 
-/* ------ PIN — ÂNCORA DA LINHA NO TOPO DO CARD ------ */
-/* CENTRALIZADO POR margin NEGATIVA, NUNCA POR transform: O TRANSFORM É DO GSAP. */
+/* ------ PIN ------ */
+/* CENTRALIZADO POR MARGIN NEGATIVA — NUNCA POR transform (RESERVADO AO GSAP). */
 
 .como-funciona-card__pin {
   position: absolute;
@@ -1247,7 +1122,7 @@ h1, h2, h3 {
   font-size: clamp(13px, 1.5vw, 18px);
   line-height: 1;
   letter-spacing: 0.02em;
-  color: var(--color-orange); /* MESMO LARANJA DOS EYEBROWS DAS DEMAIS SEÇÕES */
+  color: var(--color-orange);
 }
 
 .como-funciona-card__icon {
@@ -1259,7 +1134,7 @@ h1, h2, h3 {
   height: clamp(26px, 3.2vw, 38px);
   border-radius: clamp(8px, 1vw, 12px);
   background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  color: var(--color-accent); /* ÍCONE VERDE — IGUAL AO .sobre-card__icon */
+  color: var(--color-accent);
 }
 
 .como-funciona-card__icon svg {
@@ -1272,7 +1147,7 @@ h1, h2, h3 {
   font-weight: 800;
   font-size: clamp(12px, 1.5vw, 18px);
   line-height: 1.15;
-  color: var(--color-paper); /* VERDE ESCURO — TÍTULO SOBRE CARD CLARO */
+  color: var(--color-paper);
   margin: 0 0 clamp(3px, 0.6vw, 6px);
   flex: 0 0 auto;
 }
@@ -1282,31 +1157,24 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: clamp(10px, 1.1vw, 14px);
   line-height: 1.35;
-  color: var(--color-ink-muted); /* VERDE ESCURO MÉDIO — IGUAL AO .sobre-card__label */
+  color: var(--color-ink-muted);
   margin: 0;
-  /* MOBILE: SEM CLIP E SEM SHRINK — O TEXTO OCUPA A ALTURA QUE PRECISAR E O CARD */
-  /* ACOMPANHA VIA min-height. O CLIP VOLTA NO BREAKPOINT 768px. */
   flex: 0 0 auto;
 }
 
-/* ------ TABLET/DESKTOP — LARGURA DE CARD DA ESPECIFICAÇÃO (34%) ------ */
-/* ABAIXO DE 768px OS 34% RENDERIAM ~110px DE CARD: LARGURA INSUFICIENTE PARA */
-/* O TÍTULO E A DESCRIÇÃO. O MOBILE USA 44%, MANTENDO O CORREDOR CENTRAL DA LINHA. */
+/* ------ TABLET/DESKTOP ------ */
+/* ABAIXO DE 768px OS 34% RENDERIAM ~110px — LARGO INSUFICIENTE PARA O TEXTO. */
 
 @media (min-width: 768px) {
   #como-funciona {
     --step-card-w: 34%;
   }
 
-  /* ALTURA FIXA DE VOLTA: A CASCATA CALCULA O top DE CADA CARD A PARTIR DE */
-  /* --step-card-h. SE UM CARD CRESCER AQUI, O ESPAÇAMENTO DEIXA DE BATER. */
-  /* DA TABLET PRA CIMA O CARD É LARGO O BASTANTE E NADA ESTOURA. */
   .como-funciona-card {
     height: var(--step-card-h);
   }
 
-  /* CLIPA O EXCEDENTE — O CARD TEM ALTURA FIXA POR DESIGN. */
-  /* overflow AQUI E NÃO NO CARD: NO CARD ELE CORTARIA O PIN. */
+  /* CARD COM ALTURA FIXA — OVERFLOW AQUI, NÃO NO CARD (CORTARIA O PIN). */
   .como-funciona-card__text {
     flex: 1 1 auto;
     min-height: 0;
@@ -1318,12 +1186,11 @@ h1, h2, h3 {
    SEÇÃO 6 — DEPOIMENTOS — CARDS EMPILHADOS
    ======================================== */
 
-/* ------ TRANSIÇÕES EM ONDA ------ */
+/* ------ TRANSIÇÃO 5 → 6 ------ */
 
-/* SEÇÃO 5 (CLARA) → DEPOIMENTOS: ONDA NO TOPO, PREENCHIDA COM O CLARO DA ANTERIOR */
 .depoimentos-wave-top {
   position: absolute;
-  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  top: -2px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -1334,44 +1201,34 @@ h1, h2, h3 {
 .depoimentos-wave-top svg {
   display: block;
   width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+  height: calc(clamp(40px, 6vw, 80px) + 2px);
 }
-
-/* DEPOIMENTOS → CTA: SEM ONDA DE SAÍDA AQUI — A TRANSIÇÃO S5 (ESCURA) → S6 (CLARA) */
-/* É FEITA PELA .cta-wave-top NO TOPO DA SEÇÃO 7. */
 
 /* ------ SEÇÃO ------ */
 
 #depoimentos {
-  /* TOKENS DO PALCO — GEOMETRIA DA PILHA. ZERO VALORES SOLTOS NOS ARQUIVOS DE SEÇÃO. */
-  --dep-card-w: 240px;                             /* MOBILE — 280px NO BREAKPOINT 768px */
-  /* PISO 264px: O CARD MAIS LONGO (06, ~230 CHARS) PRECISA DE ~261px NO MOBILE. */
-  /* EM VIEWPORTS BAIXAS O 40vh RESOLVE ABAIXO DISSO, ENTÃO O PISO É QUEM PROTEGE */
-  /* CONTRA O CORTE. AINDA BEM ABAIXO DOS 300px ORIGINAIS — CUMPRE A REDUÇÃO. */
-  --dep-card-h: clamp(264px, 40vh, 280px);         /* ALTURA FIXA — PALCO NÃO PULA ENTRE CARDS */
-  /* OFFSET EM % DA LARGURA DO PRÓPRIO CARD (translateX). MOBILE MENOR: OS LATERAIS */
-  /* SÓ ESPIAM ATRÁS DO ATIVO PARA NÃO VAZAR A VIEWPORT ESTREITA. */
-  --dep-side1-x: 34%;                              /* DESLOCAMENTO HORIZONTAL DO CARD ±1 */
-  --dep-side2-x: 60%;                              /* DESLOCAMENTO HORIZONTAL DO CARD ±2 */
+  --dep-card-w: 240px;
+  --dep-card-h: clamp(264px, 40vh, 280px);
+  /* PISO 264px: CARD MAIS LONGO (~230 CHARS) PRECISA DE ~261px NO MOBILE. */
+  --dep-side1-x: 34%;
+  --dep-side2-x: 60%;
   --dep-side1-scale: 0.88;
   --dep-side2-scale: 0.76;
   --dep-side1-op: 0.85;
   --dep-side2-op: 0.6;
-  --dep-rot: 2.5deg;                               /* ROTAÇÃO DOS CARDS LATERAIS (SINAL VIA JS) */
-  /* TRANSIÇÃO DA TROCA — INJETADA POR depoimentos.js A PARTIR DE motion.js */
+  --dep-rot: 2.5deg;
   --dep-transition: 600ms cubic-bezier(0.16, 1, 0.3, 1);
 
   position: relative;
-  background-color: var(--color-paper); /* VERDE ESCURO — IGUAL AO HERO/MARCAS */
+  background-color: var(--color-paper);
   padding: clamp(96px, 14vw, 160px) clamp(24px, 6vw, 80px) clamp(96px, 14vw, 160px);
   overflow: hidden;
   isolation: isolate;
 }
 
-/* ------ FUNDO — LETRAS VAZADAS (DECORATIVO, ATRÁS DE TUDO) ------ */
-/* FICA ATRÁS DE TODO O CONTEÚDO. CONTEÚDO ESTÁTICO (HEADER) PINTA ACIMA DE UM */
-/* z-index: 0 POSICIONADO, ENTÃO O .depoimentos-inner GANHA z-index: 1 (RELATIVE */
-/* SEM OFFSET — NEUTRO NO LAYOUT) PARA QUE O FUNDO 0 FIQUE ABAIXO DE TUDO. */
+/* ------ FUNDO — LETRAS VAZADAS ------ */
+/* z-index: 0 FICA ABAIXO DO .depoimentos-inner (z-index: 1). */
+
 .depoimentos-bg-text {
   position: absolute;
   inset: 0;
@@ -1396,8 +1253,8 @@ h1, h2, h3 {
 }
 
 .depoimentos-inner {
-  position: relative;   /* PLUMBING DE STACKING — SEM OFFSET, NÃO MOVE NADA */
-  z-index: 1;           /* CONTEÚDO ACIMA DO .depoimentos-bg-text (z-index: 0) */
+  position: relative;
+  z-index: 1;
   max-width: 1120px;
   margin: 0 auto;
   display: flex;
@@ -1406,13 +1263,12 @@ h1, h2, h3 {
   gap: clamp(32px, 5vw, 56px);
 }
 
-/* ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO ------ */
+/* ------ CABEÇALHO ------ */
 
 .depoimentos-header {
   text-align: center;
 }
 
-/* EYEBROW — MESMA TIPOGRAFIA DO .hero-eyebrow / .como-funciona-eyebrow */
 .depoimentos-eyebrow {
   font-family: var(--font-body);
   font-weight: 500;
@@ -1424,11 +1280,6 @@ h1, h2, h3 {
   margin-bottom: 20px;
 }
 
-/* ------ ROLETA DO EYEBROW — SEÇÃO 6: REGRAS UNIFICADAS NA SEÇÃO HERO ------ */
-/* SEM OVERRIDE: PÍLULA LARANJA, TEXTO BRANCO, PADDING E RADIUS VÊM DO BLOCO */
-/* COMPARTILHADO — EXATAMENTE COMO NAS SEÇÕES 1, 2, 3 E 4. */
-
-/* TÍTULO — MESMO CORPO, PESO E LINE-HEIGHT DO .como-funciona-title */
 .depoimentos-title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -1441,13 +1292,12 @@ h1, h2, h3 {
   color: var(--color-accent);
 }
 
-/* ------ PALCO — CARDS EMPILHADOS ------ */
+/* ------ PALCO ------ */
 
 .depoimentos-stage {
   position: relative;
   width: 100%;
   height: var(--dep-card-h);
-  /* SEM overflow: hidden — OS CARDS ±2 PRECISAM VAZAR A LARGURA DO INNER (max 1120px) */
 }
 
 .depoimentos-cards {
@@ -1474,35 +1324,30 @@ h1, h2, h3 {
   gap: clamp(12px, 2vw, 18px);
   padding: clamp(20px, 3vw, 32px);
   border-radius: 20px;
-  background-color: var(--color-card);      /* CARDS LATERAIS — CLARO (ESTADO PADRÃO) */
+  background-color: var(--color-card);
   box-shadow: 0 20px 44px -24px rgba(0, 0, 0, 0.7);
   transform-origin: center center;
-  /* MULTIPLICADOR DE ENTRADA (0→1) TWEENADO POR depoimentos.js — COMPÕE COM A OPACITY */
-  /* DE BANDA (--dep-op) SEM QUE O REVEAL BRIGUE COM O ESTADO DOS CARDS LATERAIS. */
+  /* --dep-reveal (0→1) COMPÕE COM --dep-op SEM BRIGAR COM O ESTADO DOS LATERAIS. */
   opacity: calc(var(--dep-op, 1) * var(--dep-reveal, 1));
-  /* MICRO-INTERAÇÃO — TROCA DE POSIÇÃO É TRANSIÇÃO CSS (EXCEÇÃO DOCUMENTADA) */
   transition:
     transform var(--dep-transition),
     opacity var(--dep-transition),
     background-color var(--dep-transition);
 }
 
-/* MUDANÇA INSTANTÂNEA — PRIMEIRA APLICAÇÃO DE POSIÇÕES, EVITA FAN-OUT NO LOAD */
+/* PRIMEIRA APLICAÇÃO — SEM FAN-OUT NO LOAD. */
 .depoimentos-cards--init .depoimento-card {
   transition: none;
 }
 
-/* ------ ESTADOS DA PILHA — CLASSES ATRIBUÍDAS POR depoimentos.js ------ */
-/* --dep-dir (-1 ESQUERDA / +1 DIREITA) COMPÕE O SINAL DO translateX E DA ROTAÇÃO */
-
-/* O CENTRO JÁ VEM DO margin-left DO CARD-BASE — O transform SÓ APLICA O OFFSET DA */
-/* BANDA. NÃO REPETIR translateX(-50%) AQUI, SENÃO O CARD DESLOCA MEIA LARGURA. */
+/* ------ ESTADOS ------ */
+/* O CENTRO VEM DO margin-left DO CARD-BASE — transform SÓ APLICA O OFFSET DA BANDA. */
 
 .depoimento-card--active {
   --dep-op: 1;
   z-index: 5;
   transform: translateX(0) scale(1) rotate(0deg);
-  background-color: var(--color-accent);   /* CARD CENTRAL — VERDE UNIMED */
+  background-color: var(--color-accent);
   cursor: default;
 }
 
@@ -1526,7 +1371,6 @@ h1, h2, h3 {
   cursor: pointer;
 }
 
-/* ALÉM DE ±2 — OCULTO, MAS SEGUINDO A DIREÇÃO PARA SAIR/ENTRAR PELO LADO CERTO */
 .depoimento-card--hidden {
   --dep-op: 0;
   z-index: 2;
@@ -1539,7 +1383,6 @@ h1, h2, h3 {
 
 /* ------ CONTEÚDO DO CARD ------ */
 
-/* ASPA DECORATIVA — ABSOLUTA, FORA DO FLUXO FLEX: NÃO AFETA TEXTO NEM ESTRELAS */
 .depoimento-card__quote {
   position: absolute;
   top: -14px;
@@ -1551,12 +1394,10 @@ h1, h2, h3 {
   color: var(--color-accent);
 }
 
-/* CARD CENTRAL — ASPA CLARA SOBRE O VERDE */
 .depoimento-card--active .depoimento-card__quote {
   color: rgba(255, 255, 255, 0.35);
 }
 
-/* RÓTULO — "DEPOIMENTO" ACIMA DO TEXTO */
 .depoimento-card__label {
   font-family: var(--font-body);
   font-size: 10px;
@@ -1567,20 +1408,19 @@ h1, h2, h3 {
   margin-bottom: 6px;
 }
 
-/* CARD CENTRAL — RÓTULO CLARO SOBRE O VERDE */
 .depoimento-card--active .depoimento-card__label {
   color: rgba(255, 255, 255, 0.6);
 }
 
 .depoimento-card__stars {
-  display: block;                    /* ESTRELAS CENTRALIZADAS VIA text-align */
+  display: block;
   text-align: center;
   padding-top: 8px;
   font-size: clamp(16px, 2.4vw, 20px);
   line-height: 1;
-  color: var(--color-gold);          /* ESTRELAS DOURADAS */
+  color: var(--color-gold);
   flex: 0 0 auto;
-  margin-top: auto;                  /* ESTRELAS ANCORADAS NO FIM DO CARD */
+  margin-top: auto;
 }
 
 .depoimento-card__text {
@@ -1589,20 +1429,18 @@ h1, h2, h3 {
   font-weight: 400;
   font-size: clamp(14px, 2vw, 16px);
   line-height: 1.55;
-  color: var(--color-ink-muted);     /* CARDS LATERAIS — TEXTO VERDE ESCURO SOBRE CLARO */
+  color: var(--color-ink-muted);
   margin: 0;
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
 }
 
-/* CARD CENTRAL — TEXTO E ESTRELAS SOBRE O VERDE */
 .depoimento-card--active .depoimento-card__text {
-  color: var(--color-ink);           /* TEXTO BRANCO NO CARD ATIVO */
+  color: var(--color-ink);
 }
 
-/* ------ NAVEGAÇÃO — ANTERIOR / PRÓXIMO ------ */
-/* MESMO DESENHO DO .sobre-nav-arrow, RGBA INVERTIDO PARA O FUNDO ESCURO */
+/* ------ NAVEGAÇÃO ------ */
 
 .depoimentos-nav {
   display: flex;
@@ -1618,11 +1456,10 @@ h1, h2, h3 {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25); /* BORDA CLARA — SOBRE FUNDO ESCURO */
+  border: 1px solid rgba(255, 255, 255, 0.25);
   background-color: transparent;
   color: var(--color-ink);
   cursor: pointer;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
@@ -1639,8 +1476,6 @@ h1, h2, h3 {
   height: 20px;
 }
 
-/* ------ GUARD PREFERS-REDUCED-MOTION — TROCA INSTANTÂNEA ------ */
-
 @media (prefers-reduced-motion: reduce) {
   .depoimento-card,
   .depoimentos-nav-arrow {
@@ -1648,12 +1483,10 @@ h1, h2, h3 {
   }
 }
 
-/* ------ DESKTOP — CARD MAIOR ------ */
-
 @media (min-width: 768px) {
   #depoimentos {
     --dep-card-w: 280px;
-    --dep-side1-x: 52%;   /* MAIS FOLGA NO DESKTOP — LEQUE MAIS ABERTO */
+    --dep-side1-x: 52%;
     --dep-side2-x: 92%;
   }
 }
@@ -1662,12 +1495,11 @@ h1, h2, h3 {
    SEÇÃO 7 — CTA FINAL — CONVERSÃO
    ======================================== */
 
-/* ------ TRANSIÇÃO EM ONDA ------ */
+/* ------ TRANSIÇÃO 6 → 7 ------ */
 
-/* SEÇÃO 6 (ESCURA) → CTA: ONDA NO TOPO, PREENCHIDA COM O VERDE DA ANTERIOR */
 .cta-wave-top {
   position: absolute;
-  top: -2px; /* OVERLAP -2px — MATA HAIRLINE SUB-PIXEL NO SEAM */
+  top: -2px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -1678,7 +1510,7 @@ h1, h2, h3 {
 .cta-wave-top svg {
   display: block;
   width: 100%;
-  height: calc(clamp(40px, 6vw, 80px) + 2px); /* +2px COMPENSA O OVERLAP — NÃO CORTA A CURVA */
+  height: calc(clamp(40px, 6vw, 80px) + 2px);
 }
 
 /* ------ SEÇÃO ------ */
@@ -1702,13 +1534,12 @@ h1, h2, h3 {
   gap: clamp(28px, 4vw, 44px);
 }
 
-/* ------ CABEÇALHO — EYEBROW COM ROULETTE + TÍTULO + SUBTÍTULO ------ */
+/* ------ CABEÇALHO ------ */
 
 .cta-header {
   text-align: center;
 }
 
-/* EYEBROW — MESMA TIPOGRAFIA DAS SEÇÕES ANTERIORES */
 .cta-eyebrow {
   font-family: var(--font-body);
   font-weight: 500;
@@ -1720,9 +1551,6 @@ h1, h2, h3 {
   margin-bottom: 20px;
 }
 
-/* ROLETA — REGRAS UNIFICADAS NO BLOCO COMPARTILHADO (PÍLULA LARANJA, TEXTO BRANCO) */
-
-/* TÍTULO — MESMO CLAMP DE CORPO DAS SEÇÕES ANTERIORES */
 .cta-title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -1747,7 +1575,7 @@ h1, h2, h3 {
   margin-right: auto;
 }
 
-/* ------ BOTÕES PRINCIPAIS ------ */
+/* ------ BOTÕES ------ */
 
 .cta-actions {
   width: 100%;
@@ -1771,7 +1599,6 @@ h1, h2, h3 {
   font-size: 15px;
   cursor: pointer;
   text-decoration: none;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: transform 0.15s ease, background-color 0.3s ease;
 }
 
@@ -1785,18 +1612,16 @@ h1, h2, h3 {
   flex: 0 0 auto;
 }
 
-/* BOTÃO WHATSAPP — VERDE UNIMED */
 .cta-btn--whatsapp {
   background-color: var(--color-accent);
   color: var(--color-ink);
   border: none;
 }
 
-/* BOTÃO AVALIAÇÃO — OUTLINE SOBRE O CLARO */
 .cta-btn--outline {
   background-color: transparent;
   color: var(--color-paper);
-  border: 1px solid rgba(45, 74, 56, 0.3); /* --color-ink-muted A 30% */
+  border: 1px solid rgba(45, 74, 56, 0.3);
 }
 
 .cta-btn--outline:hover {
@@ -1822,8 +1647,6 @@ h1, h2, h3 {
   opacity: 0.5;
 }
 
-/* PISTA DO FAB — LARGURA = 52×4 + 12×3 (4 ALVOS, 3 GAPS) */
-/* ALTURA 52px DO CÍRCULO + FOLGA ABAIXO PARA O @ HANDLE DE CADA ÍCONE */
 .cta-social {
   position: relative;
   width: 244px;
@@ -1831,7 +1654,6 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
-/* ÍCONES — POSIÇÕES FIXAS, REVELADOS AO ABRIR O FAB */
 .cta-social-icon {
   position: absolute;
   top: 0;
@@ -1842,9 +1664,8 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   background-color: var(--color-card);
-  border: 1px solid rgba(6, 48, 31, 0.18); /* --color-paper A 18% */
+  border: 1px solid rgba(6, 48, 31, 0.18);
   color: var(--color-paper);
-  /* ESTADO FECHADO */
   opacity: 0;
   transform: scale(0.8) rotate(45deg);
   pointer-events: none;
@@ -1856,8 +1677,7 @@ h1, h2, h3 {
   height: 22px;
 }
 
-/* @ HANDLE — ABAIXO DO CÍRCULO, CENTRALIZADO. HERDA A OPACIDADE DO ÍCONE-PAI, */
-/* ENTÃO APARECE E SOME JUNTO COM ELE (MESMA TRANSIÇÃO DE OPACITY DO FAB). */
+/* HANDLE HERDA OPACIDADE DO PAI — APARECE E SOME JUNTO. */
 .cta-social-icon__handle {
   position: absolute;
   top: calc(100% + 6px);
@@ -1872,7 +1692,7 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-/* BOTÃO + — CAPA A PISTA. FECHADO: DESLIZA SOBRE O 1º ÍCONE (translateX -192px) */
+/* BOTÃO + — FECHADO: DESLIZA SOBRE O 1º ÍCONE (translateX -192px = 244 - 52). */
 .cta-social-toggle {
   position: absolute;
   right: 0;
@@ -1888,7 +1708,7 @@ h1, h2, h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateX(-192px); /* 244 - 52 — REPOUSA SOBRE A POSIÇÃO DO 1º ÍCONE */
+  transform: translateX(-192px);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1),
               background-color 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -1898,7 +1718,6 @@ h1, h2, h3 {
   height: 22px;
 }
 
-/* ESTADO ABERTO — + DESLIZA PARA A DIREITA (×) E OS ÍCONES SURGEM ESCALONADOS */
 .cta-social--open .cta-social-toggle {
   transform: translateX(0) rotate(45deg);
   background-color: var(--color-orange);
@@ -1910,20 +1729,17 @@ h1, h2, h3 {
   pointer-events: auto;
 }
 
-/* STAGGER NA ENTRADA — 1º / 2º / 3º ÍCONE */
 .cta-social--open .cta-social-icon:nth-child(1) { transition-delay: 0.08s; }
 .cta-social--open .cta-social-icon:nth-child(2) { transition-delay: 0.14s; }
-.cta-social--open .cta-social-icon:nth-child(3) { transition-delay: 0.2s; }
+.cta-social--open .cta-social-icon:nth-child(3) { transition-delay: 0.2s;  }
 
-/* ------ MODAL DE AVALIAÇÃO ------ */
+/* ------ MODAL ------ */
+/* FILHO DIRETO DE <body> — isolation: isolate DO #cta ANULARIA O z-index. */
 
-/* O MARKUP VIVE COMO FILHO DIRETO DE <body>, NUNCA DENTRO DE #cta: AQUELA SEÇÃO TEM */
-/* isolation: isolate E O STACKING CONTEXT LOCAL ANULARIA O z-index ABAIXO. */
 .cta-modal {
   position: fixed;
   inset: 0;
   z-index: 300; /* ACIMA DA NAVBAR (200) E DO OVERLAY DE NAV (100) */
-  /* ESTADO INICIAL OCULTO — GSAP (autoAlpha) ASSUME O CONTROLE NO INIT */
   visibility: hidden;
   opacity: 0;
 }
@@ -1974,7 +1790,7 @@ h1, h2, h3 {
   line-height: 1.2;
   color: var(--color-paper);
   margin-bottom: 20px;
-  padding-right: 32px; /* NÃO ENCOSTA NO BOTÃO FECHAR */
+  padding-right: 32px;
 }
 
 .cta-modal__form {
@@ -1999,7 +1815,7 @@ h1, h2, h3 {
 .cta-field__input {
   width: 100%;
   padding: 12px;
-  border: 1px solid rgba(6, 48, 31, 0.2); /* --color-paper A 20% */
+  border: 1px solid rgba(6, 48, 31, 0.2);
   border-radius: 8px;
   font-family: var(--font-body);
   font-size: 15px;
@@ -2039,8 +1855,6 @@ h1, h2, h3 {
   color: rgba(255, 255, 255, 0.35);
 }
 
-/* ------ GUARD PREFERS-REDUCED-MOTION — SEM TRANSIÇÕES ------ */
-
 @media (prefers-reduced-motion: reduce) {
   .cta-btn,
   .cta-social-icon,
@@ -2053,29 +1867,23 @@ h1, h2, h3 {
    NAVEGAÇÃO — NAVBAR + OVERLAYS
    ======================================== */
 
-/* BLOCO NO FIM DO ARQUIVO DE PROPÓSITO: A .nav-cta REAPROVEITA A RECEITA DA .hero-cta */
-/* (LINHA ~321) E PRECISA VIR DEPOIS DELA NA CASCATA PARA AJUSTAR A MARGEM. */
-
 /* ------ TOKENS LOCAIS ------ */
-/* O VERDE-MENTA DA NAVEGAÇÃO NÃO EXISTE NO @theme E É EXCLUSIVO DESTE BLOCO. */
-/* DECLARADO NOS DOIS ESCOPOS RAIZ (BARRA E OVERLAY) — CUSTOM PROPERTIES HERDAM, */
-/* ENTÃO TODO DESCENDENTE ENXERGA. ZERO HEX SOLTO NAS REGRAS ABAIXO. */
+/* VERDE-MENTA EXCLUSIVO DESTE BLOCO — NÃO EXISTE NO @theme.
+   DECLARADO NOS DOIS ESCOPOS RAIZ — CUSTOM PROPERTIES HERDAM PARA TODOS OS DESCENDENTES. */
 
 .nav-bar,
 .nav-overlay {
-  --nav-h: 64px;                                  /* ALTURA DA BARRA — ANCORA OS OVERLAYS */
+  --nav-h: 64px;
   --nav-gutter: clamp(16px, 4vw, 32px);
   --nav-mint: #8FD9B6;
   --nav-mint-muted: rgba(143, 217, 182, 0.5);
-  --nav-hairline: rgba(143, 217, 182, 0.12);      /* BORDA DA BARRA */
-  --nav-hairline-soft: rgba(143, 217, 182, 0.1);  /* SEPARADORES DA LISTA */
-  --nav-hairline-faint: rgba(143, 217, 182, 0.08);/* HOVER DO FECHAR E DA SETA */
-  /* EMPILHAMENTO — FONTE ÚNICA. O JS LÊ ESTE VALOR VIA getComputedStyle E O APLICA */
-  /* AO OVERLAY ABERTO — SEMPRE O MESMO Z: SÓ UM FICA EM CENA POR VEZ. */
-  /* FAIXAS SEPARADAS COM MARGEM: EMPATE DE z-index É RESOLVIDO POR ORDEM DE DOM E OS */
-  /* OVERLAYS VÊM DEPOIS DO <header>, ENTÃO QUALQUER EMPATE OS COLOCARIA POR CIMA DA BARRA. */
+  --nav-hairline: rgba(143, 217, 182, 0.12);
+  --nav-hairline-soft: rgba(143, 217, 182, 0.1);
+  --nav-hairline-faint: rgba(143, 217, 182, 0.08);
+  /* Z-INDEX FONTE ÚNICA — JS LÊ VIA getComputedStyle, NUNCA HARDCODED.
+     OVERLAYS VÊM DEPOIS DO <header> NO DOM: QUALQUER EMPATE OS COLOCA POR CIMA DA BARRA. */
   --nav-bar-z: 200;
-  --nav-overlay-z: 100;                           /* ABAIXO DA BARRA, ACIMA DE TUDO MAIS */
+  --nav-overlay-z: 100;
 }
 
 /* ------ NAVBAR ------ */
@@ -2091,25 +1899,18 @@ h1, h2, h3 {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--nav-gutter);
-  /* TRANSLÚCIDO SOBRE O TOKEN: COM O PAPER OPACO O backdrop-filter NÃO TERIA O QUE */
-  /* BORRAR. color-mix MANTÉM A COR VINDO DO @theme, SEM HEX HARDCODED. */
   background-color: color-mix(in srgb, var(--color-paper) 82%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--nav-hairline);
-  /* ESTADO INICIAL OCULTO — A BARRA (z 200) FICARIA POR CIMA DO INTRO (z 50) E */
-  /* PISCARIA SOBRE O VÍDEO ATÉ O JS RODAR. GSAP (autoAlpha) ASSUME NO initNav() E */
-  /* revealNav() FAZ A ENTRADA QUANDO O INTRO TERMINA, DEVOLVENDO O pointer-events. */
-  /* O pointer-events É REDUNDANTE COM visibility: hidden (QUE JÁ TIRA O ELEMENTO DO */
-  /* HIT-TEST), MAS PROTEGE O CASO DE ALGUÉM SOBRESCREVER SÓ A VISIBILIDADE. */
+  /* OCULTA ANTES DO INTRO — revealNav() FAZ A ENTRADA QUANDO O VÍDEO TERMINA. */
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
 
-/* ------ HAMBURGER ------ */
-/* AS BARRAS SÃO ANIMADAS POR GSAP (NUNCA POR TRANSITION CSS): O ARQUIVO DE ANIMAÇÃO */
-/* CONVERGE AS EXTERNAS EM ±(ALTURA + GAP) = 7px E ROTACIONA ±45deg. */
+/* ------ HAMBÚRGUER ------ */
+/* BARRAS ANIMADAS POR GSAP — NUNCA POR TRANSITION CSS. */
 
 .nav-hamburger {
   display: flex;
@@ -2117,9 +1918,9 @@ h1, h2, h3 {
   justify-content: center;
   align-items: flex-start;
   gap: 5px;
-  width: 44px;   /* ÁREA DE TOQUE MÍNIMA */
+  width: 44px;
   height: 44px;
-  margin-left: 0; /* BARRAS NA GUTTER — SIMÉTRICO COM O .nav-whatsapp DO OUTRO LADO */
+  margin-left: 0;
   padding: 0;
   border: none;
   background-color: transparent;
@@ -2151,7 +1952,6 @@ h1, h2, h3 {
   font-weight: 600;
   font-size: 13px;
   text-decoration: none;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
@@ -2169,34 +1969,27 @@ h1, h2, h3 {
   flex: 0 0 auto;
 }
 
-/* ------ OVERLAY — BASE COMUM AOS QUATRO ------ */
-/* REPOUSO OCULTO NO CSS PARA NÃO PISCAR ANTES DO JS; DAÍ EM DIANTE QUEM CONTROLA */
-/* visibility/opacity É O GSAP (autoAlpha) E O DESLOCAMENTO É xPercent. */
+/* ------ OVERLAY BASE ------ */
+/* REPOUSO OCULTO NO CSS — GSAP (autoAlpha) ASSUME NO INIT.
+   SEM transform AQUI: DESLOCAMENTO INICIAL É 100% DO GSAP (xPercent).
+   UM translateX(-100%) SERIA LIDO COMO x EM PX E SOMARIA AO xPercent — OVERLAY PARARIA EM -200%. */
 
 .nav-overlay {
   position: fixed;
   inset: 0;
   z-index: var(--nav-overlay-z);
   background-color: var(--color-paper);
-  padding-top: var(--nav-h); /* CONTEÚDO NUNCA CORRE POR BAIXO DA BARRA */
+  padding-top: var(--nav-h);
   overflow-x: hidden;
-  /* SCROLL NATIVO INTERNO — O LENIS ESTÁ PARADO. SÓ O overflow NÃO BASTA: O LENIS */
-  /* INTERCEPTA wheel/touch NO DOCUMENTO E DÁ preventDefault MESMO DEPOIS DE stop(), */
-  /* MATANDO O SCROLL DO FILHO. POR ISSO CADA OVERLAY CARREGA data-lenis-prevent NO */
-  /* HTML — É O MECANISMO OFICIAL DO LENIS PARA ÁREAS ROLÁVEIS ANINHADAS. */
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* SCROLL SUAVE NO IOS */
+  -webkit-overflow-scrolling: touch;
   visibility: hidden;
   opacity: 0;
   will-change: transform;
-  /* ⚠️ SEM transform AQUI. O DESLOCAMENTO INICIAL É 100% DO GSAP (xPercent). */
-  /* UM translateX(-100%) NESTE BLOCO SERIA LIDO PELO GSAP COMO x EM PIXELS E SOMADO */
-  /* AO xPercent: O OVERLAY NASCERIA EM -200% E, AO ANIMAR xPercent → 0, PARARIA EM */
-  /* -100% — VISÍVEL, PORÉM INTEIRAMENTE FORA DA TELA. O FOUC JÁ É COBERTO PELO */
-  /* visibility/opacity ACIMA. */
 }
 
-/* BOTÃO FECHAR — CANTO SUPERIOR DIREITO, LOGO ABAIXO DA BARRA FIXA */
+/* ------ BOTÃO FECHAR ------ */
+
 .nav-overlay__close {
   position: absolute;
   top: calc(var(--nav-h) + 12px);
@@ -2212,7 +2005,6 @@ h1, h2, h3 {
   border-radius: 50%;
   background-color: transparent;
   cursor: pointer;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
@@ -2224,7 +2016,7 @@ h1, h2, h3 {
   transform: scale(0.95);
 }
 
-/* AS DUAS BARRAS NASCEM SOBREPOSTAS E O GSAP AS CRUZA EM ±45deg AO ABRIR */
+/* AS DUAS BARRAS NASCEM SOBREPOSTAS — GSAP AS CRUZA EM ±45deg. */
 .nav-overlay__close-bar {
   position: absolute;
   width: 16px;
@@ -2234,7 +2026,8 @@ h1, h2, h3 {
   transform-origin: center center;
 }
 
-/* CONTAINER DE CONTEÚDO — PADRÃO E VARIANTE CENTRALIZADA */
+/* ------ CONTAINERS DE CONTEÚDO ------ */
+
 .nav-overlay__inner {
   position: relative;
   z-index: 1;
@@ -2244,8 +2037,6 @@ h1, h2, h3 {
   padding: clamp(32px, 6vw, 72px) var(--nav-gutter) clamp(40px, 8vw, 80px);
 }
 
-/* min-height: 100% JÁ DESCONTA A BARRA: O padding-top DO OVERLAY ENCOLHE O CONTENT */
-/* BOX CONTRA O QUAL A PORCENTAGEM RESOLVE. SUBTRAIR --nav-h AQUI DESCONTARIA DUAS VEZES. */
 .nav-overlay__inner--menu {
   min-height: 100%;
   display: flex;
@@ -2268,7 +2059,7 @@ h1, h2, h3 {
   padding-right: clamp(24px, 5vw, 64px);
 }
 
-/* ------ TIPOGRAFIA COMPARTILHADA DOS OVERLAYS ------ */
+/* ------ TIPOGRAFIA COMPARTILHADA ------ */
 
 .nav-eyebrow {
   font-family: var(--font-body);
@@ -2276,7 +2067,7 @@ h1, h2, h3 {
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-orange); /* MESMO LARANJA DOS EYEBROWS DAS DEMAIS SEÇÕES */
+  color: var(--color-orange);
   margin-bottom: clamp(24px, 4vw, 40px);
 }
 
@@ -2297,7 +2088,6 @@ h1, h2, h3 {
   padding: 0;
 }
 
-/* SEPARADOR ENTRE ITENS — O PRIMEIRO TAMBÉM RECEBE, FECHANDO A LISTA POR CIMA */
 .nav-menu-item {
   border-top: 1px solid var(--nav-hairline-soft);
 }
@@ -2324,7 +2114,6 @@ h1, h2, h3 {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
-  /* SEM opacity: O LARANJA PRECISA BATER EXATAMENTE COM O DA .nav-eyebrow */
   color: var(--color-orange);
 }
 
@@ -2347,7 +2136,6 @@ h1, h2, h3 {
   color: var(--color-ink);
 }
 
-/* SETA CIRCULAR — DESLIZA À DIREITA NO HOVER (MICRO-INTERAÇÃO, CSS PURO) */
 .nav-menu-btn__arrow {
   flex: 0 0 auto;
   display: flex;
@@ -2386,27 +2174,24 @@ h1, h2, h3 {
 }
 
 /* ------ OVERLAY IVAN ------ */
-/* MOBILE: EMPILHADO (FOTO 40vh NO TOPO). DESKTOP: DUAS COLUNAS DE ALTURA TOTAL. */
 
 .nav-overlay--ivan .nav-ivan {
   position: relative;
   z-index: 1;
-  min-height: 100%; /* MESMA RAZÃO DO .nav-overlay__inner--menu — VER NOTA ACIMA */
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .nav-ivan__media {
-  position: relative; /* ÂNCORA DO ::after DO DEGRADÊ */
+  position: relative;
   flex: 0 0 auto;
-  /* 75vh — 40vh, 55vh E 65vh AINDA CORTAVAM O IVAN VERTICALMENTE NO MOBILE */
   height: 75vh;
   overflow: hidden;
 }
 
-/* DEGRADÊ INFERIOR DA FOTO — TRANSIÇÃO SUAVE PARA O FUNDO DO TEXTO */
-/* O ::after VIVE NO CONTAINER, NUNCA NA .nav-ivan__photo: <img> É ELEMENTO */
-/* SUBSTITUÍDO E NÃO RENDERIZA PSEUDO-ELEMENTOS. */
+/* DEGRADÊ DUPLO: PRETO FRACO (PROFUNDIDADE) + VERDE ESCURO (TRANSIÇÃO PARA O TEXTO).
+   ::after NO CONTAINER, NÃO NA IMG — <img> NÃO RENDERIZA PSEUDO-ELEMENTOS. */
 .nav-ivan__media::after {
   content: '';
   position: absolute;
@@ -2414,7 +2199,6 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   height: 40%;
-  /* DEGRADÊ DUPLO: PRETO FRACO (PROFUNDIDADE) + VERDE ESCURO (TRANSIÇÃO PARA O TEXTO) */
   background:
     linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%),
     linear-gradient(to top, var(--color-paper) 15%, transparent 100%);
@@ -2430,8 +2214,7 @@ h1, h2, h3 {
   border-radius: 0;
 }
 
-/* TEXTO SOBREPOSTO NA PARTE INFERIOR DA FOTO */
-/* z-index 2 O MANTÉM ACIMA DO ::after DO DEGRADÊ, QUE É ABSOLUTO SEM z-index. */
+/* z-index: 2 — ACIMA DO ::after DO DEGRADÊ. */
 .nav-ivan__photo-text {
   position: absolute;
   bottom: 0;
@@ -2477,7 +2260,6 @@ h1, h2, h3 {
   max-width: 52ch;
 }
 
-/* CTA — REAPROVEITA A RECEITA DA .hero-cta (GLOW INCLUSO), SÓ ZERA A MARGEM DELA */
 .nav-cta {
   margin-top: 12px;
   align-self: flex-start;
@@ -2492,7 +2274,7 @@ h1, h2, h3 {
   .nav-ivan__media {
     flex: 0 0 44%;
     max-width: 44%;
-    height: auto;      /* ALTURA TOTAL DA COLUNA — VEM DO stretch DO FLEX */
+    height: auto;
   }
 
   .nav-ivan__content {
@@ -2501,19 +2283,10 @@ h1, h2, h3 {
   }
 }
 
-/* ------ OVERLAY PLANOS ------ */
-/* CABEÇALHO USA .nav-overlay__inner--centered + A TIPOGRAFIA COMPARTILHADA */
-/* (.nav-eyebrow / .nav-headline). OS CARDS VÊM ABAIXO. */
-
 /* ========================================
    SEÇÃO PLANOS — CARDS EXPANSÍVEIS
    ======================================== */
 
-/* MARKUP GERADO POR initPlansSection() A PARTIR DE SITE_DATA.planos. */
-/* TOKENS LOCAIS: OS VALORES DE VIDRO E MENTA NÃO EXISTEM NO @theme. AS COMPOSIÇÕES */
-/* DE LARANJA E VERDE USAM color-mix SOBRE OS TOKENS — ZERO HEX SOLTO NAS REGRAS. */
-
-/* ------ CONTAINER DOS CARDS ------ */
 .nav-plans {
   --plan-surface: rgba(255, 255, 255, 0.05);
   --plan-line: rgba(143, 217, 182, 0.15);
@@ -2529,11 +2302,10 @@ h1, h2, h3 {
   margin-top: 24px;
   margin-left: auto;
   margin-right: auto;
-  text-align: left; /* O INNER É CENTRALIZADO — O CARD NÃO */
+  text-align: left;
 }
 
-/* ------ CARD BASE ------ */
-/* overflow: hidden É REQUISITO DA ANIMAÇÃO DE height DO .nav-plan__hidden */
+/* overflow: hidden REQUISITO DA ANIMAÇÃO DE height DO .nav-plan__hidden. */
 .nav-plan {
   background: var(--plan-surface);
   border: 1px solid var(--plan-line);
@@ -2542,7 +2314,6 @@ h1, h2, h3 {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  /* MICRO-INTERAÇÃO — HOVER (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: border-color 0.3s;
 }
 
@@ -2550,13 +2321,11 @@ h1, h2, h3 {
   border-color: var(--plan-line-hover);
 }
 
-/* ------ CARD DESTAQUE ------ */
 .nav-plan--featured {
   border-color: var(--color-accent);
   box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 15%, transparent);
 }
 
-/* ------ BADGE ------ */
 .nav-plan__badge {
   position: absolute;
   top: 16px;
@@ -2572,7 +2341,6 @@ h1, h2, h3 {
   border-radius: 100px;
 }
 
-/* ------ TAG ------ */
 .nav-plan__tag {
   display: inline-block;
   background: color-mix(in srgb, var(--color-orange) 15%, transparent);
@@ -2587,7 +2355,6 @@ h1, h2, h3 {
   margin-bottom: 10px;
 }
 
-/* ------ NOME DO PLANO ------ */
 .nav-plan__name {
   font-family: var(--font-display);
   font-size: clamp(20px, 4vw, 26px);
@@ -2597,7 +2364,6 @@ h1, h2, h3 {
   margin-bottom: 6px;
 }
 
-/* ------ DIFERENCIAL ------ */
 .nav-plan__diferencial {
   font-family: var(--font-body);
   font-size: 12px;
@@ -2606,7 +2372,6 @@ h1, h2, h3 {
   margin-bottom: 16px;
 }
 
-/* ------ LISTA DE COBERTURAS ------ */
 .nav-plan__list {
   list-style: none;
   display: flex;
@@ -2634,8 +2399,7 @@ h1, h2, h3 {
   margin-top: 1px;
 }
 
-/* ------ ITEM DE ALERTA — LIMITAÇÃO DO PLANO, NÃO COBERTURA ------ */
-/* SEM O ✓ VERDE: O × LARANJA SINALIZA AUSÊNCIA, COERENTE COM O TEXTO DO ITEM. */
+/* LIMITAÇÃO DO PLANO — × LARANJA NO LUGAR DO ✓ VERDE. */
 .nav-plan__list li.nav-plan__item--alerta {
   color: var(--color-orange);
 }
@@ -2645,13 +2409,11 @@ h1, h2, h3 {
   color: var(--color-orange);
 }
 
-/* ------ BLOCO OCULTO ------ */
-/* A ALTURA É CONTROLADA PELO GSAP (expandPlanBody / collapsePlanBody). */
+/* ALTURA CONTROLADA PELO GSAP (expandPlanBody / collapsePlanBody). */
 .nav-plan__hidden {
   overflow: hidden;
 }
 
-/* ------ BOTÃO VER TUDO ------ */
 .nav-plan__toggle {
   background: none;
   border: none;
@@ -2666,7 +2428,6 @@ h1, h2, h3 {
   text-transform: uppercase;
 }
 
-/* ------ CTA WHATSAPP ------ */
 .nav-plan__cta {
   display: flex;
   align-items: center;
@@ -2684,12 +2445,10 @@ h1, h2, h3 {
   text-transform: uppercase;
   border-radius: 100px;
   text-decoration: none;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background 0.2s, transform 0.15s;
 }
 
 .nav-plan__cta:hover {
-  /* ESCURECE O ACCENT SEM HEX LITERAL — EQUIVALE AO #007a4a DA ESPECIFICAÇÃO */
   background: color-mix(in srgb, var(--color-accent) 82%, var(--color-black));
   transform: scale(1.02);
 }
@@ -2701,7 +2460,6 @@ h1, h2, h3 {
   flex-shrink: 0;
 }
 
-/* ------ REDUCED MOTION ------ */
 @media (prefers-reduced-motion: reduce) {
   .nav-plan,
   .nav-plan__hidden,
@@ -2715,7 +2473,6 @@ h1, h2, h3 {
 }
 
 /* ------ OVERLAY AVALIAÇÃO ------ */
-/* MESMA GEOMETRIA DE CAMPO DO MODAL DA SEÇÃO 7, REPINTADA PARA O FUNDO ESCURO. */
 
 .nav-form {
   width: 100%;
@@ -2739,9 +2496,6 @@ h1, h2, h3 {
   color: var(--nav-mint);
 }
 
-/* MESMA ESTÉTICA DO .cta-field__input DA SEÇÃO 7 — CAMPO CLARO, TEXTO ESCURO. */
-/* A BORDA USA color-mix NO LUGAR DO rgba(6,48,31,.2) LITERAL DA SEÇÃO 7: MESMO */
-/* RESULTADO, MAS DERIVADO DO TOKEN. */
 .nav-field__input {
   width: 100%;
   padding: 12px;
@@ -2753,13 +2507,12 @@ h1, h2, h3 {
   background-color: var(--color-ink);
 }
 
-/* AS OPÇÕES DO SELECT SÃO PINTADAS PELO SO — FIXADAS PARA ACOMPANHAR O CAMPO CLARO */
 .nav-field__input option {
   color: var(--color-paper);
   background-color: var(--color-card);
 }
 
-/* PLACEHOLDER ESCURO — O CAMPO AGORA É CLARO; O BRANCO ANTERIOR SUMIRIA NO FUNDO */
+/* PLACEHOLDER ESCURO — CAMPO CLARO, O BRANCO SUMIRIA NO FUNDO. */
 .nav-field__input::placeholder {
   color: color-mix(in srgb, var(--color-paper) 45%, transparent);
 }
@@ -2785,17 +2538,12 @@ h1, h2, h3 {
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  /* MICRO-INTERAÇÃO — HOVER/ACTIVE (EXCEÇÃO DOCUMENTADA, CSS PURO) */
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 
 .nav-form__submit:active {
   transform: scale(0.98);
 }
-
-/* ------ REDUCED MOTION ------ */
-/* O DESLOCAMENTO HORIZONTAL É DESLIGADO NO JS (SÓ OPACIDADE). AQUI CAEM AS */
-/* MICRO-INTERAÇÕES CSS DO BLOCO DE NAVEGAÇÃO. */
 
 @media (prefers-reduced-motion: reduce) {
   .nav-whatsapp,
@@ -2809,4 +2557,3 @@ h1, h2, h3 {
     transform: none;
   }
 }
-

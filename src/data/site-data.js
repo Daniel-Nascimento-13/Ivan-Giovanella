@@ -9,11 +9,12 @@ export const SITE_DATA = {
   },
 
   /* ------ SEÇÃO 1 — HERO ------ */
+  // TEXTO DE REFERÊNCIA — MARKUP ESTÁTICO NO index.html (LCP/CLS).
   hero: {
-  eyebrow: {
-    prefix: 'Plano de saúde',
-    words: ['empresarial', 'pessoal']
-  },
+    eyebrow: {
+      prefix: 'Plano de saúde',
+      words: ['empresarial', 'pessoal']
+    },
     headline: [
       'O melhor benefício para',
       'sua empresa é cuidar de',
@@ -25,8 +26,7 @@ export const SITE_DATA = {
   },
 
   /* ------ SEÇÃO 2 — SOBRE ------ */
-  /* TEXTO DE REFERÊNCIA — O MARKUP ESTÁTICO VIVE NO index.html (LCP/CLS). */
-  /* sobre.js APENAS SELECIONA E ANIMA — NÃO INJETA CONTEÚDO. */
+  // TEXTO DE REFERÊNCIA — sobre.js APENAS SELECIONA E ANIMA, NÃO INJETA CONTEÚDO.
   sobre: {
     eyebrow: 'Sobre o Consultor',
     name: 'Ivan Giovanella',
@@ -40,8 +40,7 @@ export const SITE_DATA = {
   },
 
   /* ------ SEÇÃO 0 — OVERLAY PLANOS ------ */
-  /* FONTE ÚNICA DOS CARDS: O MARKUP É GERADO POR initPlansSection() EM */
-  /* src/sections/nav.js — NADA DISSO VIVE HARDCODED NO index.html. */
+  // MARKUP GERADO POR initPlansSection() EM src/sections/nav.js — NÃO VIVE NO index.html.
   planos: [
     {
       id: 'essencial',
@@ -61,7 +60,7 @@ export const SITE_DATA = {
         'Atendimentos ambulatoriais (retirada de sinal de pele, colocação de tala de gesso, implante de DIU, quimioterapia e radioterapia ambulatorial, hemodiálise ambulatorial, entre outros)',
         'Atendimento em Plantão Médico Virtual 24 horas',
         'Urgência e emergência no Pronto Atendimento ou Plantão Unimed a nível nacional — até 12h em observação',
-        /* alerta: true — LIMITAÇÃO DO PLANO, NÃO COBERTURA. RENDERIZA SEM ✓ VERDE. */
+        // LIMITAÇÃO DO PLANO — RENDERIZA SEM ✓ VERDE.
         { texto: 'Sem cobertura para internações clínicas, cirúrgicas, obstétricas e UTI/CTI', alerta: true },
         'Diferenciais: Uniair · Extensão Assistencial · Seguro de Vida para titular (funcionário/sócio)'
       ]
@@ -92,7 +91,7 @@ export const SITE_DATA = {
   ]
 };
 
-/* ------ HELPER — LINK WHATSAPP (FONTE ÚNICA) ------ */
+/* ------ HELPER — LINK WHATSAPP ------ */
 
 export function getWhatsappLink(customMessage) {
   const message = encodeURIComponent(customMessage || SITE_DATA.whatsapp.defaultMessage);

@@ -1,5 +1,5 @@
 /* ========================================
-   CONSTANTES — LENIS (SCROLL SUAVE)
+   CONSTANTS — LENIS
    ======================================== */
 
 export const LENIS_CONFIG = {

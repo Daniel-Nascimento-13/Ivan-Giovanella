@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { gsap } from '../lib/gsap.js';
 import {
   EASE,
@@ -12,18 +16,12 @@ import { createReveal } from '../lib/reveal.js';
    SEÇÃO 6 — DEPOIMENTOS — CARDS EMPILHADOS
    ======================================== */
 
-// POSICIONAMENTO DA PILHA, REVEAL DE ENTRADA E ROLETA DO EYEBROW.
-// SCROLL = LENIS | MOVIMENTO = GSAP | DISPARO = SCROLLTRIGGER.
-// A TROCA DE CARD É TRANSIÇÃO CSS (MICRO-INTERAÇÃO) — GSAP SÓ FAZ O REVEAL.
-// TODOS OS NÚMEROS VÊM DE src/constants/motion.js.
-
 let _revealST = null;
 let _rouletteTimer = null;
 let _rouletteResetTimer = null;
 
-/* ------ DISTÂNCIA CIRCULAR ENTRE DOIS ÍNDICES ------ */
-// COM 10 CARDS EM CICLO, O CAMINHO MAIS CURTO ENTRE ATIVO E CARD i FICA EM -5..5.
-// É ISSO QUE FAZ A PILHA EMBRULHAR: O CARD 10 É VIZINHO DO CARD 1.
+/* ------ DISTÂNCIA CIRCULAR ------ */
+// CAMINHO MAIS CURTO ENTRE ATIVO E CARD i — FAZ A PILHA EMBRULHAR.
 
 function circularDelta(i, active, total) {
   let d = i - active;
@@ -33,15 +31,14 @@ function circularDelta(i, active, total) {
   return d;
 }
 
-/* ------ POSICIONA OS CARDS EM TORNO DO ATIVO ------ */
-// PURO DOM: ATRIBUI A CLASSE DE BANDA (ATIVO / ±1 / ±2 / OCULTO) E O SINAL DA
-// DIREÇÃO (--dep-dir). O MOVIMENTO EM SI É A TRANSIÇÃO CSS DO .depoimento-card.
+/* ------ POSICIONAMENTO DOS CARDS ------ */
+// ATRIBUI CLASSE DE BANDA E SINAL DE DIREÇÃO (--dep-dir).
+// O MOVIMENTO É TRANSIÇÃO CSS — GSAP NÃO TOCA transform AQUI.
 
 export function positionCards(cards, activeIndex, { instant = false } = {}) {
   const total = cards.length;
   const list = cards[0]?.parentElement;
 
-  /* PRIMEIRA APLICAÇÃO SEM ANIMAÇÃO — EVITA O FAN-OUT A PARTIR DO CENTRO NO LOAD */
   if (instant && list) {
     list.classList.add('depoimentos-cards--init');
   }
@@ -67,24 +64,23 @@ export function positionCards(cards, activeIndex, { instant = false } = {}) {
       card.classList.add('depoimento-card--hidden');
     }
 
-    /* ACESSIBILIDADE — SÓ O CARD ATIVO É EXPOSTO À LEITURA SEQUENCIAL */
     card.setAttribute('aria-hidden', abs === 0 ? 'false' : 'true');
   });
 
-  /* RELIGA A TRANSIÇÃO APÓS UM REFLOW — AS TROCAS SEGUINTES ANIMAM */
   if (instant && list) {
     void list.offsetHeight;
     list.classList.remove('depoimentos-cards--init');
   }
 }
 
-/* ------ REVEAL — HEADER (CLIP) + CARDS (STAGGER SEM MEXER NO TRANSFORM) ------ */
+/* ------ REVEAL ------ */
+// HEADER: CLIP-PATH + TRANSLATEY + AUTOALPHA.
+// CARDS: MULTIPLICA --dep-reveal 0→1 — NÃO TOCA transform NEM A OPACITY DE BANDA.
 
 export function revealDepoimentos(refs) {
   const { section, header, cards } = refs;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* HEADER — REVEAL PADRÃO COM CLIP-PATH + TRANSLATEY + AUTOALPHA */
   const headerEls = Array.from(header.children);
   _revealST = createReveal(headerEls, {
     trigger: section,
@@ -92,12 +88,8 @@ export function revealDepoimentos(refs) {
     stagger: STAGGER.base
   });
 
-  /* GUARD — SEM ANIMAÇÃO: CARDS JÁ VISÍVEIS (--dep-reveal PADRÃO = 1) */
   if (prefersReduced) return;
 
-  /* CARDS — MULTIPLICADOR --dep-reveal DE 0→1 COM STAGGER. */
-  /* OPACITY-ONLY VIA CUSTOM PROPERTY: NÃO TOCA transform (POSIÇÃO DA PILHA) NEM */
-  /* SOBRESCREVE A OPACITY DE BANDA — OS DOIS SE MULTIPLICAM NO CSS. */
   gsap.set(cards, { '--dep-reveal': 0 });
   gsap.to(cards, {
     '--dep-reveal': 1,
@@ -112,17 +104,14 @@ export function revealDepoimentos(refs) {
   });
 }
 
-/* ------ ROLETA DO EYEBROW — SEÇÃO 6 — DEPOIMENTOS ------ */
-// MESMO MECANISMO DA SEÇÃO 5: TRACK EM COLUNA QUE DESLIZA POR TRANSITION CSS, COM
-// A LARGURA DO WRAPPER SEGUINDO A PALAVRA ATUAL. UM CLONE DA PRIMEIRA PALAVRA FECHA
-// A LISTA E O TRACK VOLTA AO TOPO COM A TRANSIÇÃO DESLIGADA — SALTO INVISÍVEL.
+/* ------ ROLETA DO EYEBROW ------ */
+// CLONE DA PRIMEIRA PALAVRA FECHA A LISTA — RESET INVISÍVEL PORQUE O CONTEÚDO É IGUAL.
 
 export function initDepoimentosRoulette() {
   const rouletteEl = document.querySelector('.depoimentos-eyebrow-roulette');
   const track = document.querySelector('.depoimentos-eyebrow-roulette__track');
   if (!rouletteEl || !track) return;
 
-  /* O CLONE FICA FORA DA CONTAGEM — REINICIALIZAÇÃO NÃO PODE TRATÁ-LO COMO PALAVRA */
   const words = Array.from(
     track.querySelectorAll('.depoimentos-eyebrow-roulette__word:not([aria-hidden="true"])')
   );
@@ -133,11 +122,9 @@ export function initDepoimentosRoulette() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
-  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
   const widths = words.map(w => w.offsetWidth);
   const h = words[0].offsetHeight;
 
-  /* CLONE DA PRIMEIRA PALAVRA NO FIM — DESTINO DO ÚLTIMO PASSO DO CICLO */
   if (track.dataset.rouletteCloned !== 'true') {
     const clone = words[0].cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
@@ -145,7 +132,6 @@ export function initDepoimentosRoulette() {
     track.dataset.rouletteCloned = 'true';
   }
 
-  /* VOLTA AO TOPO SEM TRANSIÇÃO — ESTADO LIMPO EM CASO DE REINICIALIZAÇÃO */
   track.style.transition = 'none';
   track.style.transform = 'translateY(0px)';
   void track.offsetHeight;
@@ -157,7 +143,6 @@ export function initDepoimentosRoulette() {
   function advance() {
     current += 1;
 
-    /* NO CLONE O CONTEÚDO É O DA PALAVRA 0 — LARGURA E LABEL SEGUEM A ORIGINAL */
     const isClone = current === words.length;
     const wordIndex = isClone ? 0 : current;
 
@@ -171,12 +156,11 @@ export function initDepoimentosRoulette() {
     track.style.transform = `translateY(-${current * h}px)`;
     rouletteEl.style.width = (widths[wordIndex] + ROULETTE.widthPadPx) + 'px';
 
-    /* RESET SILENCIOSO — DEPOIS QUE O DESLIZE ATÉ O CLONE TERMINA */
     if (isClone) {
       _rouletteResetTimer = setTimeout(() => {
         track.style.transition = 'none';
         track.style.transform = 'translateY(0px)';
-        void track.offsetHeight; /* FORÇA REFLOW ANTES DE RELIGAR A TRANSIÇÃO */
+        void track.offsetHeight;
         if (!prefersReduced) track.style.transition = '';
         current = 0;
       }, ROULETTE.resetDelayMs);
@@ -193,7 +177,7 @@ export function destroyDepoimentosRoulette() {
   _rouletteResetTimer = null;
 }
 
-/* ------ CLEANUP — MATA O REVEAL E SEU SCROLLTRIGGER ------ */
+/* ------ CLEANUP ------ */
 
 export function killDepoimentosReveal() {
   _revealST?.kill();

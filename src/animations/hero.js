@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, STAGGER, REVEAL_FROM, REVEAL_TO } from '../constants/motion.js';
 import { getWhatsappLink } from '../data/site-data.js';
@@ -20,8 +24,8 @@ function selectHeroElements(hero) {
   return [eyebrow, ...lines, subheadline, cta].filter(Boolean);
 }
 
-/* ------ PREPARAÇÃO — ESCONDE O HERO IMEDIATAMENTE, ANTES DA INTRO TERMINAR ------ */
-/* EVITA FLASH DE CONTEÚDO SEM ANIMAÇÃO (FOUC) ENQUANTO O VÍDEO AINDA RODA */
+/* ------ PREPARAÇÃO ------ */
+// ESCONDE O HERO ANTES DA INTRO TERMINAR — EVITA FOUC.
 
 export function prepareHero() {
   const hero = document.querySelector('#hero');
@@ -37,6 +41,7 @@ export function prepareHero() {
 }
 
 /* ------ ROLETA DO EYEBROW ------ */
+
 let _rouletteTimer = null;
 let _ctaTimer = null;
 let _ctaTimeouts = [];
@@ -49,14 +54,12 @@ function initEyebrowRoulette() {
   const words = Array.from(track.querySelectorAll('.eyebrow-roulette__word'));
   if (words.length < 2) return;
 
-  /* GUARD — A CHAMADA AGORA É ASSÍNCRONA (document.fonts.ready): DUAS PROMISES */
-  /* PENDENTES DEIXARIAM DOIS setInterval VIVOS COM UM SÓ HANDLE RASTREADO. */
+  // GUARD — EVITA DOIS setInterval VIVOS SE A CHAMADA FOR ASSÍNCRONA.
   destroyEyebrowRoulette();
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
-  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
   const widths = words.map(w => w.offsetWidth);
   const h = words[0].offsetHeight;
 
@@ -85,6 +88,7 @@ function destroyEyebrowRoulette() {
 }
 
 /* ------ ANIMAÇÃO DE LETRAS DO CTA ------ */
+
 function initCtaAnimation() {
   const cta = document.querySelector('.hero-cta-label');
   if (!cta) return;
@@ -92,7 +96,6 @@ function initCtaAnimation() {
   const originalText = cta.textContent.trim();
   cta.innerHTML = '';
 
-  /* ENVOLVE CADA LETRA EM UM SPAN */
   originalText.split('').forEach(c => {
     const span = document.createElement('span');
     span.style.cssText = 'display:inline-block; line-height:1.2;';
@@ -103,7 +106,6 @@ function initCtaAnimation() {
   function animate() {
     const spans = cta.querySelectorAll('span');
 
-    /* SAÍDA — LETRAS SOBEM COM BLUR */
     spans.forEach((s, i) => {
       s.style.animation = 'none';
       void s.offsetWidth;
@@ -111,7 +113,6 @@ function initCtaAnimation() {
       s.style.animation = 'ctaCharOut 0.4s ease forwards ' + (i * 0.03) + 's';
     });
 
-    /* ENTRADA — LETRAS SOBEM POR BAIXO */
     const tIn = setTimeout(() => {
       _ctaTimeouts = _ctaTimeouts.filter(h => h !== tIn);
       spans.forEach((s, i) => {
@@ -122,7 +123,6 @@ function initCtaAnimation() {
     }, 500);
     _ctaTimeouts.push(tIn);
 
-    /* LIMPA ANIMAÇÕES */
     const tClean = setTimeout(() => {
       _ctaTimeouts = _ctaTimeouts.filter(h => h !== tClean);
       spans.forEach(s => { s.style.animation = ''; s.style.animationDelay = ''; });
@@ -139,14 +139,14 @@ function initCtaAnimation() {
 }
 
 function destroyCtaAnimation() {
-  /* CANCELA TIMEOUTS PENDENTES — EVITA ESCRITA EM SPANS APÓS DESTROY */
+  // CANCELA TIMEOUTS PENDENTES — EVITA ESCRITA EM SPANS APÓS DESTROY.
   _ctaTimeouts.forEach(clearTimeout);
   _ctaTimeouts = [];
   clearInterval(_ctaTimer);
   _ctaTimer = null;
 }
 
-/* ------ INIT — CHAMADO APÓS A INTRO TERMINAR ------ */
+/* ------ INIT ------ */
 
 export function initHero() {
   const hero = document.querySelector('#hero');
@@ -162,14 +162,14 @@ export function initHero() {
   animateHero(heroElements);
 }
 
-/* ------ CTA WHATSAPP — FONTE ÚNICA ------ */
+/* ------ CTA WHATSAPP ------ */
 
 function bindWhatsappCta(hero) {
   const cta = hero.querySelector('.hero-cta');
   if (cta) cta.href = getWhatsappLink();
 }
 
-/* ------ ANIMAÇÃO — REVELA A PARTIR DO ESTADO JÁ ESCONDIDO ------ */
+/* ------ ANIMAÇÃO ------ */
 
 function animateHero(elements) {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -193,11 +193,7 @@ function animateHero(elements) {
     onComplete: () => {
       gsap.set(elements, { willChange: 'auto' });
 
-      /* ------ ROLETA DO EYEBROW ------ */
-      /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA VIA offsetWidth E, */
-      /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO — O BUG */
-      /* SÓ SOME NO RELOAD, COM A FONTE JÁ EM CACHE. SEM SCROLLTRIGGER AQUI: A ROLETA É */
-      /* SÓ TRANSITION CSS + setInterval. MESMO PADRÃO DOS ARQUIVOS DE SEÇÃO 4, 5, 6 E 7. */
+      // AGUARDA FONTES — offsetWidth SEM FONTE CARREGADA GERA PÍLULA COM TAMANHO ERRADO.
       if (document.fonts) {
         document.fonts.ready.then(() => initEyebrowRoulette());
       } else {

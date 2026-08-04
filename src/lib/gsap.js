@@ -1,9 +1,8 @@
 /* ========================================
-   GSAP — INSTÂNCIA CENTRAL
+   LIB — GSAP
    ======================================== */
 
-// FONTE ÚNICA DE GSAP + SCROLLTRIGGER (PLUGIN REGISTRADO UMA VEZ).
-// TODAS AS SEÇÕES DEVEM IMPORTAR DAQUI, NUNCA DE 'gsap' DIRETO.
+// FONTE ÚNICA — TODAS AS SEÇÕES IMPORTAM DAQUI, NUNCA DE 'gsap' DIRETO.
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

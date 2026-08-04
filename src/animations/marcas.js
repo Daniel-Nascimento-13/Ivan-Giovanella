@@ -1,3 +1,7 @@
+/* ========================================
+   IMPORTS
+   ======================================== */
+
 import { gsap } from '../lib/gsap.js';
 import { EASE, DURATION, STAGGER } from '../constants/motion.js';
 import { createReveal } from '../lib/reveal.js';
@@ -6,22 +10,22 @@ import { createReveal } from '../lib/reveal.js';
    SEÇÃO 3 — MARCAS
    ======================================== */
 
-/* LISTA DE LOGOS — CAMINHO RELATIVO A public/ */
 const LOGOS = [
   'logo-artem', 'logo-castro', 'logo-centralsul', 'logo-diamond',
   'logo-jasper', 'logo-madre', 'logo-nutritec', 'logo-plastrela',
   'logo-reficomp', 'logo-runmore', 'logo-scala', 'logo-univates'
 ];
 
-const CYCLE_MS   = 2000;   /* INTERVALO GLOBAL DE TROCA (MS) — TODAS AS COLUNAS JUNTAS */
-const SHIFT_Y    = 20;     /* DESLOCAMENTO VERTICAL DA TRANSIÇÃO (PX) — ENTRA POR BAIXO, SAI POR CIMA */
-const WAVE_DELAY = 0.08;   /* DELAY ESCALONADO POR COLUNA (S) — EFEITO DE ONDA */
+const CYCLE_MS   = 2000;  // INTERVALO GLOBAL DE TROCA (MS)
+const SHIFT_Y    = 20;    // DESLOCAMENTO VERTICAL DA TRANSIÇÃO (PX)
+const WAVE_DELAY = 0.08;  // DELAY ESCALONADO POR COLUNA (S)
 
-let _interval = null;    /* ÚNICO SETINTERVAL GLOBAL — CONTROLA O CICLO INTEIRO */
+let _interval = null;
 let _revealST = null;
 let _marcasRouletteTimer = null;
 
-/* ------ EMBARALHA ARRAY (FISHER-YATES) ------ */
+/* ------ UTILITÁRIOS ------ */
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -31,7 +35,6 @@ function shuffle(arr) {
   return a;
 }
 
-/* ------ DISTRIBUI LOGOS NAS COLUNAS ------ */
 function distribute(logos, cols) {
   const shuffled = shuffle(logos);
   return Array.from({ length: cols }, (_, i) =>
@@ -39,7 +42,6 @@ function distribute(logos, cols) {
   );
 }
 
-/* ------ CRIA ELEMENTO DE LOGO ------ */
 function createLogoEl(name) {
   const wrap = document.createElement('div');
   wrap.className = 'marcas-logo';
@@ -51,9 +53,9 @@ function createLogoEl(name) {
   return wrap;
 }
 
-/* ------ TROCA O LOGO DE UMA COLUNA — ROLETA VERTICAL ------ */
-/* SAI PRIMEIRO (SOBE + FADE), DEPOIS ENTRA (DE BAIXO PARA CIMA) — SEQUENCIAL VIA TIMELINE */
-/* i = ÍNDICE DA COLUNA — GERA O DELAY ESCALONADO (EFEITO DE ONDA) */
+/* ------ ROTAÇÃO DE COLUNA ------ */
+// SAI PRIMEIRO (SOBE + FADE), DEPOIS ENTRA (DE BAIXO). DELAY ESCALONADO = EFEITO DE ONDA.
+
 function rotateColumn(state, i) {
   state.index = (state.index + 1) % state.logos.length;
 
@@ -63,12 +65,9 @@ function rotateColumn(state, i) {
   state.col.appendChild(next);
   state.current = next;
 
-  /* DELAY INCREMENTAL POR COLUNA — COLUNA 0 COMEÇA PRIMEIRO, DEMAIS ATRASAM EM CASCATA */
   const waveDelay = i * WAVE_DELAY;
-
   const tl = gsap.timeline();
 
-  /* SAÍDA — LOGO ATUAL SOBE E DESAPARECE */
   tl.to(old, {
     y: -SHIFT_Y,
     autoAlpha: 0,
@@ -78,7 +77,6 @@ function rotateColumn(state, i) {
     onComplete: () => old.remove()
   });
 
-  /* ENTRADA — PRÓXIMO LOGO SOBE ATÉ O CENTRO */
   tl.to(next, {
     y: 0,
     autoAlpha: 1,
@@ -88,7 +86,6 @@ function rotateColumn(state, i) {
   });
 }
 
-/* ------ ESTADO INICIAL DE UMA COLUNA — MOSTRA O PRIMEIRO LOGO ------ */
 function initColumn(col, logos) {
   col.innerHTML = '';
   const first = createLogoEl(logos[0]);
@@ -97,7 +94,9 @@ function initColumn(col, logos) {
   return { col, logos, index: 0, current: first };
 }
 
-/* ------ ROLETA DO EYEBROW — MARCAS ------ */
+/* ------ ROLETA DO EYEBROW ------ */
+// AGUARDA FONTES — offsetWidth SEM FONTE CARREGADA GERA PÍLULA COM TAMANHO ERRADO.
+
 function initMarcasEyebrowRoulette(section) {
   const rouletteEl = section.querySelector('.marcas-eyebrow-roulette');
   const track = section.querySelector('.marcas-eyebrow-roulette__track');
@@ -106,15 +105,12 @@ function initMarcasEyebrowRoulette(section) {
   const words = Array.from(track.querySelectorAll('.marcas-eyebrow-roulette__word'));
   if (words.length < 2) return;
 
-  /* GUARD — A CHAMADA AGORA É ASSÍNCRONA (document.fonts.ready): DUAS PROMISES */
-  /* PENDENTES DEIXARIAM DOIS setInterval VIVOS COM UM SÓ HANDLE RASTREADO. */
   clearInterval(_marcasRouletteTimer);
   _marcasRouletteTimer = null;
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0;
 
-  /* PRÉ-MEDE TODAS AS LARGURAS E ALTURA ANTES DE QUALQUER ANIMAÇÃO */
   const widths = words.map(w => w.offsetWidth);
   const h = words[0].offsetHeight;
 
@@ -138,6 +134,7 @@ function initMarcasEyebrowRoulette(section) {
 }
 
 /* ------ INIT ------ */
+
 export function initMarcas() {
   const section = document.querySelector('#marcas');
   if (!section) return;
@@ -148,33 +145,21 @@ export function initMarcas() {
 
   const cols = Array.from(section.querySelectorAll('.marcas-col'));
   const distributed = distribute(LOGOS, cols.length);
-
-  /* ESTADO INICIAL — CADA COLUNA COM 1 LOGO */
   const states = cols.map((col, i) => initColumn(col, distributed[i]));
 
-  /* ------ ROTAÇÃO GLOBAL — TODAS AS COLUNAS TROCAM JUNTAS (GUARD REDUCED MOTION) ------ */
   if (!prefersReducedMotion) {
     _interval = setInterval(() => {
       states.forEach(rotateColumn);
     }, CYCLE_MS);
   }
 
-  /* ------ REVEAL — EYEBROW + TÍTULO (CLIP-PATH) + CARROSSEL (SÓ FADE) ------ */
-  const revealEls = [
+  const textEls = [
     section.querySelector('.marcas-eyebrow'),
-    section.querySelector('.marcas-title'),
-    section.querySelector('.marcas-carousel')
+    section.querySelector('.marcas-title')
   ].filter(Boolean);
 
-  /* TEXTO: REVEAL PADRÃO COM CLIP-PATH — SEM O CARROSSEL */
-  const textEls = revealEls.filter(el => !el.classList.contains('marcas-carousel'));
   const carousel = section.querySelector('.marcas-carousel');
 
-  /* ------ ROLETA DO EYEBROW — TROCA DE TEXTO EM LOOP ------ */
-  /* ESPERA A FONTE: A ROLETA PRÉ-MEDE A LARGURA DE CADA PALAVRA VIA offsetWidth E, */
-  /* MEDIDA COM A FONTE DE FALLBACK, A PÍLULA NASCERIA COM O TAMANHO ERRADO — O BUG */
-  /* SÓ SOME NO RELOAD, COM A FONTE JÁ EM CACHE. SEM SCROLLTRIGGER AQUI: A ROLETA É */
-  /* SÓ TRANSITION CSS + setInterval, ENTÃO NADA É CRIADO FORA DO INIT SÍNCRONO. */
   if (document.fonts) {
     document.fonts.ready.then(() => initMarcasEyebrowRoulette(section));
   } else {
@@ -187,7 +172,7 @@ export function initMarcas() {
     stagger: STAGGER.base
   });
 
-  /* CAROUSEL: REVELA SÓ COM FADE — SEM will-change: transform QUE QUEBRA O STACKING */
+  // CARROSSEL: SÓ FADE — will-change: transform QUEBRARIA O STACKING CONTEXT.
   if (!prefersReducedMotion && carousel) {
     gsap.set(carousel, { autoAlpha: 0 });
     gsap.to(carousel, {
@@ -204,13 +189,12 @@ export function initMarcas() {
 }
 
 /* ------ CLEANUP ------ */
+
 export function destroyMarcas() {
   clearInterval(_interval);
   _interval = null;
   _revealST?.kill();
   _revealST = null;
-
-  /* ------ PARA A ROLETA DO EYEBROW ------ */
   clearInterval(_marcasRouletteTimer);
   _marcasRouletteTimer = null;
 }
