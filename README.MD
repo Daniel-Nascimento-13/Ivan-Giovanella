@@ -10,7 +10,7 @@ A landing page foi desenvolvida para conectar o cliente diretamente ao atendimen
 
 - **Landing page**
 
-👉 
+👉 https://www.ivangiovanella.com.br
 
 ---
 
